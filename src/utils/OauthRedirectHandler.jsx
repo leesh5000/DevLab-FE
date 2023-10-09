@@ -1,4 +1,3 @@
-import {Cookies} from "react-cookie";
 import client from "../lib/client.jsx";
 import {useNavigate} from "react-router-dom";
 
@@ -15,19 +14,10 @@ const OauthRedirectHandler = () => {
 
   const callOauthLoginAPI = async () => {
     try {
-      const refreshToken = await client.post("/auth/oauth-login", {
+      await client.post("/auth/oauth-login", {
         oauth_type: requestBody.oauthType,
         authorization_code: requestBody.authorizationCode
-      }).then((response) => {
-        return response.data.refresh_token;
-      });
-
-      const cookies = new Cookies();
-      cookies.set("refresh_token", refreshToken.value, {
-        path: "/",
-        expires: new Date(refreshToken.expired_at),
-      });
-
+      })
     } catch (e) {
       alert("로그인에 실패했습니다. 잠시 후 다시 시도해주세요.");
       console.log(e);

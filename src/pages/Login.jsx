@@ -2,7 +2,6 @@ import Header from "../components/Header.jsx";
 import Navbar from "../components/Navbar.jsx";
 import {useState} from "react";
 import client from "../lib/client.jsx";
-import {Cookies} from "react-cookie";
 import {useNavigate} from "react-router-dom";
 
 const Login = () => {
@@ -40,19 +39,10 @@ const Login = () => {
 
     const callLoginAPI = async (id, password) => {
       try {
-        const refreshToken = await client.post("/auth/login", {
+        await client.post("/auth/login", {
           login_id: id,
           password: password
-        }).then((response) => {
-          return response.data.refresh_token;
         });
-
-        const cookies = new Cookies();
-        cookies.set("refresh_token", refreshToken.value, {
-          path: "/",
-          expires: new Date(refreshToken.expired_at),
-        });
-
       } catch (e) {
         if (e.response.status === 404) {
           alert("아이디가 존재하지 않습니다.");
