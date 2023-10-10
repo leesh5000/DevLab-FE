@@ -1,49 +1,33 @@
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
-import client from "../lib/client.jsx";
 import {Cookies} from "react-cookie";
+import {useDispatch, useSelector} from "react-redux";
+import {getAccessToken} from "../actions/UserAuthActions.js";
 
 const Header = () => {
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [accessToken, setAccessToken] = useState(null);
-  const [userAuth, setUserAuth] = useState({
-    isLogin : false,
-    accessToken: null,
-  });
+  const userAuth = useSelector(state => state.userAuthReducer);
 
   useEffect(() => {
 
     if (!userAuth.isLogin) {
       return;
     }
+    //
+    // dispatch(getAccessToken())
+    //   .catch(e => {
+    //     console.log(e);
+    //     if (e.response.status === 401) {
+    //       alert("로그인이 만료되었습니다. 다시 로그인해주세요.");
+    //     } else {
+    //       alert("일시적인 서버 오류입니다. 다시 로그인해주세요.");
+    //     }
+    //   });
 
-    const callAccessTokenAPI = async () => {
-      try {
-        return await client.post("/auth/refresh-token", {}, {
-          withCredentials: true,
-        }).then((response) => {
-          return response.data.access_token.value;
-        });
-      } catch (e) {
-        console.log(e);
-        throw e;
-      }
-    };
-
-    callAccessTokenAPI().then((accessToken) => {
-      setAccessToken(accessToken);
-    }).catch((e) => {
-      if (e.response.status === 401) {
-        alert("로그인이 만료되었습니다. 다시 로그인 해주세요.");
-        navigate("/login");
-      } else {
-        alert("일시적인 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
-        navigate("/");
-      }
-    });
-
-  }, []);
+  }, [userAuth]);
 
   const goLoginPage = () => {
     navigate("/login");
@@ -63,7 +47,7 @@ const Header = () => {
       <h1 className="text-4xl mr-2">
         DEVLAB
       </h1>
-      {accessToken ? (
+      {userAuth.isLogin ? (
         <div className="w-1/6.5 flex justify-between">
           <button className="ml-6 border-1 p-1 px-2 border-gray-600" onClick={goLoginPage}>
             내 정보

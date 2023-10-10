@@ -1,8 +1,9 @@
 import Header from "../components/Header.jsx";
 import Navbar from "../components/Navbar.jsx";
 import {useState} from "react";
-import client from "../lib/client.jsx";
 import {useNavigate} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {login} from "../actions/UserAuthActions.js";
 
 const Login = () => {
 
@@ -12,6 +13,7 @@ const Login = () => {
   });
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const kakaoClientId = import.meta.env.VITE_KAKAO_CLIENT_ID;
   const kakaoRedirectUri = import.meta.env.VITE_KAKAO_REDIRECT_URI;
@@ -27,38 +29,26 @@ const Login = () => {
 
   const onLogin = () => {
 
-    if (userInput.id.length === 0) {
-      alert("아이디를 입력해주세요.");
-      return;
-    }
+    const body = {
+      login_id: userInput.id,
+      password: userInput.password
+    };
 
-    if (userInput.password.length === 0) {
-      alert("패스워드를 입력해주세요.");
-      return;
-    }
-
-    const callLoginAPI = async (id, password) => {
-      try {
-        await client.post("/auth/login", {
-          login_id: id,
-          password: password
-        });
-      } catch (e) {
-        if (e.response.status === 404) {
-          alert("아이디가 존재하지 않습니다.");
-        } else if (e.response.status === 403) {
-          alert("패스워드가 일치하지 않습니다.");
-        } else {
-          alert("로그인에 실패했습니다. 잠시 후 다시 시도해주세요.");
-        }
+    dispatch(login(body))
+      .then(() => {
+        navigate("/");
+      })
+      .catch((e) => {
         console.log(e);
-      }
-    }
-
-    callLoginAPI(userInput.id, userInput.password).then(
-      navigate("/")
-    );
-  }
+        if (e.response.status === 404) {
+          alert("존재하지 않는 아이디입니다.");
+        } else if (e.response.status === 403) {
+          alert("비밀번호가 일치하지 않습니다.");
+        } else {
+          alert("일시적인 서버 오류입니다. 잠시 후 다시 시도해주세요.");
+        }
+      });
+  };
 
   return (
     <>
@@ -96,13 +86,13 @@ const Login = () => {
           </div>
           <div id="social" className="w-[340px] mt-4 flex flex-col">
             <a href={googleUri}>
-              <img src="/public/google.png" className="cursor-pointer mb-2" alt="google"/>
+              <img src="/google.png" className="cursor-pointer mb-2" alt="google"/>
             </a>
             <a href={naverUri}>
-              <img src="/public/naver.png" className="cursor-pointer mb-2" alt="naver"/>
+              <img src="/naver.png" className="cursor-pointer mb-2" alt="naver"/>
             </a>
             <a href={kakaoUri}>
-              <img src="/public/kakao.png" className="cursor-pointer" alt="kakao"/>
+              <img src="/kakao.png" className="cursor-pointer" alt="kakao"/>
             </a>
           </div>
         </div>
