@@ -1,12 +1,12 @@
 import Header from "../components/Header.jsx";
-import Categories from "../components/Navbar.jsx";
+import Navbar from "../components/Navbar.jsx";
 import SearchBar from "../components/SearchBar.jsx";
 
 const Home = () => {
   return (
-    <div className="w-[1024px]">
+    <>
       <Header/>
-      <Categories/>
+      <Navbar/>
       <SearchBar/>
       <table className="w-full table-auto">
         <thead className="text-sm h-8">
@@ -57,7 +57,7 @@ const Home = () => {
         </tr>
         </tbody>
       </table>
-    </div>
+    </>
   );
 }
 
