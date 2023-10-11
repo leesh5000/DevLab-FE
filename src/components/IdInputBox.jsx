@@ -1,7 +1,7 @@
 import client from "../lib/client.jsx";
 import {useEffect, useState} from "react";
 
-const IdInputBox = ({id, setId, isValid, setIsValid}) => {
+const IdInputBox = ({id, setId, isValid, setIsValid, userInputValidator}) => {
 
   const [isDuplicated, setIsDuplicated] = useState(false);
 
@@ -10,31 +10,37 @@ const IdInputBox = ({id, setId, isValid, setIsValid}) => {
   }, [id]);
 
   function validateId(id) {
-    if (id.length === 0 || (id.length < 4 || id.length > 20)) {
+
+    if (!userInputValidator.id.test(id)) {
       setIsValid(false);
       setIsDuplicated(false);
       return;
     }
 
-    const validateDuplicateId = async (id) => {
-      try {
-        await client.get("/auth/id-checks", {params: {id}})
-          .then((response) => {
-            setIsValid(true);
-            setIsDuplicated(false);
-          });
-      } catch (e) {
-        if (e.response.status === 409) {
+    const checkDuplicatedId = async (id) => {
+      return await client.get("/auth/validation/id", {params: {id}})
+        .then(() => {
+          return true;
+        }).catch((e) => {
+          if (e.response.status === 409) {
+            return false;
+          }
+        });
+    };
+
+    checkDuplicatedId(id)
+      .then((result) => {
+        if (result) {
+          setIsValid(true);
+          setIsDuplicated(false);
+        } else {
           setIsValid(false);
           setIsDuplicated(true);
         }
-      }
-    };
-
-    validateDuplicateId(id);
+      });
   }
 
-  const onKeyUp = (e) => {
+  const onChange = (e) => {
     setId(e.target.value);
   }
 
@@ -55,7 +61,7 @@ const IdInputBox = ({id, setId, isValid, setIsValid}) => {
         <div className="flex mb-1.5 items-center">
           <input type="text"
                  className="w-1/2 h-8 border-1 border-gray-400 p-1.5 text-gray-600"
-                 onKeyUp={onKeyUp}
+                 onChange={onChange}
                  onFocus={onFocus}
                  onBlur={onBlur}/>
           {
@@ -75,7 +81,7 @@ const IdInputBox = ({id, setId, isValid, setIsValid}) => {
             아이디는 4~20자 이내로 되어야합니다.
           </p>
           {
-            id.length !== 0 && (id.length < 4 || id.length > 20) ?
+            id.length !== 0 && !userInputValidator.id.test(id) ?
               <p className="text-sm text-red-600">
                 글자 수를 확인해주세요.
               </p> :

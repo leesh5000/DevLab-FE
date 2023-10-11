@@ -3,7 +3,7 @@ import Navbar from "../components/Navbar.jsx";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
-import {login} from "../actions/UserActions.js";
+import {login} from "../actions/UserAuthActions.jsx";
 
 const Login = () => {
 

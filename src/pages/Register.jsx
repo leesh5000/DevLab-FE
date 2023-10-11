@@ -6,8 +6,9 @@ import PasswordInputBox from "../components/PasswordInputBox.jsx";
 import NicknameInputBox from "../components/NicknameInputBox.jsx";
 import {EmailInputBox} from "../components/EmailInputBox.jsx";
 import {CertInputBox} from "../components/CertInputBox.jsx";
-import client from "../lib/client.jsx";
 import {useNavigate} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {register} from "../actions/UserAuthActions.jsx";
 
 const Register = () => {
 
@@ -18,6 +19,13 @@ const Register = () => {
   const [nickname, setNickname] = useState("");
   const [isValidNickname, setIsValidNickname] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const userInputValidator = {
+    id: /^[a-z0-9]{4,20}$/, // 영어, 숫자로 된 4~20자리
+    password: /^.{6,30}$/,
+    nickname: /^[a-z0-9가-힣]{2,10}$/, // 한글, 영어, 숫자로 된 2~10자리
+  }
 
   const onRegister = () => {
 
@@ -39,20 +47,15 @@ const Register = () => {
       return;
     }
 
-    const callRegisterApi = async (id, password, nickname) => {
-      try {
-        const response = await client.post("/auth/register", {
-          login_id: id,
-          password: password,
-          nickname: nickname
-        });
-      } catch (e) {
-        alert("회원가입에 실패했습니다. 잠시 후 다시 시도해주세요.");
-        console.log(e);
-      }
-    }
-
-    callRegisterApi(id, password, nickname).then(() => {
+    dispatch(register({
+      login_id: id,
+      password: password,
+      nickname: nickname
+    })).then(() => {
+      navigate("/");
+    }).catch((e) => {
+      console.log(e);
+      alert("회원가입에 실패했습니다. 잠시 후 다시 시도해주세요.");
       navigate("/");
     });
   }
@@ -66,13 +69,13 @@ const Register = () => {
       <Header/>
       <Navbar/>
       <div id="body" className="h-[1024px] flex flex-col justify-center items-center">
-        <div id="input" className="border-2 border-gray-300 p-24 rounded">
+        <div id="border" className="border-2 border-gray-300 p-24 rounded">
           <IdInputBox id={id} setId={setId}
-                      isValid={isValidId} setIsValid={setIsValidId}/>
+                      isValid={isValidId} setIsValid={setIsValidId} userInputValidator={userInputValidator}/>
           <PasswordInputBox password={password} setPassword={setPassword}
-                            isValid={isValidPassword} setIsValid={setIsValidPassword}/>
+                            isValid={isValidPassword} setIsValid={setIsValidPassword} userInputValidator={userInputValidator}/>
           <NicknameInputBox nickname={nickname} setNickname={setNickname}
-                            isValid={isValidNickname} setIsValid={setIsValidNickname}/>
+                            isValid={isValidNickname} setIsValid={setIsValidNickname} userInputValidator={userInputValidator}/>
           <EmailInputBox/>
           <CertInputBox/>
         </div>

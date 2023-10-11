@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 
-const PasswordInputBox = ({password, setPassword, isValid, setIsValid}) => {
+const PasswordInputBox = ({password, setPassword, isValid, setIsValid, userInputValidator}) => {
 
   const [passwordConfirm, setPasswordConfirm] = useState("");
 
@@ -19,16 +19,16 @@ const PasswordInputBox = ({password, setPassword, isValid, setIsValid}) => {
 
   }, [password, passwordConfirm]);
 
-  const onKeyUp = (e) => {
+  const onChange = (e) => {
     setPassword(e.target.value);
   }
 
-  const onKeyUpConfirm = (e) => {
+  const onChangePasswordConfirm = (e) => {
     setPasswordConfirm(e.target.value);
   }
 
   return (
-    <div id="password-box" className="flex h-36">
+    <div id="password-box" className="flex h-32">
       <div className="w-1/6 mr-12">
         비밀번호
       </div>
@@ -37,7 +37,7 @@ const PasswordInputBox = ({password, setPassword, isValid, setIsValid}) => {
           <div className="flex mb-1.5 items-center">
             <input type="password"
                    className="w-1/2 h-8 border-1 border-gray-400 p-1.5 text-gray-600"
-                   onKeyUp={onKeyUp}
+                   onChange={onChange}
             />
             {
               isValid ?
@@ -53,26 +53,27 @@ const PasswordInputBox = ({password, setPassword, isValid, setIsValid}) => {
           </div>
           <input type="password"
                  className="w-1/2 h-8 border-1 border-gray-400 p-1.5 text-gray-600"
-                 onKeyUp={onKeyUpConfirm}
+                 onChange={onChangePasswordConfirm}
           />
         </div>
-        <div className="text-sm text-gray-400 mb-6">
+        <div className="text-sm text-gray-400">
           <p>
             비밀번호는 6~30자로 되어야합니다.
           </p>
           {
-            password.length !== 0 && (password.length < 6 || password.length > 30) ?
+            password.length !== 0 && !userInputValidator.password.test(password) ?
               <p className="text-sm text-red-600">
                 글자 수를 확인해주세요.
               </p> :
               null
           }
           {
-            passwordConfirm.length === 0 || (passwordConfirm === password) ?
+            passwordConfirm.length === 0 || !userInputValidator.password.test(password) ?
+              null : ((passwordConfirm === password) ?
               null :
               <p className="text-sm text-red-600">
                 비밀번호가 일치하지 않습니다.
-              </p>
+              </p>)
           }
         </div>
       </div>

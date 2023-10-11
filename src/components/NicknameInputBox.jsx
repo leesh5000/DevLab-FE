@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import client from "../lib/client.jsx";
 
-const NicknameInputBox = ({nickname, setNickname, isValid, setIsValid}) => {
+const NicknameInputBox = ({nickname, setNickname, isValid, setIsValid, userInputValidator}) => {
 
   const [isDuplicated, setIsDuplicated] = useState(false);
 
@@ -18,25 +18,30 @@ const NicknameInputBox = ({nickname, setNickname, isValid, setIsValid}) => {
       return;
     }
 
-    const validateDuplicateNickname = async (nickname) => {
-      try {
-        await client.get("/auth/nickname-checks", {params: {nickname}})
-          .then((response) => {
-            setIsValid(true);
-            setIsDuplicated(false);
-          });
-      } catch (e) {
-        if (e.response.status === 409) {
+    const checkDuplicatedNickname = async (nickname) => {
+      return await client.get("/auth/validation/nickname", {params: {nickname}})
+        .then(() => {
+          return true;
+        }).catch((e) => {
+          if (e.response.status === 409) {
+            return false;
+          }
+        });
+    };
+
+    checkDuplicatedNickname(nickname)
+      .then((result) => {
+        if (result) {
+          setIsValid(true);
+          setIsDuplicated(false);
+        } else {
           setIsValid(false);
           setIsDuplicated(true);
         }
-      }
-    };
-
-    validateDuplicateNickname(nickname);
+      });
   }
 
-  const onKeyUp = (e) => {
+  const onChange = (e) => {
     setNickname(e.target.value);
   }
 
@@ -57,7 +62,7 @@ const NicknameInputBox = ({nickname, setNickname, isValid, setIsValid}) => {
         <div className="flex mb-1.5 items-center">
           <input type="text"
                  className="w-1/2 h-8 border-1 border-gray-400 p-1.5 text-gray-600"
-                 onKeyUp={onKeyUp}
+                 onChange={onChange}
                  onBlur={onBlur}
                  onFocus={onFocus}/>
           {
@@ -74,10 +79,10 @@ const NicknameInputBox = ({nickname, setNickname, isValid, setIsValid}) => {
         </div>
         <div className="text-sm text-gray-400">
           <p>
-            닉네임은 4~10자로 되어야합니다. (띄어쓰기는 불가능합니다.)
+            닉네임은 한글, 영어, 숫자로 된 2~10자리여야 합니다.
           </p>
           {
-            nickname.length !== 0 && (nickname.length < 4 || nickname.length > 20) ?
+            nickname.length !== 0 && !userInputValidator.nickname.test(nickname) ?
               <p className="text-sm text-red-600">
                 글자 수를 확인해주세요.
               </p> :

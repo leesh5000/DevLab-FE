@@ -1,7 +1,7 @@
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {getAccessToken, logout} from "../actions/UserActions.js";
+import {fetchAccessToken, logout} from "../actions/UserAuthActions.jsx";
 
 const Header = () => {
 
@@ -12,7 +12,7 @@ const Header = () => {
 
   useEffect(() => {
 
-    dispatch(getAccessToken())
+    dispatch(fetchAccessToken())
       .catch(e => {
         console.log(e);
         if (e.response.status >= 500) {
