@@ -3,7 +3,7 @@ import Navbar from "../components/Navbar.jsx";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
-import {login} from "../actions/UserAuthActions.js";
+import {login} from "../actions/UserActions.js";
 
 const Login = () => {
 
@@ -15,16 +15,18 @@ const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const baseRedirectURI = import.meta.env.VITE_BASE_REDIRECT_URI;
+
   const kakaoClientId = import.meta.env.VITE_KAKAO_CLIENT_ID;
-  const kakaoRedirectUri = import.meta.env.VITE_KAKAO_REDIRECT_URI;
+  const kakaoRedirectUri = baseRedirectURI + "kakao";
   const kakaoUri = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${kakaoClientId}&redirect_uri=${kakaoRedirectUri}`
 
   const naverClientId = import.meta.env.VITE_NAVER_CLIENT_ID;
-  const naverRedirectUri = import.meta.env.VITE_NAVER_REDIRECT_URI;
+  const naverRedirectUri = baseRedirectURI + "naver";
   const naverUri = `https://nid.naver.com/oauth2.0/authorize?client_id=${naverClientId}&redirect_uri=${naverRedirectUri}&response_type=code&state=DevLab`
 
   const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
-  const googleRedirectUri = import.meta.env.VITE_GOOGLE_REDIRECT_URI;
+  const googleRedirectUri = baseRedirectURI + "google";
   const googleUri = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${googleClientId}&redirect_uri=${googleRedirectUri}&response_type=code&scope=openid email`
 
   const onLogin = () => {
@@ -44,7 +46,7 @@ const Login = () => {
           alert("존재하지 않는 아이디입니다.");
         } else if (e.response.status === 403) {
           alert("비밀번호가 일치하지 않습니다.");
-        } else {
+        } else if (e.response.status >= 500) {
           alert("일시적인 서버 오류입니다. 잠시 후 다시 시도해주세요.");
         }
       });

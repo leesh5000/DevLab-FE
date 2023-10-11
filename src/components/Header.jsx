@@ -1,8 +1,7 @@
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {Cookies} from "react-cookie";
 import {useDispatch, useSelector} from "react-redux";
-import {getAccessToken} from "../actions/UserAuthActions.js";
+import {getAccessToken, logout} from "../actions/UserActions.js";
 
 const Header = () => {
 
@@ -13,21 +12,15 @@ const Header = () => {
 
   useEffect(() => {
 
-    if (!userAuth.isLogin) {
-      return;
-    }
-    //
-    // dispatch(getAccessToken())
-    //   .catch(e => {
-    //     console.log(e);
-    //     if (e.response.status === 401) {
-    //       alert("로그인이 만료되었습니다. 다시 로그인해주세요.");
-    //     } else {
-    //       alert("일시적인 서버 오류입니다. 다시 로그인해주세요.");
-    //     }
-    //   });
+    dispatch(getAccessToken())
+      .catch(e => {
+        console.log(e);
+        if (e.response.status >= 500) {
+          alert("일시적인 서버 오류입니다. 다시 로그인해주세요.");
+        }
+      });
 
-  }, [userAuth]);
+  }, []);
 
   const goLoginPage = () => {
     navigate("/login");
@@ -38,21 +31,27 @@ const Header = () => {
   }
 
   const onLogout = () => {
-    const cookies = new Cookies();
-    cookies.remove("refresh_token");
+    dispatch(logout());
+    navigate("/");
+  }
+
+  const goHome = () => {
+    navigate("/");
   }
 
   return (
     <div className="h-36 w-full flex justify-between items-center">
       <h1 className="text-4xl mr-2">
-        DEVLAB
+        <button onClick={goHome}>
+          DEVLAB
+        </button>
       </h1>
       {userAuth.isLogin ? (
         <div className="w-1/6.5 flex justify-between">
           <button className="ml-6 border-1 p-1 px-2 border-gray-600" onClick={goLoginPage}>
             내 정보
           </button>
-          <button className="ml-6 border-1 p-1 px-2 border-gray-600" onClick={goRegisterPage}>
+          <button className="ml-6 border-1 p-1 px-2 border-gray-600" onClick={onLogout}>
             로그아웃
           </button>
         </div>) : (

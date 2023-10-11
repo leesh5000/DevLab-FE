@@ -1,5 +1,5 @@
 import {useDispatch} from "react-redux";
-import {oauthLogin} from "../actions/UserAuthActions.js";
+import {oauthLogin} from "../actions/UserActions.js";
 import {useNavigate} from "react-router-dom";
 
 const OauthRedirectHandler = () => {
@@ -22,8 +22,8 @@ const OauthRedirectHandler = () => {
     .catch((e) => {
       console.log(e);
       alert("일시적인 서버 오류입니다. 잠시 후 다시 시도해주세요.");
+      navigate("/");
     });
-
 }
 
 export default OauthRedirectHandler;
