@@ -9,7 +9,7 @@ import {composeWithDevTools} from "redux-devtools-extension";
 import App from "./App.jsx";
 import {CookiesProvider} from "react-cookie";
 import {Provider} from "react-redux";
-import ScrollToTop from "./utils/ScrollTop.js";
+import ScrollToTop from "./utils/ScrollTop.jsx";
 
 const middleware = applyMiddleware(thunk);
 const store = createStore(rootReducer, composeWithDevTools(middleware));

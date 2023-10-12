@@ -5,8 +5,9 @@ import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import Editor from "../components/Editor.jsx";
 import {write} from "../actions/PostActions.jsx";
+import Categories from "../utils/Categories.jsx";
 
-const Post = () => {
+const Posting = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -18,16 +19,21 @@ const Post = () => {
     tags: [],
   });
 
-  console.log("postInput: ", postInput);
+  const [errorMessage, setErrorMessage] = useState(false);
 
-  // useEffect(() => {
-  //   if (!userAuth.isLogin) {
-  //     navigate("/login");
-  //     alert("로그인이 필요합니다.");
-  //   }
-  // }, [userAuth]);
+  useEffect(() => {
+    if (!userAuth.isLogin) {
+      navigate("/login");
+      alert("로그인이 필요합니다.");
+    }
+  }, [userAuth]);
 
   const onCategoryHandler = (e) => {
+    if (e.target.value === "none") {
+      setErrorMessage(true);
+    } else {
+      setErrorMessage(false);
+    }
     setPostInput({
       ...postInput,
       category: e.target.value,
@@ -41,18 +47,36 @@ const Post = () => {
     });
   }
 
+  const onTitleBlur = (e) => {
+    if (postInput.category === "" || postInput.category === "none") {
+      setErrorMessage(true);
+    }
+  }
+
   const onContentsHandler = (e) => {
 
     setPostInput({
       ...postInput,
-      content: e,
+      contents: e,
     });
   }
 
-  const onTagInputHandler = (e) => {
+  const onTagHandler = (e) => {
 
-    if (e.key === "Enter") {
+    if (e.target.value.length > 20) {
+      alert("태그는 20자 이내로 입력해주세요.");
+      e.target.value = e.target.value.substring(0, 20);
+      return;
+    }
 
+    if (e.key === "Enter" && e.target.value !== "") {
+
+      if (postInput.tags.length >= 5) {
+        alert("태그는 최대 5개까지만 지정 가능합니다.");
+        return;
+      }
+
+      console.log(e.target.value);
       const newTag = e.target.value.replace(/ /g, "-");
 
       if (!postInput.tags.includes(newTag)) {
@@ -62,7 +86,7 @@ const Post = () => {
         });
       }
 
-      e.target.value = "";
+      e.target.value = null;
     }
   }
 
@@ -82,12 +106,13 @@ const Post = () => {
       return;
     }
 
-    if (postInput.title.length < 8 || postInput.title.length > 50) {
-      alert("제목은 최소 8자, 최대 50자 이상 입력해야합니다.");
+    const noWhitespaceTitle = postInput.title.replace(/ /g, "");
+    if (noWhitespaceTitle.length < 8 || noWhitespaceTitle.length > 100) {
+      alert("제목은 공백을 제외하고 최소 10자, 최대 100자로 입력해야합니다.");
       return;
     }
 
-    if (postInput.content.replace(/<[^>]*>/g, '').length < 30) {
+    if (postInput.contents.replace(/<[^>]*>/g, '').length < 30) {
       alert("내용은 최소 30자 이상 입력해야 합니다.");
       return;
     }
@@ -111,23 +136,39 @@ const Post = () => {
         <h1 className="text-xl mb-2">게시글 작성</h1>
         <div className="flex">
           <select id="tabs" className="w-20 border-1 border-r-0 border-gray-400" onChange={onCategoryHandler}>
-            <option value="none">탭</option>
-            <option value="question">질문</option>
-            <option value="information">정보</option>
-            <option value="life">질문</option>
+            <option value="none">카테고리</option>
+            {
+              Object.entries(Categories).map(([key, value]) => {
+                return (
+                  <option key={key} value={key}>{value}</option>
+                );
+              })
+            }
           </select>
-          <input type="text" className="flex-1 border-1 border-gray-400 p-2" placeholder="제목"
-                 onChange={onTitleHandler}/>
+          <input type="text" className="flex-1 border-1 border-gray-400 p-2"
+                 placeholder="제목"
+                 onChange={onTitleHandler}
+                 onBlur={onTitleBlur}/>
         </div>
+        {
+          errorMessage ?
+            <p className="text-sm text-red-600 mt-1">
+              게시글 카테고리를 선택해주세요.
+            </p> :
+            null
+        }
         <h1 className="text-xl mt-8 mb-2">내용</h1>
         <Editor onContentHandler={onContentsHandler}/>
         <h1 className="text-xl mt-8 mb-2">태그 입력</h1>
-        <input type="text" className="w-full border-1 border-gray-400 p-2 mb-2" placeholder="제목"
-               onKeyDown={onTagInputHandler}/>
+        <input type="text" className="w-full border-1 border-gray-400 p-2" placeholder="제목"
+               onKeyUp={onTagHandler}/>
+        <p className="text-sm text-blue-600 mt-1">
+          태그는 20자 이내로 입력해주세요. 띄어쓰기는 자동으로 하이픈(-)으로 변환됩니다.
+        </p>
         {
           postInput.tags.map((tag) => {
             return (
-              <button key={tag} className="border-1 bg-sky-100 text-blue-500 p-2 px-3 mr-2" onClick={onRemove}>
+              <button key={tag} className="border-1 bg-sky-100 text-blue-500 p-2 px-3 mr-2 mt-4" onClick={onRemove}>
                 {tag}
               </button>
             );
@@ -146,4 +187,4 @@ const Post = () => {
   );
 }
 
-export default Post;
+export default Posting;
