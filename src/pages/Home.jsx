@@ -1,41 +1,49 @@
 import Header from "../components/Header.jsx";
 import Navbar from "../components/Navbar.jsx";
 import SearchBar from "../components/SearchBar.jsx";
+import {useNavigate} from "react-router-dom";
 
 const Home = () => {
+
+  const navigate = useNavigate();
+
+  const goPost = () => {
+    navigate('/post');
+  }
+
   return (
     <>
       <Header/>
       <Navbar/>
       <SearchBar/>
-      <table className="w-full table-auto">
-        <thead className="text-sm h-8">
-        <tr className="border-1">
-          <th className="w-1/18 font-normal">
+      <table className="w-[1024px] h-[960px] table-auto">
+        <thead>
+        <tr className="border-1 border-t-0">
+          <th>
             분류
           </th>
-          <th className="font-normal">
+          <th>
             제목 & 태그
           </th>
-          <th className="w-1/9 font-normal">
+          <th>
             작성자
           </th>
-          <th className="w-1/12 font-normal">
+          <th>
             작성일
           </th>
-          <th className="w-1/16 font-normal">
+          <th>
             조회
           </th>
-          <th className="w-1/16 font-normal">
+          <th>
             추천
           </th>
         </tr>
         </thead>
         <tbody>
-        <tr className="text-center text-sm border-b-1">
+        <tr className="border-b-1 align-top">
           <td>질문</td>
-          <td className="text-left text-base h-16 flex flex-col justify-around">
-            <div className="">
+          <td>
+            <div>
               Java와 JavaScript의 차이는 무엇인가요?
             </div>
             <div className="text-sm">
@@ -57,6 +65,11 @@ const Home = () => {
         </tr>
         </tbody>
       </table>
+      <div className="h-24 bg-yellow-200">
+        <button onClick={goPost}>
+          글 쓰기
+        </button>
+      </div>
     </>
   );
 }

@@ -40,7 +40,7 @@ const Header = () => {
   }
 
   return (
-    <div className="h-36 w-full flex justify-between items-center">
+    <div className="h-24 w-full flex justify-between items-center">
       <h1 className="text-4xl mr-2">
         <button onClick={goHome}>
           DEVLAB

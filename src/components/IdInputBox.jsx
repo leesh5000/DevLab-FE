@@ -60,7 +60,7 @@ const IdInputBox = ({id, setId, isValid, setIsValid, userInputValidator}) => {
       <div className="flex-1">
         <div className="flex mb-1.5 items-center">
           <input type="text"
-                 className="w-1/2 h-8 border-1 border-gray-400 p-1.5 text-gray-600"
+                 className="w-1/2 h-8 border-1 border-gray-400 p-1.5"
                  onChange={onChange}
                  onFocus={onFocus}
                  onBlur={onBlur}/>

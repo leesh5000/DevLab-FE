@@ -57,16 +57,15 @@ const Login = () => {
       <Header/>
       <Navbar/>
       <div id="body" className="h-[1024px] flex flex-col justify-center items-center">
-        <div id="input"
-             className="w-[500px] items-center border-2 border-gray-300 p-24 py-16 rounded flex flex-col justify-items-start">
-          <input type="text" className="w-full border-1 border-gray-400 p-2 text-gray-600" placeholder="아이디"
+        <div id="border" className="w-[500px] items-center border-2 border-gray-300 p-24 py-16 rounded flex flex-col justify-items-start">
+          <input type="text" className="w-full border-1 border-gray-400 p-2" placeholder="아이디"
                  onKeyUp={(e) => setUserInput((prevState) => {
                    return {
                      ...prevState,
                      id: e.target.value,
                    }
                  })}/>
-          <input type="password" className="w-full border-1 border-t-0 border-gray-400 p-2 text-gray-600" placeholder="패스워드"
+          <input type="password" className="w-full border-1 border-t-0 border-gray-400 p-2" placeholder="패스워드"
                  onKeyUp={(e) => setUserInput((prevState) => {
                    return {
                       ...prevState,

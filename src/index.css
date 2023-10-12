@@ -5,4 +5,11 @@
 #root {
   width: 1024px;
   margin: 0 auto;
+  min-height: 100%;
+}
+
+.ql-editor {
+  font-size: 1rem;
+  line-height: 1.5rem;
+  min-height: 500px;
 }
