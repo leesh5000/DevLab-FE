@@ -7,7 +7,6 @@ const Header = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [accessToken, setAccessToken] = useState(null);
   const userAuth = useSelector(state => state.userAuthReducer);
 
   useEffect(() => {

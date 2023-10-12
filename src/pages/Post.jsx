@@ -20,12 +20,12 @@ const Post = () => {
 
   console.log("postInput: ", postInput);
 
-  useEffect(() => {
-    if (!userAuth.isLogin) {
-      navigate("/login");
-      alert("로그인이 필요합니다.");
-    }
-  }, [userAuth]);
+  // useEffect(() => {
+  //   if (!userAuth.isLogin) {
+  //     navigate("/login");
+  //     alert("로그인이 필요합니다.");
+  //   }
+  // }, [userAuth]);
 
   const onCategoryHandler = (e) => {
     setPostInput({
