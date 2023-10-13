@@ -9,8 +9,8 @@ export default function (state = {}, action) {
       return {
         content: action.payload.content,
         pageable: action.payload.pageable,
-        totalPages: action.payload.totalPages,
-        totalElements: action.payload.totalElements,
+        total_page: action.payload.total_page,
+        total_elements: action.payload.total_elements,
         last: action.payload.last,
         size: action.payload.size,
         number: action.payload.number,
@@ -27,6 +27,11 @@ export default function (state = {}, action) {
         created_at: action.payload.created_at,
         modified_at: action.payload.modified_at,
         like_count: action.payload.like_count,
+      }
+    case "ADD_COMMENT":
+      return {
+        ...state,
+        comment_details: [...state.comment_details, action.payload],
       }
     default:
       return state;

@@ -6,11 +6,11 @@ const Editor = ({onContentHandler}) => {
 
   const modules = {
     toolbar: [
-      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-      ['blockquote', 'code-block'],
-
-      [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-      [{ 'align': [] }],
+      [{size: []}],
+      ['bold', 'italic', 'blockquote', 'code-block'],
+      [{'list': 'ordered'}, {'list': 'bullet'},
+        {'indent': '-1'}, {'indent': '+1'}],
+      ['link', 'image']
     ],
   }
 

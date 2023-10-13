@@ -3,6 +3,8 @@ import {useEffect} from "react";
 import {getPage} from "../actions/PostActions.jsx";
 import {useNavigate} from "react-router-dom";
 import Categories from "../utils/Categories.jsx";
+import {DateConverter} from "../utils/DateConverter.jsx";
+import {TagItem} from "./TagItem.jsx";
 
 function PostTable() {
 
@@ -16,22 +18,6 @@ function PostTable() {
     dispatch(getPage(0, 5, "createdAt,desc"))
   }, [dispatch]);
 
-  const dateConverter = (date) => {
-    const localDate = new Date(date);
-    const year = localDate.getFullYear();
-    const month = localDate.getMonth() + 1;
-    const day = localDate.getDate();
-    const hours = localDate.getHours();
-    const minutes = localDate.getMinutes();
-    const today = new Date().getDate();
-
-    if (day === today) {
-      return `${hours}:${minutes}`;
-    } else {
-      return `${year}.${month}.${day}`;
-    }
-  }
-
   const onTitleClick = (post) => {
     navigate(`/post/${encodeURI(post.title)}`, {
       state: {
@@ -41,12 +27,8 @@ function PostTable() {
     });
   };
 
-  if (!postPage || !postPage.content) {
-    return null;
-  }
-
   return (
-    <table className="w-full table-fixed">
+    <table className="table-fixed">
       <thead>
       <tr className="border-1 border-t-0">
         <th className="w-20">
@@ -71,7 +53,7 @@ function PostTable() {
       </thead>
       <tbody>
       {
-        postPage.content.map((post, index) => {
+        postPage.content?.map((post, index) => {
           return (
             <tr key={index} className="align-middle text-center border-b-1 border-gray-200">
               <td id="category" className="">
@@ -84,13 +66,10 @@ function PostTable() {
                         }}>
                   {post.title}
                 </button>
-                <div className="text-sm">
+                <div>
                   {post.tags.map((tag, index) => {
                     return (
-                      <button key={index}
-                              className="mb-2 text-xs rounded-lg py-1 px-1.5 mr-2 bg-sky-100 text-sky-600 hover:bg-blue-200">
-                        {tag}
-                      </button>
+                      <TagItem key={index} value={tag}/>
                     )
                   })}
                 </div>
@@ -99,7 +78,7 @@ function PostTable() {
                 {post.author}
               </td>
               <td id="createdAt">
-                {dateConverter(post.created_at)}
+                {DateConverter(post.created_at)}
               </td>
               <td>
                 999+

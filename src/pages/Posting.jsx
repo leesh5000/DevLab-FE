@@ -121,7 +121,6 @@ const Posting = () => {
       .then(() => {
         navigate("/");
       });
-
   }
 
   const onCancel = () => {

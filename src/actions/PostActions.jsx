@@ -3,6 +3,7 @@ import client from "../lib/client.jsx";
 export const WRITE = "WRITE";
 export const GET_PAGE = "GET_PAGE";
 export const GET_DETAIL = "GET_DETAIL";
+export const  ADD_COMMENT = "ADD_COMMENT";
 
 export const write = (data = {}, accessToken) => async (dispatch) => {
 
@@ -45,6 +46,22 @@ export const getDetail = (id) => async (dispatch) => {
 
     dispatch({
       type: GET_DETAIL,
+      payload: response.data,
+    });
+}
+
+export const addComment = (id, contents, accessToken) => async (dispatch) => {
+
+    const response = await client.post(`/posts/${id}/comments`, {
+      contents: contents,
+    }, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      }
+    });
+
+    dispatch({
+      type: ADD_COMMENT,
       payload: response.data,
     });
 }
