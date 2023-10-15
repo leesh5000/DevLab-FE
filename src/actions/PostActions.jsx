@@ -50,13 +50,13 @@ export const getDetail = (id) => async (dispatch) => {
     });
 }
 
-export const addComment = (id, contents, accessToken) => async (dispatch) => {
+export const addComment = (id, contents, userAuth = {}) => async (dispatch) => {
 
     const response = await client.post(`/posts/${id}/comments`, {
       contents: contents,
     }, {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${userAuth.accessToken}`,
       }
     });
 

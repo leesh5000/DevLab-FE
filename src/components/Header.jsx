@@ -11,13 +11,7 @@ const Header = () => {
 
   useEffect(() => {
 
-    dispatch(fetchAccessToken())
-      .catch(e => {
-        console.log(e);
-        if (e.response.status >= 500) {
-          alert("일시적인 서버 오류입니다. 다시 로그인해주세요.");
-        }
-      });
+    dispatch(fetchAccessToken());
 
   }, []);
 

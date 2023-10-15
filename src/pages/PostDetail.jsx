@@ -3,7 +3,7 @@ import Header from "../components/Header.jsx";
 import Navbar from "../components/Navbar.jsx";
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {getDetail, writeComment} from "../actions/PostActions.jsx";
+import {addComment, getDetail} from "../actions/PostActions.jsx";
 import {TagItem} from "../components/TagItem.jsx";
 import Editor from "../components/Editor.jsx";
 import {CommentDetail} from "../components/CommentDetail.jsx";
@@ -54,7 +54,7 @@ const PostDetail = () => {
   }
 
   const onComment = async () => {
-    await dispatch(writeComment(id, comment, userAuth.accessToken));
+    await dispatch(addComment(id, comment, userAuth));
 
   }
 

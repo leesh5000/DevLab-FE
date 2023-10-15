@@ -1,7 +1,7 @@
 import {useDispatch, useSelector} from "react-redux";
 import {setNickname} from "../actions/UserRegisterActions.js";
 
-const NicknameInputBox = () => {
+export const SecurityCodeInputBox = () => {
 
   const dispatch = useDispatch();
   const userInput = useSelector(state => state.userRegisterReducer);
@@ -13,13 +13,13 @@ const NicknameInputBox = () => {
   return (
     <div id="id-box" className="flex mb-8">
       <div className="w-40">
-        닉네임
+        보안코드 발급 이메일
       </div>
       <div>
-        <input type="text" className="h-8 w-60 border-1 border-gray-400 p-1.5" onChange={onNicknameHandler}/>
+        <input type="text" className="h-8 w-40 border-1 border-gray-400 p-1.5" onChange={onNicknameHandler}/>
         <div className="my-1">
-          <p className="text-sm text-gray-400">
-            닉네임는 한글, 영어, 숫자로 된 2-9자리여야 합니다.
+          <p className="text-sm text-blue-700">
+            보안코드를 발급하지 않아도 회원가입이 가능하며, 추후 내정보 페이지에서 발급받을 수 있습니다.
           </p>
           {
             userInput.isDuplicatedNickname ?
@@ -33,5 +33,3 @@ const NicknameInputBox = () => {
     </div>
   );
 }
-
-export default NicknameInputBox;
