@@ -37,7 +37,7 @@ export default function (state = initialState, action) {
     case SET_EMAIL:
       return {
         ...state,
-        email: action.email,
+        email: action.payload,
       }
     default:
       return state;

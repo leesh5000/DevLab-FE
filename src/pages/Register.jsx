@@ -4,8 +4,7 @@ import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import client from "../lib/client.jsx";
-import {CertInputBox} from "../components/CertInputBox.jsx";
-import {SecurityCodeInputBox} from "../components/SecurityCodeInputBox.jsx";
+import {EmailInputBox} from "../components/EmailInputBox.jsx";
 import NicknameInputBox from "../components/NicknameInputBox.jsx";
 import PasswordInputBox from "../components/PasswordInputBox.jsx";
 import IdInputBox from "../components/IdInputBox.jsx";
@@ -95,7 +94,7 @@ const Register = () => {
           <img src="/public/info1.svg" className="h-5" alt=""/>
         </button>
         <div id="tooltip-default" role="tooltip"
-             className="absolute z-10 invisible inline-block px-3 py-2 text-xs text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+             className="absolute z-10 invisible inline-block px-3 py-2 text-sm text-white transition-opacity duration-300 bg-gray-800 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
           <p className="pb-3">보안코드란?</p>
           <p className="pb-1">보안코드는 아이디/비밀번호 찾기에 사용됩니다.</p>
           <p className="pb-1">보안코드는 이메일 인증 완료 후 해당 이메일을 통해 발급받을 수 있습니다.</p>
@@ -103,8 +102,7 @@ const Register = () => {
         </div>
       </div>
       <div className="border-1 border-gray-400 rounded">
-        <SecurityCodeInputBox/>
-        <CertInputBox/>
+        <EmailInputBox/>
       </div>
     </div>
   );
