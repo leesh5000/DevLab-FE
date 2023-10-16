@@ -5,6 +5,7 @@ export const SET_EMAIL = 'users/SET_EMAIL';
 export const SET_NICKNAME = 'users/SET_NICKNAME';
 export const SET_PASSWORD = 'users/SET_PASSWORD';
 export const SET_PASSWORD_CONFIRM = 'users/SET_PASSWORD_CONFIRM';
+export const SET_VERIFIED = 'users/SET_VERIFIED';
 
 export const setId = (id) => async (dispatch) => {
 
@@ -72,4 +73,11 @@ export const setPasswordConfirm = (passwordConfirm) => {
     type: SET_PASSWORD_CONFIRM,
     payload: passwordConfirm,
   };
+}
+
+export const setVerified = (verified) => {
+  return {
+    type: SET_VERIFIED,
+    payload: verified,
+  }
 }

@@ -1,4 +1,11 @@
-import {SET_EMAIL, SET_ID, SET_NICKNAME, SET_PASSWORD, SET_PASSWORD_CONFIRM} from "../actions/UserRegisterActions.js";
+import {
+  SET_EMAIL,
+  SET_ID,
+  SET_NICKNAME,
+  SET_PASSWORD,
+  SET_PASSWORD_CONFIRM,
+  SET_VERIFIED
+} from "../actions/UserRegisterActions.js";
 
 const initialState = {
   id: "",
@@ -8,6 +15,7 @@ const initialState = {
   isDuplicatedId : false,
   isDuplicatedNickname: false,
   isPasswordConfirmed: false,
+  isVerified: false,
 }
 
 export default function (state = initialState, action) {
@@ -38,6 +46,11 @@ export default function (state = initialState, action) {
       return {
         ...state,
         email: action.payload,
+      }
+    case SET_VERIFIED:
+      return {
+        ...state,
+        isVerified: action.payload,
       }
     default:
       return state;

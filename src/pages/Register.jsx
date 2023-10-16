@@ -1,8 +1,7 @@
 import Header from "../components/Header.jsx";
 import Navbar from "../components/Navbar.jsx";
-import {useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import client from "../lib/client.jsx";
 import {EmailInputBox} from "../components/EmailInputBox.jsx";
 import NicknameInputBox from "../components/NicknameInputBox.jsx";
@@ -13,56 +12,45 @@ import 'flowbite';
 const Register = () => {
 
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const userInput = useSelector(state => state.userRegisterReducer);
-
-  const [id, setId] = useState("");
-  const [isValidId, setIsValidId] = useState(false);
-  const [password, setPassword] = useState("");
-  const [isValidPassword, setIsValidPassword] = useState(false);
-  const [nickname, setNickname] = useState("");
-  const [isValidNickname, setIsValidNickname] = useState(false);
 
   console.log("userInput = ", userInput);
 
-  const userInputValidator = {
+  const validator = {
     id: /^[a-z0-9]{4,20}$/, // 영어, 숫자로 된 4~20자리
     password: /^.{6,30}$/,
-    nickname: /^[a-z0-9가-힣]{2,10}$/, // 한글, 영어, 숫자로 된 2~10자리
+    nickname: /^[a-z0-9가-힣]{2,9}$/, // 한글, 영어, 숫자로 된 2~9자리
   }
 
-  const onRegister = () => {
+  const onRegister = async () => {
 
-    if (!isValidId) {
-      alert("아이디를 확인해주세요.");
-      setIsValidId(false);
+    if (!validator.id.test(userInput.id) || userInput.isDuplicatedId) {
+      alert("아이디를 바르게 입력해주세요.");
       return;
     }
 
-    if (!isValidPassword) {
-      alert("비밀번호를 확인해주세요.");
-      setIsValidPassword(false);
+    if (!validator.password.test(userInput.password) || !userInput.isPasswordConfirmed) {
+      alert("비밀번호를 바르게 입력해주세요.");
       return;
     }
 
-    if (!isValidNickname) {
-      alert("닉네임을 확인해주세요.");
-      setIsValidNickname(false);
+    if (!validator.nickname.test(userInput.nickname) || userInput.isDuplicatedNickname) {
+      alert("닉네임을 바르게 입력해주세요.");
       return;
     }
 
-    const register = async (requestBody = {}) => {
-      const response = await client.post("/auth/register", requestBody);
-    }
-
-    register({
-      login_id: id,
-      password: password,
-      nickname: nickname
-    }).catch((e) => {
-      console.log(e);
-      alert("회원가입에 실패했습니다. 잠시 후 다시 시도해주세요.");
+    await client.post("/auth/register", {
+      login_id: userInput.id,
+      password: userInput.password,
+      nickname: userInput.nickname,
+      verified: userInput.isVerified,
+    }).then(() => {
       navigate("/");
+    }).catch((e) => {
+      if (e.response.status === 409) {
+        alert("회원 가입에 실패하였습니다. 잠시 후 다시 시도해주세요.")
+        navigate("/")
+      }
     });
   }
 
@@ -78,15 +66,15 @@ const Register = () => {
     <div>
       <Header/>
       <Navbar/>
-      <div className="font-semibold border-b-2 border-blue-700 pb-1">
+      <div className="font-semibold border-b-2 border-blue-700 pb-1 mt-12 mb-4">
         회원가입
       </div>
-      <div className="border-1 border-gray-400 rounded">
+      <div className="border-1 border-gray-400 rounded p-12">
         <IdInputBox/>
         <PasswordInputBox/>
         <NicknameInputBox/>
       </div>
-      <div className="flex items-center border-b-2 border-blue-700 pb-1">
+      <div className="flex items-center border-b-2 border-blue-700 pb-1 mt-8 mb-4">
         <div className="font-semibold mr-0.5">
           보안코드 발급받기
         </div>
@@ -101,8 +89,16 @@ const Register = () => {
           <div className="tooltip-arrow" data-popper-arrow></div>
         </div>
       </div>
-      <div className="border-1 border-gray-400 rounded">
+      <div className="border-1 border-gray-400 rounded p-12">
         <EmailInputBox/>
+      </div>
+      <div className="flex justify-end mb-8 mt-6">
+        <button className="mr-6 border-1 border-gray-400 rounded p-2 px-6" onClick={onRegister}>
+          등록
+        </button>
+        <button className="border-1 border-gray-400 rounded p-2 px-6" onClick={onCancel}>
+          취소
+        </button>
       </div>
     </div>
   );

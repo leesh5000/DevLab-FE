@@ -1,6 +1,8 @@
 import {useState} from "react";
 import client from "../lib/client.jsx";
 import Timer from "./Timer.jsx";
+import {useDispatch, useSelector} from "react-redux";
+import {setVerified} from "../actions/UserRegisterActions.js";
 
 export const EmailInputBox = () => {
 
@@ -8,7 +10,8 @@ export const EmailInputBox = () => {
   const [mailServer, setMailServer] = useState("");
   const [count, setCount] = useState(-1);
   const [verifyCode, setVerifyCode] = useState("");
-  const [isVerified, setIsVerified] = useState(false);
+  const dispatch = useDispatch();
+  const userInput = useSelector(state => state.userRegisterReducer);
 
   const onEmailHandler = (e) => {
     setEmail(e.target.value);
@@ -37,7 +40,7 @@ export const EmailInputBox = () => {
       },
       withCredentials: true
     }).then(() => {
-      setCount(10);
+      setCount(300);
     });
   }
 
@@ -63,7 +66,7 @@ export const EmailInputBox = () => {
       withCredentials: true
     }).then(() => {
       alert("인증되었습니다.");
-      setIsVerified(true);
+      dispatch(setVerified(true));
       setCount(-1);
     }).catch((e) => {
       if (e.response.status === 400) {
@@ -82,10 +85,9 @@ export const EmailInputBox = () => {
           <div className="flex">
             <input type="text" className="h-8 w-40 border-1 border-gray-400 p-1.5" onChange={onEmailHandler}/>
             <span className="mx-2 text-xl">@</span>
-            <input type="text" list="mail-server"
-                   defaultValue={mailServer}
+            <input type="text" list="mail-server" value={mailServer}
                    onChange={onMailServerHandler}
-                   className="h-8 w-40 border-1 border-gray-400 p-1.5 mr-2"/>
+                   className="h-8 w-40 border-1 border-gray-400 p-1.5 mr-4"/>
             <select className="block" onChange={onMailServerHandler}>
               <option defaultValue="selected" value="">이메일 선택</option>
               <option value="naver.com">naver.com</option>
@@ -100,14 +102,13 @@ export const EmailInputBox = () => {
           </p>
         </div>
       </form>
-      <form className="flex mb-8">
+      <form className="flex">
         <label className="w-40">
           인증 번호
         </label>
         <div className="flex flex-col">
           <div className="flex">
-            <input type="text" className="h-8 w-32 border-1 border-gray-400 p-1.5" onChange={onVerifyCodeHandler}
-                   disabled={isVerified}/>
+            <input type="text" className="h-8 w-32 border-1 border-gray-400 p-1.5" onChange={onVerifyCodeHandler} disabled={userInput.isVerified}/>
             <button className="h-8 w-10 border-1 border-l-0 border-gray-400 mr-4"
                     onClick={onConfirmEmail}>
               확인

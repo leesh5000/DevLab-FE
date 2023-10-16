@@ -11,13 +11,13 @@ const NicknameInputBox = () => {
   }
 
   return (
-    <div id="id-box" className="flex mb-8">
+    <div className="flex">
       <div className="w-40">
         닉네임
       </div>
       <div>
         <input type="text" className="h-8 w-60 border-1 border-gray-400 p-1.5" onChange={onNicknameHandler}/>
-        <div className="my-1">
+        <div className="mt-1">
           <p className="text-sm text-gray-400">
             닉네임는 한글, 영어, 숫자로 된 2-9자리여야 합니다.
           </p>
