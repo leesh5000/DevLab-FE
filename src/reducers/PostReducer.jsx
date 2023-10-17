@@ -31,7 +31,7 @@ export default function (state = {}, action) {
     case "ADD_COMMENT":
       return {
         ...state,
-        comment_details: [...state.comment_details, action.payload],
+        comment_details: [...state.comment_details, action.newComment],
       }
     default:
       return state;

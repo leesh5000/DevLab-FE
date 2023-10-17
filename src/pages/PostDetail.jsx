@@ -1,12 +1,12 @@
 import {useLocation, useNavigate} from "react-router-dom";
 import Header from "../components/Header.jsx";
 import Navbar from "../components/Navbar.jsx";
-import {useEffect, useState} from "react";
+import {useEffect, useRef} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {addComment, getDetail} from "../actions/PostActions.jsx";
 import {TagItem} from "../components/TagItem.jsx";
-import Editor from "../components/Editor.jsx";
 import {CommentDetail} from "../components/CommentDetail.jsx";
+import Editor from "../components/Editor.jsx";
 
 const PostDetail = () => {
 
@@ -16,9 +16,9 @@ const PostDetail = () => {
 
   const postDetails = useSelector(state => state.postReducer);
   const userAuth = useSelector(state => state.userAuthReducer);
+  const quillInstance = useRef();
 
   const id = location.state.id;
-  const [comment, setComment] = useState("");
 
   useEffect(() => {
     dispatch(getDetail(id));
@@ -39,30 +39,38 @@ const PostDetail = () => {
     second = second >= 10 ? second : '0' + second;
 
     return date.getFullYear() + '.' + month + '.' + day + ' ' + hour + ':' + minute + ':' + second;
-
   }
 
-  const onContentHandler = (e) => {
+  const addCommentHandler = () => {
 
     if (!userAuth.isLogin) {
       alert("로그인이 필요합니다.");
-      navigate("/login");
       return;
     }
 
-    setComment(e);
-  }
+    if (quillInstance.current.getEditor().getText() === "") {
+      alert("내용을 입력해주세요.");
+      return;
+    }
 
-  const onComment = async () => {
-    await dispatch(addComment(id, comment, userAuth));
+    const newComment = {
+        contents: quillInstance.current.getEditor().getText(),
+        author : userAuth.nickname,
+        created_at: new Date().getTime(),
+        modified_at: new Date().getTime(),
+        postId : id,
+        likeCount : 0,
+    }
 
+    dispatch(addComment(id, newComment, userAuth));
+    quillInstance.current.getEditor().setText("");
   }
 
   return (
     <>
       <Header/>
       <Navbar/>
-      <h1 className="text-xl mt-16 mb-2">
+      <h1 className="text-xl mt-8 mb-2">
         {postDetails.title}
       </h1>
       <div>
@@ -72,7 +80,7 @@ const PostDetail = () => {
           )
         })}
       </div>
-      <div id="metadata" className="text-sm text-gray-600 mt-4 flex justify-between border-b-1 pb-2">
+      <div id="metadata" className="text-sm text-gray-600 mt-3 flex justify-between border-b-1 pb-2">
         <div className="flex items-center">
           <div id="author">
             {postDetails.author}
@@ -106,7 +114,7 @@ const PostDetail = () => {
         </button>
       </div>
       <div className="mb-8">
-        <div className="font-bold mt-8 border-b-2 border-sky-600 pb-1">
+        <div className="font-bold mt-8 border-b-2 border-blue-700 pb-1">
           답변 {postDetails.comment_details?.length}
         </div>
         {postDetails.comment_details?.map((commentDetail, index) => {
@@ -115,9 +123,9 @@ const PostDetail = () => {
           );
         })}
       </div>
-      <Editor onContentHandler={onContentHandler}/>
+      <Editor quillInstance={quillInstance}/>
       <button className="mt-6 mb-12 bg-blue-600 text-white p-2 px-4 rounded-lg hover:bg-blue-700"
-              onClick={onComment}>
+              onClick={addCommentHandler}>
         답변 작성하기
       </button>
     </>

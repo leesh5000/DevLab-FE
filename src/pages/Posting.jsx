@@ -1,32 +1,25 @@
 import Header from "../components/Header.jsx";
 import Navbar from "../components/Navbar.jsx";
-import {useEffect, useState} from "react";
+import {useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
-import Editor from "../components/Editor.jsx";
 import {write} from "../actions/PostActions.jsx";
 import Categories from "../utils/Categories.jsx";
+import Editor from "../components/Editor.jsx";
 
 const Posting = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userAuth = useSelector((state) => state.userAuthReducer);
+  const [errorMessage, setErrorMessage] = useState(false);
+  const quillInstance = useRef();
   const [postInput, setPostInput] = useState({
     category: "",
     title: "",
     contents: "",
     tags: [],
   });
-
-  const [errorMessage, setErrorMessage] = useState(false);
-
-  useEffect(() => {
-    if (!userAuth.isLogin) {
-      navigate("/login");
-      alert("로그인이 필요합니다.");
-    }
-  }, [userAuth]);
 
   const onCategoryHandler = (e) => {
     if (e.target.value === "none") {
@@ -54,7 +47,6 @@ const Posting = () => {
   }
 
   const onContentsHandler = (e) => {
-
     setPostInput({
       ...postInput,
       contents: e,
@@ -63,8 +55,12 @@ const Posting = () => {
 
   const onTagHandler = (e) => {
 
+    if (!/^[a-z0-9]{0,}$/.test(e.target.value)) {
+      e.target.value = "";
+      return;
+    }
+
     if (e.target.value.length > 20) {
-      alert("태그는 20자 이내로 입력해주세요.");
       e.target.value = e.target.value.substring(0, 20);
       return;
     }
@@ -76,7 +72,6 @@ const Posting = () => {
         return;
       }
 
-      console.log(e.target.value);
       const newTag = e.target.value.replace(/ /g, "-");
 
       if (!postInput.tags.includes(newTag)) {
@@ -99,21 +94,21 @@ const Posting = () => {
     });
   }
 
-  const onPost = () => {
+  const onPostHandler = () => {
 
-    if (postInput.category === "") {
+    if (postInput.category === "none" || postInput.category === "") {
       alert("카테고리를 선택해주세요.");
       return;
     }
 
     const noWhitespaceTitle = postInput.title.replace(/ /g, "");
     if (noWhitespaceTitle.length < 8 || noWhitespaceTitle.length > 100) {
-      alert("제목은 공백을 제외하고 최소 10자, 최대 100자로 입력해야합니다.");
+      alert("제목은 최소 8자, 최대 100자로 입력해야 합니다.");
       return;
     }
 
-    if (postInput.contents.replace(/<[^>]*>/g, '').length < 30) {
-      alert("내용은 최소 30자 이상 입력해야 합니다.");
+    if (postInput.contents.replace(/<[^>]*>/g, '').length < 20) {
+      alert("내용은 최소 20자 이상 입력해야 합니다.");
       return;
     }
 
@@ -131,54 +126,49 @@ const Posting = () => {
     <div>
       <Header/>
       <Navbar/>
-      <div id="border" className="border-2 border-gray-300 rounded p-16 m-16 mb-8">
-        <h1 className="text-xl mb-2">게시글 작성</h1>
-        <div className="flex">
-          <select id="tabs" className="w-20 border-1 border-r-0 border-gray-400" onChange={onCategoryHandler}>
-            <option value="none">카테고리</option>
-            {
-              Object.entries(Categories).map(([key, value]) => {
-                return (
-                  <option key={key} value={key}>{value}</option>
-                );
-              })
-            }
-          </select>
-          <input type="text" className="flex-1 border-1 border-gray-400 p-2"
-                 placeholder="제목"
-                 onChange={onTitleHandler}
-                 onBlur={onTitleBlur}/>
-        </div>
-        {
-          errorMessage ?
-            <p className="text-sm text-red-600 mt-1">
-              게시글 카테고리를 선택해주세요.
-            </p> :
-            null
-        }
-        <h1 className="text-xl mt-8 mb-2">내용</h1>
-        <Editor onContentHandler={onContentsHandler}/>
-        <h1 className="text-xl mt-8 mb-2">태그 입력</h1>
-        <input type="text" className="w-full border-1 border-gray-400 p-2" placeholder="제목"
-               onKeyUp={onTagHandler}/>
-        <p className="text-sm text-blue-600 mt-1">
-          태그는 20자 이내로 입력해주세요. 띄어쓰기는 자동으로 하이픈(-)으로 변환됩니다.
-        </p>
+      <div className="font-semibold border-b-2 border-blue-700 pb-1 mt-12 mb-8">
+        게시글 작성
+      </div>
+      <div className="flex w-full">
+        <select id="tabs" className="w-28 border-1 border-gray-400 mr-4" onChange={onCategoryHandler}>
+          <option value="none">카테고리</option>
+          {
+            Object.entries(Categories).map(([key, value]) => {
+              return (
+                <option key={key} value={key}>{value}</option>
+              );
+            })
+          }
+        </select>
+        <input type="text" className="w-full border-1 border-b-1 border-gray-400 p-2" placeholder="제목"
+               onChange={onTitleHandler} onBlur={onTitleBlur}/>
+      </div>
+      {
+        errorMessage && <div className="text-red-500 text-sm mt-2">카테고리를 선택해주세요.</div>
+      }
+      <div className="mt-6"></div>
+      <Editor quillInstance={quillInstance}/>
+      <input type="text" className="w-full border-0 border-b-1 border-gray-400 focus:ring-0 p-2 pl-0 mt-6" placeholder="태그 입력"
+             onKeyUp={onTagHandler}/>
+      <p className="text-sm text-blue-700 my-1">
+        태그는 20자 이내의 영어, 숫자만 입력 가능하며 최대 5개까지 지정 가능합니다.
+      </p>
+      <div className="h-16">
         {
           postInput.tags.map((tag) => {
             return (
-              <button key={tag} className="border-1 bg-sky-100 text-blue-500 p-2 px-3 mr-2 mt-4" onClick={onRemove}>
+              <button key={tag} className="border-1 bg-sky-100 hover:bg-sky-200 text-blue-500 p-2 px-3 mr-2 mt-4" onClick={onRemove}>
                 {tag}
               </button>
             );
           })
         }
       </div>
-      <div className="mx-16 mb-24 mt-0 flex justify-end items-center">
-        <button className="ml-6 border-1 p-1 px-3 border-gray-600" onClick={onPost}>
+      <div className="flex justify-end items-center">
+        <button className="mr-6 border-1 border-gray-400 text-white bg-blue-700 hover:bg-blue-800 rounded p-2 px-4" onClick={onPostHandler}>
           등록
         </button>
-        <button className="ml-6 border-1 p-1 px-3 border-gray-600" onClick={onCancel}>
+        <button className="border-1 border-gray-400 text-white bg-blue-700 hover:bg-blue-800 rounded p-2 px-4" onClick={onCancel}>
           취소
         </button>
       </div>

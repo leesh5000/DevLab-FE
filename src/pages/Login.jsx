@@ -31,6 +31,16 @@ const Login = () => {
 
   const onLogin = () => {
 
+    if (userInput.id === "") {
+      alert("아이디를 입력해주세요.");
+      return;
+    }
+
+    if (userInput.password === "") {
+      alert("비밀번호를 입력해주세요.");
+      return;
+    }
+
     const body = {
       login_id: userInput.id,
       password: userInput.password
@@ -52,50 +62,53 @@ const Login = () => {
       });
   };
 
+  const onIdHandler = (e) => {
+    setUserInput((prevState) => {
+      return {
+        ...prevState,
+        id: e.target.value,
+      }
+    })
+  }
+
+  const onPasswordHandler = (e) => {
+    setUserInput((prevState) => {
+      return {
+        ...prevState,
+        password: e.target.value,
+      }
+    })
+  }
+
   return (
     <>
       <Header/>
       <Navbar/>
-      <div id="body" className="h-[1024px] flex flex-col justify-center items-center">
-        <div id="border" className="w-[500px] items-center border-2 border-gray-300 p-24 py-16 rounded flex flex-col justify-items-start">
-          <input type="text" className="w-full border-1 border-gray-400 p-2" placeholder="아이디"
-                 onKeyUp={(e) => setUserInput((prevState) => {
-                   return {
-                     ...prevState,
-                     id: e.target.value,
-                   }
-                 })}/>
-          <input type="password" className="w-full border-1 border-t-0 border-gray-400 p-2" placeholder="패스워드"
-                 onKeyUp={(e) => setUserInput((prevState) => {
-                   return {
-                      ...prevState,
-                     password: e.target.value,
-                   }
-                 })}/>
-          <button className="mt-8 h-12 text-lg w-full border-1 border-gray-400"
-                  onClick={onLogin}>
-            로그인
-          </button>
-          <div id="divider" className="w-[480px] mt-4">
-            <div className="relative flex py-5 items-center">
-              <div className="flex-grow border-t border-gray-300"></div>
-              <span className="flex-shrink mx-4 text-gray-400">
+      <div id="border" className="w-[500px] mx-auto my-24 border-1 border-gray-400 p-24 rounded flex flex-col justify-items-start items-center">
+        <input type="text" className="w-full border-1 border-gray-400 p-2" placeholder="아이디" onChange={onIdHandler}/>
+        <input type="password" className="w-full border-1 border-t-white border-gray-400 p-2" placeholder="패스워드" onChange={onPasswordHandler}/>
+        <button className="mt-8 h-12 text-lg w-full bg-blue-700 hover:bg-blue-800 text-white rounded" onClick={onLogin}>
+          로그인
+        </button>
+        <div id="divider" className="w-[420px] my-8">
+          <div className="relative flex items-center">
+            <div className="flex-grow border-t border-gray-300"></div>
+            <span className="flex-shrink mx-4 text-gray-400">
                 또는
               </span>
-              <div className="flex-grow border-t border-gray-300"></div>
-            </div>
+            <div className="flex-grow border-t border-gray-300"></div>
           </div>
-          <div id="social" className="w-[340px] mt-4 flex flex-col">
-            <a href={googleUri}>
-              <img src="/google.png" className="cursor-pointer mb-2" alt="google"/>
-            </a>
-            <a href={naverUri}>
-              <img src="/naver.png" className="cursor-pointer mb-2" alt="naver"/>
-            </a>
-            <a href={kakaoUri}>
-              <img src="/kakao.png" className="cursor-pointer" alt="kakao"/>
-            </a>
-          </div>
+        </div>
+        <div id="social" className="w-[340px] flex flex-col">
+          <a href={googleUri}>
+            <img src="/google.png" className="cursor-pointer mb-2" alt="google"/>
+          </a>
+          <a href={naverUri}>
+            <img src="/naver.png" className="cursor-pointer mb-2" alt="naver"/>
+          </a>
+          <a href={kakaoUri}>
+            <img src="/kakao.png" className="cursor-pointer" alt="kakao"/>
+          </a>
         </div>
       </div>
     </>

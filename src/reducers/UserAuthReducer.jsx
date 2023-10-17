@@ -1,8 +1,9 @@
-import {GET_ACCESS_TOKEN, LOGIN, LOGOUT, OAUTH_LOGIN, REGISTER} from "../actions/UserAuthActions.jsx";
+import {GET_ACCESS_TOKEN, LOGIN, LOGOUT, OAUTH_LOGIN} from "../actions/UserAuthActions.jsx";
 
 const initialState = {
-  accessToken : "",
   isLogin: false,
+  nickname: "",
+  accessToken : "",
 }
 
 export default function (state = initialState, action) {
@@ -10,18 +11,22 @@ export default function (state = initialState, action) {
   switch (action.type) {
     case LOGIN:
     case OAUTH_LOGIN:
+      return {
+        ...state,
+        isLogin: true,
+        accessToken: action.accessToken,
+      }
     case GET_ACCESS_TOKEN:
       return {
-        accessToken: action.payload.access_token.value,
         isLogin: true,
-      }
+        accessToken: action.accessToken,
+        nickname: action.nickname,
+      };
     case LOGOUT:
-      return {
-        accessToken: "",
-        isLogin: false,
-      }
-    case REGISTER:
+      return initialState;
     default:
-      return state;
+      return {
+        ...state,
+      }
   }
 }

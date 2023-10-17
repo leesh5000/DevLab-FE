@@ -9,10 +9,8 @@ const Header = () => {
   const dispatch = useDispatch();
   const userAuth = useSelector(state => state.userAuthReducer);
 
-  useEffect(() => {
-
+  useEffect (() => {
     dispatch(fetchAccessToken());
-
   }, []);
 
   const goLoginPage = () => {
@@ -33,22 +31,25 @@ const Header = () => {
   }
 
   return (
-    <div className="h-24 w-full flex justify-between items-center">
+    <div className="h-28 w-full flex justify-between items-center">
       <h1 className="text-4xl mr-2">
         <button onClick={goHome}>
           DEVLAB
         </button>
       </h1>
-      {userAuth.isLogin ? (
-        <div className="w-1/6.5 flex justify-between">
-          <button className="ml-6 border-1 p-1 px-2 border-gray-600" onClick={goLoginPage}>
-            내 정보
-          </button>
-          <button className="ml-6 border-1 p-1 px-2 border-gray-600" onClick={onLogout}>
-            로그아웃
-          </button>
-        </div>) : (
-        <div className="w-1/6.5 flex justify-between">
+      {userAuth.isLogin ?
+        (<div className="w-1/6.5 flex justify-between items-center">
+            <p>
+              {userAuth.nickname} 님
+            </p>
+            <button className="ml-6 border-1 p-1 px-2 border-gray-600" onClick={goLoginPage}>
+              내 정보
+            </button>
+            <button className="ml-6 border-1 p-1 px-2 border-gray-600" onClick={onLogout}>
+              로그아웃
+            </button>
+          </div>) :
+        (<div className="w-1/6.5 flex justify-between">
           <button className="ml-6 border-1 p-1 px-2 border-gray-600" onClick={goLoginPage}>
             로그인
           </button>

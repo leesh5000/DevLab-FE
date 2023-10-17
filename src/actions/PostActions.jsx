@@ -50,18 +50,21 @@ export const getDetail = (id) => async (dispatch) => {
     });
 }
 
-export const addComment = (id, contents, userAuth = {}) => async (dispatch) => {
+export const addComment = (id, newComment, userAuth) => async (dispatch) => {
 
-    const response = await client.post(`/posts/${id}/comments`, {
-      contents: contents,
-    }, {
-      headers: {
-        Authorization: `Bearer ${userAuth.accessToken}`,
-      }
-    });
+  const response = await client.post(`/posts/${id}/comments`, {
+    contents: newComment.contents,
+  }, {
+    headers: {
+      Authorization: `Bearer ${userAuth.accessToken}`,
+    }
+  });
 
-    dispatch({
-      type: ADD_COMMENT,
-      payload: response.data,
-    });
-}
+  dispatch({
+    type: ADD_COMMENT,
+    newComment : {
+      ...newComment,
+      id: response.data.id,
+    }
+  });
+};

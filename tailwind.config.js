@@ -14,5 +14,8 @@ export default {
   },
   plugins: [
     require('flowbite/plugin'),
+    function({ addVariant }) {
+      addVariant('current', '&.active');
+    },
   ],
 }
