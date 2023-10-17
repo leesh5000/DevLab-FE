@@ -1,6 +1,23 @@
 import {DateConverter} from "../utils/DateConverter.jsx";
+import {useDispatch, useSelector} from "react-redux";
+import {addLikeComment} from "../actions/PostActions.jsx";
 
 export const CommentDetail = ({commentDetail}) => {
+
+  const dispatch = useDispatch();
+  const userAuth = useSelector(state => state.userAuthReducer);
+  const postDetails = useSelector(state => state.postReducer);
+
+  const addLikeHandler = () => {
+
+    if (!userAuth.isLogin) {
+      alert("로그인이 필요합니다.");
+      return;
+    }
+
+    dispatch(addLikeComment(commentDetail.id, userAuth));
+
+  }
 
   return (
     <div className="py-4 border-b-1">
@@ -10,9 +27,9 @@ export const CommentDetail = ({commentDetail}) => {
             {commentDetail.author}
           </div>
           <div className="w-[1px] h-[16px] bg-gray-400 mx-2"/>
-          <div>
+          <button className="hover:text-blue-700 hover:underline hover:font-semibold" onClick={addLikeHandler}>
             추천 {commentDetail.like_count}
-          </div>
+          </button>
         </div>
         <div id="modifiedAt">
           {DateConverter(commentDetail.modified_at)}

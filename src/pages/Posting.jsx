@@ -1,6 +1,6 @@
 import Header from "../components/Header.jsx";
 import Navbar from "../components/Navbar.jsx";
-import {useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {write} from "../actions/PostActions.jsx";
@@ -20,6 +20,12 @@ const Posting = () => {
     contents: "",
     tags: [],
   });
+
+  useEffect(() => {
+    if (!userAuth.isLogin) {
+      navigate("/");
+    }
+  }, [userAuth]);
 
   const onCategoryHandler = (e) => {
     if (e.target.value === "none") {

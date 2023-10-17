@@ -1,9 +1,9 @@
-import {useLocation, useNavigate} from "react-router-dom";
+import {useLocation} from "react-router-dom";
 import Header from "../components/Header.jsx";
 import Navbar from "../components/Navbar.jsx";
 import {useEffect, useRef} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {addComment, getDetail} from "../actions/PostActions.jsx";
+import {addComment, addLike, getDetail} from "../actions/PostActions.jsx";
 import {TagItem} from "../components/TagItem.jsx";
 import {CommentDetail} from "../components/CommentDetail.jsx";
 import Editor from "../components/Editor.jsx";
@@ -12,7 +12,6 @@ const PostDetail = () => {
 
   const location = useLocation();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const postDetails = useSelector(state => state.postReducer);
   const userAuth = useSelector(state => state.userAuthReducer);
@@ -66,6 +65,16 @@ const PostDetail = () => {
     quillInstance.current.getEditor().setText("");
   }
 
+  const addLikeHandler = () => {
+
+      if (!userAuth.isLogin) {
+        alert("로그인이 필요합니다.");
+        return;
+      }
+
+    dispatch(addLike(id, userAuth));
+  }
+
   return (
     <>
       <Header/>
@@ -109,7 +118,8 @@ const PostDetail = () => {
       </div>
       <div id="contents" className="py-12" dangerouslySetInnerHTML={{__html: postDetails.contents}}/>
       <div className="flex justify-center">
-        <button className="bg-blue-300 mx-auto my-8 border-b-1 p-2">
+        <button className="bg-blue-700 hover:bg-blue-800 text-white mx-auto my-8 p-1 px-3 rounded-lg"
+                onClick={addLikeHandler}>
           추천하기
         </button>
       </div>
