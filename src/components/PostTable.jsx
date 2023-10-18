@@ -1,7 +1,7 @@
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
 import {getPage} from "../actions/PostActions.jsx";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useSearchParams} from "react-router-dom";
 import Categories from "../utils/Categories.jsx";
 import {DateConverter} from "../utils/DateConverter.jsx";
 import {TagItem} from "./TagItem.jsx";
@@ -11,15 +11,17 @@ function PostTable() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const [queryParams] = useSearchParams();
   const postPage = useSelector(state => state.posts);
-  const pageSize = 12;
+  const pageSize = 20;
 
   useEffect(() => {
-    dispatch(getPage(0, 5, "createdAt,desc"))
-  }, [dispatch]);
+    const category = queryParams.get("category");
+    dispatch(getPage(category, 0, pageSize, "createdAt,desc"))
+  }, [queryParams]);
 
   const onTitleClick = (post) => {
-    navigate(`/post/${encodeURI(post.title)}`, {
+    navigate(`/posts/${encodeURI(post.title)}`, {
       state: {
         id: post.id,
         title: post.title

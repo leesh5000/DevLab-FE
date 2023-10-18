@@ -63,10 +63,11 @@ export const deletePost = (id, accessToken) => async (dispatch) => {
   });
 }
 
-export const getPage = (page, size, sort) => async (dispatch) => {
+export const getPage = (category, page, size, sort) => async (dispatch) => {
 
     const response = await client.get(`/posts`, {
       params: {
+        category: category,
         page: page,
         size: size,
         sort: sort,

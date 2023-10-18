@@ -10,12 +10,13 @@ import PostDetail from "./pages/PostDetail.jsx";
 export const App = () => {
   return (
     <Routes>
-      <Route path="/" element={<Home/>}/>
       <Route path="/login" element={<Login/>}/>
       <Route path="/oauth/callback/*" element={<OauthLogin/>}/>
       <Route path="/register" element={<Register/>}/>
-      <Route path="/post" element={<Posting/>}/>
-      <Route path="/post/:title" element={<PostDetail/>}/>
+      <Route exact path="/posts" element={<Posting/>}/>
+      <Route exact path="/posts/:title" element={<PostDetail/>}/>
+      <Route exact path="/" element={<Home/>}/>
+      <Route exact path="?category=category" element={<Home/>}/>
     </Routes>
   );
 }
