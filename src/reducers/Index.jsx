@@ -1,12 +1,24 @@
 import {combineReducers} from "redux";
-import userAuthReducer from "./UserAuthReducer.jsx";
-import postReducer from "./PostReducer.jsx";
-import userRegisterReducer from "./UserRegisterReducer.jsx";
+import AuthReducer from "./AuthReducer.jsx";
+import PostReducer from "./PostReducer.jsx";
+import RegisterReducer from "./RegisterReducer.jsx";
+import {persistReducer} from "redux-persist";
+import storage from "redux-persist/lib/storage";
+import createFilter from "redux-persist-transform-filter";
+
+const subsetFilter = createFilter('auth', ['isLogin']);
+
+const persistConfig = {
+  key: "auth",
+  storage,
+  whitelist: ["auth"],
+  transforms: [subsetFilter],
+}
 
 const rootReducer = combineReducers({
-  postReducer,
-  userAuthReducer,
-  userRegisterReducer,
+  posts: PostReducer,
+  auth: AuthReducer,
+  register: RegisterReducer,
 });
 
-export default rootReducer;
+export const persistedReducer = persistReducer(persistConfig, rootReducer);

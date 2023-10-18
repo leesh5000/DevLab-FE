@@ -1,4 +1,4 @@
-import {GET_ACCESS_TOKEN, LOGIN, LOGOUT, OAUTH_LOGIN} from "../actions/UserAuthActions.jsx";
+import {GET_ACCESS_TOKEN, LOGIN, LOGIN_EXPIRED, LOGOUT, OAUTH_LOGIN} from "../actions/UserAuthActions.jsx";
 
 const initialState = {
   isLogin: false,
@@ -23,10 +23,9 @@ export default function (state = initialState, action) {
         nickname: action.nickname,
       };
     case LOGOUT:
+    case LOGIN_EXPIRED:
       return initialState;
     default:
-      return {
-        ...state,
-      }
+      return state;
   }
 }

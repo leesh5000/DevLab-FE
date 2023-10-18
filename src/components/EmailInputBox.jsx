@@ -11,7 +11,7 @@ export const EmailInputBox = () => {
   const [count, setCount] = useState(-1);
   const [verifyCode, setVerifyCode] = useState("");
   const dispatch = useDispatch();
-  const userInput = useSelector(state => state.userRegisterReducer);
+  const userInput = useSelector(state => state.register);
 
   const onEmailHandler = (e) => {
     setEmail(e.target.value);

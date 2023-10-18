@@ -2,13 +2,13 @@ import Header from "../components/Header.jsx";
 import Navbar from "../components/Navbar.jsx";
 import SearchBar from "../components/SearchBar.jsx";
 import {useNavigate} from "react-router-dom";
-import PostTable from "../components/PostTable.jsx";
 import {useSelector} from "react-redux";
+import PostTable from "../components/PostTable.jsx";
 
 const Home = () => {
 
   const navigate = useNavigate();
-  const userAuth = useSelector(state => state.userAuthReducer);
+  const userAuth = useSelector(state => state.auth);
 
   const onPostingHandler = () => {
     if (!userAuth.isLogin) {

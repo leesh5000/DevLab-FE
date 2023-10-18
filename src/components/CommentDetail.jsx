@@ -5,8 +5,7 @@ import {addLikeComment} from "../actions/PostActions.jsx";
 export const CommentDetail = ({commentDetail}) => {
 
   const dispatch = useDispatch();
-  const userAuth = useSelector(state => state.userAuthReducer);
-  const postDetails = useSelector(state => state.postReducer);
+  const userAuth = useSelector(state => state.auth);
 
   const addLikeHandler = () => {
 

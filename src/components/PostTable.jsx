@@ -11,7 +11,7 @@ function PostTable() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const postPage = useSelector(state => state.postReducer);
+  const postPage = useSelector(state => state.posts);
   const pageSize = 12;
 
   useEffect(() => {
@@ -60,11 +60,14 @@ function PostTable() {
                 {Categories[post.category]}
               </td>
               <td id="title" className="text-start">
-                <button className="my-2 text-sky-700 font-semibold hover:text-sky-400 hover:underline"
+                <button className="my-2 text-sky-700 font-semibold hover:text-sky-500 hover:underline flex items-center"
                         onClick={() => {
                           onTitleClick(post)
                         }}>
                   {post.title}
+                  <p className="inline text-xs ml-1">
+                    [{post.comment_details.length}]
+                  </p>
                 </button>
                 <div>
                   {post.tags.map((tag, index) => {

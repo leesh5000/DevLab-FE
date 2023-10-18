@@ -4,7 +4,7 @@ import {setNickname} from "../actions/UserRegisterActions.js";
 const NicknameInputBox = () => {
 
   const dispatch = useDispatch();
-  const userInput = useSelector(state => state.userRegisterReducer);
+  const userInput = useSelector(state => state.register);
 
   const onNicknameHandler = (e) => {
     dispatch(setNickname(e.target.value));

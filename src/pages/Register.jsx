@@ -12,9 +12,7 @@ import 'flowbite';
 const Register = () => {
 
   const navigate = useNavigate();
-  const userInput = useSelector(state => state.userRegisterReducer);
-
-  console.log("userInput = ", userInput);
+  const userInput = useSelector(state => state.register);
 
   const validator = {
     id: /^[a-z0-9]{4,20}$/, // 영어, 숫자로 된 4~20자리

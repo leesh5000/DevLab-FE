@@ -1,9 +1,9 @@
 import Header from "../components/Header.jsx";
 import Navbar from "../components/Navbar.jsx";
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {useNavigate} from "react-router-dom";
-import {write} from "../actions/PostActions.jsx";
+import {useLocation, useNavigate} from "react-router-dom";
+import {getDetail, write} from "../actions/PostActions.jsx";
 import Categories from "../utils/Categories.jsx";
 import Editor from "../components/Editor.jsx";
 
@@ -11,9 +11,11 @@ const Posting = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+
   const userAuth = useSelector((state) => state.userAuthReducer);
+  const postDetails = useSelector((state) => state.postReducer);
   const [errorMessage, setErrorMessage] = useState(false);
-  const quillInstance = useRef();
   const [postInput, setPostInput] = useState({
     category: "",
     title: "",
@@ -24,6 +26,15 @@ const Posting = () => {
   useEffect(() => {
     if (!userAuth.isLogin) {
       navigate("/");
+    }
+    if (location.state?.mode === "edit") {
+      dispatch(getDetail(location.state.id));
+      setPostInput({
+        category: postDetails.category,
+        title: postDetails.title,
+        contents: postDetails.contents,
+        tags: postDetails.tags,
+      });
     }
   }, [userAuth]);
 
@@ -46,12 +57,6 @@ const Posting = () => {
     });
   }
 
-  const onTitleBlur = (e) => {
-    if (postInput.category === "" || postInput.category === "none") {
-      setErrorMessage(true);
-    }
-  }
-
   const onContentsHandler = (e) => {
     setPostInput({
       ...postInput,
@@ -59,12 +64,13 @@ const Posting = () => {
     });
   }
 
-  const onTagHandler = (e) => {
-
-    if (!/^[a-z0-9]{0,}$/.test(e.target.value)) {
-      e.target.value = "";
-      return;
+  const onTitleBlur = (e) => {
+    if (postInput.category === "" || postInput.category === "none") {
+      setErrorMessage(true);
     }
+  }
+
+  const onTagHandler = (e) => {
 
     if (e.target.value.length > 20) {
       e.target.value = e.target.value.substring(0, 20);
@@ -72,6 +78,11 @@ const Posting = () => {
     }
 
     if (e.key === "Enter" && e.target.value !== "") {
+
+      if (!/^[a-z0-9\s+]*$/.test(e.target.value)) {
+        alert("태그는 영어, 숫자, 공백만 입력 가능합니다.");
+        return;
+      }
 
       if (postInput.tags.length >= 5) {
         alert("태그는 최대 5개까지만 지정 가능합니다.");
@@ -136,7 +147,7 @@ const Posting = () => {
         게시글 작성
       </div>
       <div className="flex w-full">
-        <select id="tabs" className="w-28 border-1 border-gray-400 mr-4" onChange={onCategoryHandler}>
+        <select id="tabs" className="w-28 border-1 border-gray-400 mr-4" value={postInput.category} onChange={onCategoryHandler}>
           <option value="none">카테고리</option>
           {
             Object.entries(Categories).map(([key, value]) => {
@@ -147,13 +158,14 @@ const Posting = () => {
           }
         </select>
         <input type="text" className="w-full border-1 border-b-1 border-gray-400 p-2" placeholder="제목"
+               value={postInput.title}
                onChange={onTitleHandler} onBlur={onTitleBlur}/>
       </div>
       {
         errorMessage && <div className="text-red-500 text-sm mt-2">카테고리를 선택해주세요.</div>
       }
       <div className="mt-6"></div>
-      <Editor quillInstance={quillInstance}/>
+      <Editor contents={postInput.contents} onContentsHandler={onContentsHandler}/>
       <input type="text" className="w-full border-0 border-b-1 border-gray-400 focus:ring-0 p-2 pl-0 mt-6" placeholder="태그 입력"
              onKeyUp={onTagHandler}/>
       <p className="text-sm text-blue-700 my-1">
@@ -163,7 +175,7 @@ const Posting = () => {
         {
           postInput.tags.map((tag) => {
             return (
-              <button key={tag} className="border-1 bg-sky-100 hover:bg-sky-200 text-blue-500 p-2 px-3 mr-2 mt-4" onClick={onRemove}>
+              <button key={tag} className="border-1 bg-blue-100 hover:bg-blue-300 text-blue-500 p-2 px-3 mr-2 mt-4" onClick={onRemove}>
                 {tag}
               </button>
             );

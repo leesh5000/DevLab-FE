@@ -7,10 +7,12 @@ const Header = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const userAuth = useSelector(state => state.userAuthReducer);
+  const userAuth = useSelector(state => state.auth);
 
   useEffect (() => {
-    dispatch(fetchAccessToken());
+    if (userAuth.isLogin) {
+      dispatch(fetchAccessToken());
+    }
   }, []);
 
   const goLoginPage = () => {

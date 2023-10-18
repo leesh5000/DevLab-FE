@@ -2,7 +2,7 @@ import ReactQuill from "react-quill";
 import 'quill/dist/quill.bubble.css';
 import 'quill/dist/quill.snow.css';
 
-const Editor = ({quillInstance}) => {
+const Editor = ({contents, onContentsHandler}) => {
 
   const modules = {
     toolbar: [
@@ -16,7 +16,8 @@ const Editor = ({quillInstance}) => {
 
   return (
     <>
-      <ReactQuill ref={quillInstance}
+      <ReactQuill value={contents}
+                  onChange={onContentsHandler}
                   modules={modules}
                   theme={"snow"}/>
     </>

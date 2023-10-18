@@ -4,7 +4,7 @@ import {setId} from "../actions/UserRegisterActions.js";
 const IdInputBox = () => {
 
   const dispatch = useDispatch();
-  const userInput = useSelector(state => state.userRegisterReducer);
+  const userInput = useSelector(state => state.register);
 
   const onIdHandler = (e) => {
     dispatch(setId(e.target.value));

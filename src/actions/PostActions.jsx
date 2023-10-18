@@ -1,11 +1,13 @@
 import client from "../lib/client.jsx";
 
-export const WRITE = "WRITE";
-export const GET_PAGE = "GET_PAGE";
-export const GET_DETAIL = "GET_DETAIL";
-export const  ADD_COMMENT = "ADD_COMMENT";
-export const ADD_LIKE = "ADD_LIKE";
-export const ADD_LIKE_COMMENT = "ADD_LIKE_COMMENT";
+export const WRITE = "posts/WRITE";
+export const EDIT = "posts/EDIT";
+export const DELETE = "posts/DELETE";
+export const GET_PAGE = "posts/GET_PAGE";
+export const GET_DETAIL = "posts/GET_DETAIL";
+export const ADD_COMMENT = "posts/ADD_COMMENT";
+export const ADD_LIKE = "posts/ADD_LIKE";
+export const ADD_LIKE_COMMENT = "posts/ADD_LIKE_COMMENT";
 
 export const write = (data = {}, accessToken) => async (dispatch) => {
 
@@ -24,6 +26,10 @@ export const write = (data = {}, accessToken) => async (dispatch) => {
     type: WRITE,
     payload: response.data,
   });
+}
+
+export const edit = (id, data = {}, accessToken) => async (dispatch) => {
+
 }
 
 export const getPage = (page, size, sort) => async (dispatch) => {

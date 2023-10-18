@@ -1,7 +1,7 @@
-import {useLocation} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import Header from "../components/Header.jsx";
 import Navbar from "../components/Navbar.jsx";
-import {useEffect, useRef} from "react";
+import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {addComment, addLike, getDetail} from "../actions/PostActions.jsx";
 import {TagItem} from "../components/TagItem.jsx";
@@ -11,11 +11,12 @@ import Editor from "../components/Editor.jsx";
 const PostDetail = () => {
 
   const location = useLocation();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const postDetails = useSelector(state => state.postReducer);
-  const userAuth = useSelector(state => state.userAuthReducer);
-  const quillInstance = useRef();
+  const postDetails = useSelector(state => state.posts);
+  const userAuth = useSelector(state => state.auth);
+  const [comment, setComment] = useState("");
 
   const id = location.state.id;
 
@@ -40,6 +41,10 @@ const PostDetail = () => {
     return date.getFullYear() + '.' + month + '.' + day + ' ' + hour + ':' + minute + ':' + second;
   }
 
+  const onCommentHandler = (e) => {
+    setComment(e);
+  }
+
   const addCommentHandler = () => {
 
     if (!userAuth.isLogin) {
@@ -47,33 +52,40 @@ const PostDetail = () => {
       return;
     }
 
-    if (quillInstance.current.getEditor().getText() === "") {
+    if (comment === "") {
       alert("내용을 입력해주세요.");
       return;
     }
 
     const newComment = {
-        contents: quillInstance.current.getEditor().getText(),
+        contents: comment,
         author : userAuth.nickname,
         created_at: new Date().getTime(),
         modified_at: new Date().getTime(),
-        postId : id,
-        likeCount : 0,
+        post_id : id,
+        like_count : 0,
     }
 
     dispatch(addComment(id, newComment, userAuth));
-    quillInstance.current.getEditor().setText("");
+    setComment("");
   }
 
   const addLikeHandler = () => {
-
-      if (!userAuth.isLogin) {
-        alert("로그인이 필요합니다.");
-        return;
-      }
-
+    if (!userAuth.isLogin) {
+      alert("로그인이 필요합니다.");
+      return;
+    }
     dispatch(addLike(id, userAuth));
   }
+
+  const onEditHandler = () => {
+    navigate("/post", {
+      state: {
+        mode: "edit",
+        id: id,
+      }
+    })
+  };
 
   return (
     <>
@@ -98,13 +110,25 @@ const PostDetail = () => {
           <div id="modifiedAt">
             {convertDetailTime(postDetails.modified_at)}
             {
-              postDetails.created_at !== postDetails.modified_at ? (
-                <div className="inline-block text-gray-400 ml-1">
-                  (수정됨)
-                </div>
-              ) : null
+              (postDetails.created_at !== postDetails.modified_at) &&
+              <div className="inline-block text-gray-400 ml-1">
+                (수정됨)
+              </div>
             }
           </div>
+          {
+            (userAuth.isLogin && userAuth.nickname === postDetails.author) &&
+            <div className="text-gray-700 ml-4">
+              <button className="hover:text-blue-700 hover:underline" onClick={onEditHandler}>
+                <img src="/public/edit.svg" alt="edit" className="h-5 inline-block"/>
+                수정
+              </button>
+              <button className="hover:text-blue-700 hover:underline ml-2">
+                <img src="/public/delete.svg" alt="edit" className="h-4 inline-block"/>
+                삭제
+              </button>
+            </div>
+          }
         </div>
         <div className="flex">
           <div>
@@ -116,15 +140,16 @@ const PostDetail = () => {
           </div>
         </div>
       </div>
-      <div id="contents" className="py-12" dangerouslySetInnerHTML={{__html: postDetails.contents}}/>
+      <div id="contents" className="my-12" dangerouslySetInnerHTML={{__html: postDetails.contents}}/>
       <div className="flex justify-center">
-        <button className="bg-blue-700 hover:bg-blue-800 text-white mx-auto my-8 p-1 px-3 rounded-lg"
+        <button className="mx-auto py-1.5 border-1 border-gray-500 px-4 text-gray-700 bg-sky-50 rounded-lg flex justify-center items-center hover:bg-gray-200"
                 onClick={addLikeHandler}>
+          <img src="/public/thumbsup-1.svg" alt="thumbsup" className="w-6 inline-block mr-1"/>
           추천하기
         </button>
       </div>
-      <div className="mb-8">
-        <div className="font-bold mt-8 border-b-2 border-blue-700 pb-1">
+      <div className="my-8">
+        <div className="font-bold border-b-2 border-blue-700 pb-1">
           답변 {postDetails.comment_details?.length}
         </div>
         {postDetails.comment_details?.map((commentDetail, index) => {
@@ -133,7 +158,7 @@ const PostDetail = () => {
           );
         })}
       </div>
-      <Editor quillInstance={quillInstance}/>
+      <Editor contents={comment} onContentsHandler={onCommentHandler}/>
       <button className="mt-6 mb-12 bg-blue-600 text-white p-2 px-4 rounded-lg hover:bg-blue-700"
               onClick={addCommentHandler}>
         답변 작성하기

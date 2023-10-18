@@ -4,7 +4,7 @@ import {setPassword, setPasswordConfirm} from "../actions/UserRegisterActions.js
 const PasswordInputBox = () => {
 
   const dispatch = useDispatch();
-  const userInput = useSelector(state => state.userRegisterReducer);
+  const userInput = useSelector(state => state.register);
 
   const onPasswordHandler = (e) => {
     dispatch(setPassword(e.target.value));
