@@ -3,7 +3,9 @@ import {
   ADD_LIKE,
   ADD_LIKE_COMMENT,
   DELETE,
+  DELETE_COMMENT,
   EDIT,
+  EDIT_COMMENT,
   GET_DETAIL,
   GET_PAGE,
   WRITE
@@ -49,6 +51,26 @@ export default function (state = {}, action) {
       return {
         ...state,
         comment_details: [...state.comment_details, action.newComment],
+      }
+    case EDIT_COMMENT:
+      return {
+        ...state,
+        comment_details: state.comment_details.map((commentDetail) => {
+          if (commentDetail.id === action.commentId) {
+            return {
+              ...commentDetail,
+              contents: action.contents,
+              modified_at: new Date().getTime(),
+            }
+          } else {
+            return commentDetail;
+          }
+        }),
+      }
+    case DELETE_COMMENT:
+      return {
+        ...state,
+        comment_details: state.comment_details.filter((commentDetail) => commentDetail.id !== action.commentId),
       }
     case ADD_LIKE:
       return {
