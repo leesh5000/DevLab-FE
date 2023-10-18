@@ -125,12 +125,12 @@ const PostDetail = () => {
           </div>
           {
             (userAuth.isLogin && userAuth.nickname === postDetails.author) &&
-            <div className="text-gray-700 ml-4">
-              <button className="hover:text-blue-700 hover:underline" onClick={onEditHandler}>
+            <div className="text-gray-700 ml-4 flex">
+              <button className="hover:text-blue-700 hover:underline flex items-center" onClick={onEditHandler}>
                 <img src="/public/edit.svg" alt="edit" className="h-5 inline-block"/>
                 수정
               </button>
-              <button className="hover:text-blue-700 hover:underline ml-2" onClick={onDeleteHandler}>
+              <button className="hover:text-blue-700 hover:underline ml-2 flex items-center" onClick={onDeleteHandler}>
                 <img src="/public/delete.svg" alt="edit" className="h-4 inline-block"/>
                 삭제
               </button>

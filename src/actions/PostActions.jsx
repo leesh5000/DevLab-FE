@@ -6,6 +6,8 @@ export const DELETE = "posts/DELETE";
 export const GET_PAGE = "posts/GET_PAGE";
 export const GET_DETAIL = "posts/GET_DETAIL";
 export const ADD_COMMENT = "posts/ADD_COMMENT";
+export const EDIT_COMMENT = "posts/EDIT_COMMENT";
+export const DELETE_COMMENT = "posts/DELETE_COMMENT";
 export const ADD_LIKE = "posts/ADD_LIKE";
 export const ADD_LIKE_COMMENT = "posts/ADD_LIKE_COMMENT";
 
@@ -105,6 +107,37 @@ export const addComment = (id, newComment, userAuth) => async (dispatch) => {
     }
   });
 };
+
+export const editComment = (postId, commentId, contents, userAuth) => async (dispatch) => {
+
+    const response = await client.put(`/posts/${postId}/comments/${commentId}`, {
+      contents: contents,
+    }, {
+      headers: {
+        Authorization: `Bearer ${userAuth.accessToken}`,
+      }
+    });
+
+    dispatch({
+      type: EDIT_COMMENT,
+      commentId: commentId,
+      contents: contents,
+    });
+}
+
+export const deleteComment = (postId, commentId, userAuth) => async (dispatch) => {
+
+    await client.delete(`/comments/${commentId}`, {
+      headers: {
+        Authorization: `Bearer ${userAuth.accessToken}`,
+      }
+    });
+
+    dispatch({
+      type: DELETE_COMMENT,
+      commentId: commentId,
+    });
+}
 
 export const addLike = (id, userAuth) => async (dispatch) => {
 

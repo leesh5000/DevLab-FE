@@ -20,14 +20,6 @@ const Navbar = () => {
             );
           })
         }
-        {/*<button className="p-2 px-3 text-white font-semibold">전체</button>*/}
-        {/*{*/}
-        {/*  Object.entries(Categories).map(([key, value]) => {*/}
-        {/*    return (*/}
-        {/*      <button className="p-2 px-3 text-white font-semibold">{value}</button>*/}
-        {/*    );*/}
-        {/*  })*/}
-        {/*}*/}
       </div>
     </>
   )
