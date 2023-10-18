@@ -1,6 +1,6 @@
-import {DateConverter} from "../utils/DateConverter.jsx";
 import {useDispatch, useSelector} from "react-redux";
 import {addLikeComment} from "../actions/PostActions.jsx";
+import {TimeConverter} from "../utils/TimeConverter.jsx";
 
 export const CommentDetail = ({commentDetail}) => {
 
@@ -15,6 +15,13 @@ export const CommentDetail = ({commentDetail}) => {
     }
 
     dispatch(addLikeComment(commentDetail.id, userAuth));
+  }
+
+  const onEditHandler = () => {
+
+  }
+
+  const onDeleteHandler = () => {
 
   }
 
@@ -26,18 +33,33 @@ export const CommentDetail = ({commentDetail}) => {
             {commentDetail.author}
           </div>
           <div className="w-[1px] h-[16px] bg-gray-400 mx-2"/>
+          <div id="modifiedAt">
+            {TimeConverter(commentDetail.modified_at)}
+            {
+              commentDetail.created_at !== commentDetail.modified_at ? (
+                <div className="inline-block text-gray-400 ml-1">
+                  (수정됨)
+                </div>
+              ) : null
+            }
+          </div>
+        </div>
+        <div className="flex">
           <button className="hover:text-blue-700 hover:underline hover:font-semibold" onClick={addLikeHandler}>
             추천 {commentDetail.like_count}
           </button>
-        </div>
-        <div id="modifiedAt">
-          {DateConverter(commentDetail.modified_at)}
           {
-            commentDetail.created_at !== commentDetail.modified_at ? (
-              <div className="inline-block text-gray-400 ml-1">
-                (수정됨)
-              </div>
-            ) : null
+            (userAuth.isLogin && userAuth.nickname === commentDetail.author) &&
+            <div className="ml-4 text-gray-600">
+              <button className="hover:text-blue-700 hover:underline" onClick={onEditHandler}>
+                <img src="/public/edit.svg" alt="edit" className="h-4 inline-block text-sm"/>
+                수정
+              </button>
+              <button className="hover:text-blue-700 hover:underline ml-2" onClick={onDeleteHandler}>
+                <img src="/public/delete.svg" alt="edit" className="h-3 inline-block text-sm"/>
+                삭제
+              </button>
+            </div>
           }
         </div>
       </div>
