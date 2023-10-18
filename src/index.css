@@ -3,6 +3,29 @@
 @tailwind utilities;
 
 #root {
-  width: 1024px;
+  width: 968px;
   margin: 0 auto;
+  min-height: 100%;
+}
+
+.ql-container {
+  border-bottom-left-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+  background: #fefcfc;
+}
+
+.ql-editor {
+  font-size: 1rem;
+  line-height: 1.5rem;
+  min-height: 120px;
+  border-bottom-left-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+  background: #fefcfc;
+}
+
+.ql-toolbar {
+  display: block;
+  background: #eaecec;
+  border-top-left-radius: 0.5em;
+  border-top-right-radius: 0.5em;
 }

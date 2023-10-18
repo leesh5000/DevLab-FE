@@ -1,42 +1,36 @@
 import client from "../lib/client.jsx";
 
-export const REGISTER = "users/register";
 export const LOGIN = "users/login";
 export const OAUTH_LOGIN = "users/oauth-login";
 export const GET_ACCESS_TOKEN = "users/get-access-token";
 export const LOGOUT = "users/logout";
-
-export const register = (data) => async (dispatch) => {
-
-    const response = await client.post("/auth/register", data);
-
-    dispatch({
-      type: REGISTER,
-      payload: response.data
-    });
-}
+export const LOGIN_EXPIRED = "users/login-expired";
 
 export const login = (data) => async (dispatch) => {
 
-  const response = await client.post("/auth/login", data, {
+  const accessToken = await client.post("/auth/login", data, {
     withCredentials: true
+  }).then((res) => {
+    return res.data.access_token.value;
   });
 
   dispatch({
-    type: LOGIN,
-    payload: response.data
+    type: OAUTH_LOGIN,
+    accessToken: accessToken,
   });
 };
 
 export const oauthLogin = (data) => async (dispatch) => {
 
-  const response = await client.post("/auth/oauth-login", data, {
+  const accessToken = await client.post("/auth/oauth-login", data, {
     withCredentials: true
+  }).then((res) => {
+    return res.data.access_token.value;
   });
 
   dispatch({
     type: OAUTH_LOGIN,
-    payload: response.data
+    accessToken: accessToken,
   });
 }
 
@@ -44,10 +38,17 @@ export const fetchAccessToken = () => async (dispatch) => {
 
   const response = await client.post("/auth/refresh-token", {}, {
     withCredentials: true
+  }).catch((e) => {
+    if (e.response.status === 401) {
+      alert("로그인이 만료되었습니다. 다시 로그인 해주세요.");
+      dispatch(loginExpired());
+    }
   });
+
   dispatch({
     type: GET_ACCESS_TOKEN,
-    payload: response.data
+    accessToken: response.data.access_token.value,
+    nickname: response.data.user_info.nickname,
   });
 }
 
@@ -61,4 +62,10 @@ export const logout = () => async (dispatch) => {
       type: LOGOUT,
       payload: response.data
     });
+}
+
+export const loginExpired = () => {
+  return {
+    type: LOGIN_EXPIRED,
+  }
 }
