@@ -16,7 +16,7 @@ const Editor = ({contents, onContentsHandler}) => {
 
   return (
     <>
-      <ReactQuill value={contents}
+      <ReactQuill value={contents || ""}
                   onChange={onContentsHandler}
                   modules={modules}
                   theme={"snow"}/>

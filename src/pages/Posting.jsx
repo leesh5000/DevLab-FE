@@ -3,7 +3,7 @@ import Navbar from "../components/Navbar.jsx";
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useLocation, useNavigate} from "react-router-dom";
-import {getDetail, write} from "../actions/PostActions.jsx";
+import {edit, getDetail, write} from "../actions/PostActions.jsx";
 import Categories from "../utils/Categories.jsx";
 import Editor from "../components/Editor.jsx";
 
@@ -12,9 +12,10 @@ const Posting = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+  const mode = location.state?.mode;
 
-  const userAuth = useSelector((state) => state.userAuthReducer);
-  const postDetails = useSelector((state) => state.postReducer);
+  const userAuth = useSelector((state) => state.auth);
+  const postDetails = useSelector((state) => state.posts);
   const [errorMessage, setErrorMessage] = useState(false);
   const [postInput, setPostInput] = useState({
     category: "",
@@ -27,7 +28,7 @@ const Posting = () => {
     if (!userAuth.isLogin) {
       navigate("/");
     }
-    if (location.state?.mode === "edit") {
+    if (mode === "edit") {
       dispatch(getDetail(location.state.id));
       setPostInput({
         category: postDetails.category,
@@ -79,8 +80,8 @@ const Posting = () => {
 
     if (e.key === "Enter" && e.target.value !== "") {
 
-      if (!/^[a-z0-9\s+]*$/.test(e.target.value)) {
-        alert("태그는 영어, 숫자, 공백만 입력 가능합니다.");
+      if (!/^[a-z0-9가-힣\s+]*$/.test(e.target.value)) {
+        alert("태그는 한글, 영어, 숫자, 공백만 입력 가능합니다.");
         return;
       }
 
@@ -129,10 +130,17 @@ const Posting = () => {
       return;
     }
 
-    dispatch(write(postInput, userAuth.accessToken))
-      .then(() => {
-        navigate("/");
-      });
+    if (mode === "edit") {
+      dispatch(edit(location.state.id, postInput, userAuth.accessToken))
+        .then(() => {
+          navigate(-1);
+        });
+    } else {
+      dispatch(write(postInput, userAuth.accessToken))
+        .then(() => {
+          navigate("/");
+        });
+    }
   }
 
   const onCancel = () => {
@@ -144,7 +152,7 @@ const Posting = () => {
       <Header/>
       <Navbar/>
       <div className="font-semibold border-b-2 border-blue-700 pb-1 mt-12 mb-8">
-        게시글 작성
+        {mode === "edit" ? "게시글 수정" : "게시글 작성"}
       </div>
       <div className="flex w-full">
         <select id="tabs" className="w-28 border-1 border-gray-400 mr-4" value={postInput.category} onChange={onCategoryHandler}>
@@ -158,22 +166,22 @@ const Posting = () => {
           }
         </select>
         <input type="text" className="w-full border-1 border-b-1 border-gray-400 p-2" placeholder="제목"
-               value={postInput.title}
+               value={postInput.title || ""}
                onChange={onTitleHandler} onBlur={onTitleBlur}/>
       </div>
       {
         errorMessage && <div className="text-red-500 text-sm mt-2">카테고리를 선택해주세요.</div>
       }
       <div className="mt-6"></div>
-      <Editor contents={postInput.contents} onContentsHandler={onContentsHandler}/>
+      <Editor contents={postInput?.contents} onContentsHandler={onContentsHandler}/>
       <input type="text" className="w-full border-0 border-b-1 border-gray-400 focus:ring-0 p-2 pl-0 mt-6" placeholder="태그 입력"
              onKeyUp={onTagHandler}/>
       <p className="text-sm text-blue-700 my-1">
-        태그는 20자 이내의 영어, 숫자만 입력 가능하며 최대 5개까지 지정 가능합니다.
+        태그는 20자 이내로 입력 가능하며 최대 5개까지 지정 가능합니다.
       </p>
       <div className="h-16">
         {
-          postInput.tags.map((tag) => {
+          postInput.tags?.map((tag) => {
             return (
               <button key={tag} className="border-1 bg-blue-100 hover:bg-blue-300 text-blue-500 p-2 px-3 mr-2 mt-4" onClick={onRemove}>
                 {tag}

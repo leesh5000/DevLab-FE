@@ -30,6 +30,35 @@ export const write = (data = {}, accessToken) => async (dispatch) => {
 
 export const edit = (id, data = {}, accessToken) => async (dispatch) => {
 
+    const response = await client.put(`/posts/${id}`, {
+      title: data.title,
+      contents: data.contents,
+      category: data.category,
+      tags: data.tags,
+    }, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      }
+    });
+
+    dispatch({
+      type: EDIT,
+      payload: response.data,
+    });
+}
+
+export const deletePost = (id, accessToken) => async (dispatch) => {
+
+  await client.delete(`/posts/${id}`, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    }
+  });
+
+  dispatch({
+    type: DELETE,
+    deletedPostId: id,
+  });
 }
 
 export const getPage = (page, size, sort) => async (dispatch) => {
@@ -94,7 +123,6 @@ export const addLike = (id, userAuth) => async (dispatch) => {
 
   dispatch({
     type: ADD_LIKE,
-    payload: response.data,
   });
 }
 

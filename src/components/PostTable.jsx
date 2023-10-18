@@ -65,9 +65,12 @@ function PostTable() {
                           onTitleClick(post)
                         }}>
                   {post.title}
-                  <p className="inline text-xs ml-1">
-                    [{post.comment_details.length}]
-                  </p>
+                  {
+                    (post.comment_details.length !== 0) &&
+                    <p className="inline text-xs ml-1">
+                      [{post.comment_details.length}]
+                    </p>
+                  }
                 </button>
                 <div>
                   {post.tags.map((tag, index) => {

@@ -3,7 +3,7 @@ import Header from "../components/Header.jsx";
 import Navbar from "../components/Navbar.jsx";
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {addComment, addLike, getDetail} from "../actions/PostActions.jsx";
+import {addComment, addLike, deletePost, getDetail} from "../actions/PostActions.jsx";
 import {TagItem} from "../components/TagItem.jsx";
 import {CommentDetail} from "../components/CommentDetail.jsx";
 import Editor from "../components/Editor.jsx";
@@ -87,6 +87,13 @@ const PostDetail = () => {
     })
   };
 
+  const onDeleteHandler = () => {
+    if (window.confirm("정말로 삭제하시겠습니까?")) {
+      dispatch(deletePost(id, userAuth.accessToken));
+      navigate(-1);
+    }
+  }
+
   return (
     <>
       <Header/>
@@ -123,7 +130,7 @@ const PostDetail = () => {
                 <img src="/public/edit.svg" alt="edit" className="h-5 inline-block"/>
                 수정
               </button>
-              <button className="hover:text-blue-700 hover:underline ml-2">
+              <button className="hover:text-blue-700 hover:underline ml-2" onClick={onDeleteHandler}>
                 <img src="/public/delete.svg" alt="edit" className="h-4 inline-block"/>
                 삭제
               </button>

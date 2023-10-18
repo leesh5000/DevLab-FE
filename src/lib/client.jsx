@@ -16,7 +16,7 @@ export const setUpInterceptors = (dispatch) => {
         }).then((res) => res.data.access_token.value)
           .catch((e) => {
             if (e.response.status === 401) {
-              alert("로그인이 만료되었습니다. 다시 로그인 해주세요.11");
+              alert("로그인이 만료되었습니다. 다시 로그인 해주세요.");
               dispatch(loginExpired());
               return null;
             }

@@ -1,11 +1,26 @@
-import {ADD_COMMENT, ADD_LIKE, ADD_LIKE_COMMENT, GET_DETAIL, GET_PAGE, WRITE} from "../actions/PostActions.jsx";
+import {
+  ADD_COMMENT,
+  ADD_LIKE,
+  ADD_LIKE_COMMENT,
+  DELETE,
+  EDIT,
+  GET_DETAIL,
+  GET_PAGE,
+  WRITE
+} from "../actions/PostActions.jsx";
 
 export default function (state = {}, action) {
 
   switch (action.type) {
     case WRITE:
+    case EDIT:
       return {
         postId: action.payload.id,
+      }
+    case DELETE:
+      return {
+        ...state,
+        content: state.content.filter((post) => post.id !== action.deletedPostId),
       }
     case GET_PAGE:
       return {
