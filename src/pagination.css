@@ -1,4 +1,4 @@
-.pagination {
+ul.pagination {
   display: flex;
   justify-content: center;
   font-size: 14px;
@@ -6,7 +6,6 @@
 
 ul.pagination li {
   margin: 0 4px;
-  padding: 4px 8px;
   border: 1px solid lightgray;
   border-radius: 5px;
   display: flex;
@@ -14,25 +13,22 @@ ul.pagination li {
   align-items: center;
 }
 
-ul.pagination li:first-child,
-ul.pagination li:last-child {
-  border-radius: 5px;
-}
-
 ul.pagination li a {
   text-decoration: none;
   color: rgb(31, 41, 55);
-}
-
-ul.pagination li.active a {
-  color: white;
-}
-
-ul.pagination li.active,
-ul.pagination li.active:hover {
-  background-color: #337ab7;
+  padding: 4px 8px;
 }
 
 ul.pagination li:hover {
   background-color: lightgray;
+}
+
+ul.pagination li.active-page {
+  background-color: #337ab7;
+  font-weight: bold;
+}
+
+ul.pagination li.active-page a,
+ul.pagination li.active-page a:hover {
+  color: white;
 }
