@@ -18,7 +18,7 @@ const Navbar = () => {
 
   return (
     <>
-      <div id="navbar" className="flex items-center">
+      <div id="navbar" className="flex items-center text-sm">
         <button className={"py-1.5 px-4 border-1 rounded-tl-lg rounded-bl-lg border-r-0 border-gray-400 text-gray-800 hover:bg-gray-100 " + `${active === "ALL" ? 'bg-gray-200' : ''}`}
                 onClick={() => onCategoryClick("ALL")}>전체</button>
         {

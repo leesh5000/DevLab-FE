@@ -4,6 +4,7 @@ import SearchBar from "../components/SearchBar.jsx";
 import {useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
 import PostTable from "../components/PostTable.jsx";
+import Paging from "../lib/Paging.jsx";
 
 const Home = () => {
 
@@ -26,6 +27,7 @@ const Home = () => {
       <div id="table-container" className="h-[1024px]">
         <PostTable/>
       </div>
+      <Paging/>
       <div className="h-24 bg-yellow-200">
         <button onClick={onPostingHandler}>
           글 쓰기

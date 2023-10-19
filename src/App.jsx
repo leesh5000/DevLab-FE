@@ -15,8 +15,8 @@ export const App = () => {
       <Route path="/register" element={<Register/>}/>
       <Route exact path="/posts" element={<Posting/>}/>
       <Route exact path="/posts/:title" element={<PostDetail/>}/>
-      <Route exact path="/" element={<Home/>}/>
       <Route exact path="?category=category" element={<Home/>}/>
+      <Route exact path="*" element={<Home/>}/>
     </Routes>
   );
 }

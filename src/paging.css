@@ -1,0 +1,38 @@
+.pagination {
+  display: flex;
+  justify-content: center;
+  font-size: 14px;
+}
+
+ul.pagination li {
+  margin: 0 4px;
+  padding: 4px 8px;
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+ul.pagination li:first-child,
+ul.pagination li:last-child {
+  border-radius: 5px;
+}
+
+ul.pagination li a {
+  text-decoration: none;
+  color: rgb(31, 41, 55);
+}
+
+ul.pagination li.active a {
+  color: white;
+}
+
+ul.pagination li.active,
+ul.pagination li.active:hover {
+  background-color: #337ab7;
+}
+
+ul.pagination li:hover {
+  background-color: lightgray;
+}

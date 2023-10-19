@@ -1,5 +1,5 @@
 import {useDispatch, useSelector} from "react-redux";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {getPage} from "../actions/PostActions.jsx";
 import {useNavigate, useSearchParams} from "react-router-dom";
 import Categories from "../utils/Categories.jsx";
@@ -12,13 +12,15 @@ function PostTable() {
   const navigate = useNavigate();
 
   const [queryParams] = useSearchParams();
+  const [sort, setSort] = useState("createdAt");
+  const [order, setOrder] = useState("desc");
   const postPage = useSelector(state => state.posts);
   const pageSize = 20;
 
   useEffect(() => {
     const category = queryParams.get("category");
-    dispatch(getPage(category, 0, pageSize, "createdAt,desc"))
-  }, [queryParams]);
+    dispatch(getPage(category, 0, pageSize, `${sort},${order}`))
+  }, [queryParams, sort, order]);
 
   const onTitleClick = (post) => {
     navigate(`/posts/${encodeURI(post.title)}`, {
@@ -29,27 +31,34 @@ function PostTable() {
     });
   };
 
+  const onLikeSortHandler = () => {
+    setSort("likes");
+    setOrder(order === "desc" ? "asc" : "desc");
+  }
+
   return (
-    <table className="table-fixed">
+    <table className="table-fixed text-sm">
       <thead>
       <tr className="border-1 border-t-0">
-        <th className="w-20">
+        <th className="w-20 text-sm text-gray-600">
           분류
         </th>
-        <th className="w-[600px]">
+        <th className="w-[600px] text-sm text-gray-600">
           제목 & 태그
         </th>
-        <th className="w-32">
+        <th className="w-32 text-sm text-gray-600">
           작성자
         </th>
-        <th className="w-24">
+        <th className="w-24 text-sm text-gray-600">
           작성일
         </th>
-        <th className="w-14">
+        <th className="w-14 text-sm text-gray-600">
           조회
         </th>
-        <th className="w-14">
-          추천
+        <th className="w-14 text-sm text-gray-600">
+          <button onClick={onLikeSortHandler}>
+            추천
+          </button>
         </th>
       </tr>
       </thead>
@@ -61,7 +70,7 @@ function PostTable() {
               <td id="category" className="">
                 {Categories[post.category]}
               </td>
-              <td id="title" className="text-start">
+              <td id="title" className="text-start text-base">
                 <button className="my-2 text-sky-700 font-semibold hover:text-sky-500 hover:underline flex items-center"
                         onClick={() => {
                           onTitleClick(post)
