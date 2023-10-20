@@ -36,6 +36,7 @@ const Posting = () => {
         contents: postDetails.contents,
         tags: postDetails.tags,
       });
+      console.log(postInput);
     }
   }, [userAuth]);
 

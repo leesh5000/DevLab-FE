@@ -1,5 +1,5 @@
 import {useDispatch, useSelector} from "react-redux";
-import {setNickname} from "../actions/UserRegisterActions.js";
+import {setNickname} from "../actions/UserRegisterActions.jsx";
 
 const NicknameInputBox = () => {
 

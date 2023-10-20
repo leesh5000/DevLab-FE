@@ -2,7 +2,7 @@ import {useState} from "react";
 import client from "../lib/client.jsx";
 import Timer from "./Timer.jsx";
 import {useDispatch, useSelector} from "react-redux";
-import {setVerified} from "../actions/UserRegisterActions.js";
+import {setVerified} from "../actions/UserRegisterActions.jsx";
 
 export const EmailInputBox = () => {
 

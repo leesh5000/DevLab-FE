@@ -12,17 +12,19 @@ function PostTable() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [queryParams] = useSearchParams();
-  const [sort, setSort] = useState("createdAt");
+  const [searchParams] = useSearchParams();
+  const [sort, setSort] = useState("created_at");
   const [order, setOrder] = useState("desc");
   const postPage = useSelector(state => state.posts);
   const pageSize = 12;
-  const [currentPage, setCurrentPage] = useState(0);
 
   useEffect(() => {
-    const category = queryParams.get("category");
+    console.log("category : " + searchParams.get("category"));
+    console.log("page : " + searchParams.get("page"));
+    const category = searchParams.get("category") === "ALL" ? null : searchParams.get("category");
+    const currentPage = Math.max(searchParams.get("page") - 1, 0);
     dispatch(getPage(category, currentPage, pageSize, `${sort},${order}`))
-  }, [queryParams, sort, order, currentPage]);
+  }, [searchParams, sort, order]);
 
   const onTitleClick = (post) => {
     navigate(`/posts/${encodeURI(post.title)}`, {
@@ -34,7 +36,7 @@ function PostTable() {
   };
 
   const onLikeSortHandler = () => {
-    setSort("likes");
+    setSort("like_count");
     setOrder(order === "desc" ? "asc" : "desc");
   }
 
@@ -50,7 +52,7 @@ function PostTable() {
 
   return (
     <>
-      <div id="table-container">
+      <div id="table-container" className="h-[940px]">
         <table className="table-fixed text-sm">
           <thead>
           <tr className="border-1 border-t-0">
@@ -92,9 +94,9 @@ function PostTable() {
                       }}>
                       {post.title}
                       {
-                        (post.comment_details.length !== 0) &&
+                        (post.comment_count !== 0) &&
                         <p className="inline text-xs ml-1">
-                          [{post.comment_details.length}]
+                          [{post.comment_count}]
                         </p>
                       }
                     </button>
@@ -125,8 +127,8 @@ function PostTable() {
           </tbody>
         </table>
       </div>
-      <div className="my-8">
-        <PaginatedItems currentPage={currentPage} setCurrentPage={setCurrentPage} pageSize={pageSize} totalItemSize={postPage.total_elements}/>
+      <div className="my-16">
+        <PaginatedItems pageSize={pageSize} totalItemSize={postPage.total_elements}/>
       </div>
     </>
   );

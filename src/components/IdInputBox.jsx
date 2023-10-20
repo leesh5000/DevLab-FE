@@ -1,5 +1,5 @@
 import {useDispatch, useSelector} from "react-redux";
-import {setId} from "../actions/UserRegisterActions.js";
+import {setId} from "../actions/UserRegisterActions.jsx";
 
 const IdInputBox = () => {
 
