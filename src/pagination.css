@@ -1,0 +1,34 @@
+ul.pagination {
+  display: flex;
+  justify-content: center;
+  font-size: 14px;
+}
+
+ul.pagination li {
+  margin: 0 4px;
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+ul.pagination li a {
+  text-decoration: none;
+  color: rgb(31, 41, 55);
+  padding: 4px 8px;
+}
+
+ul.pagination li:hover {
+  background-color: lightgray;
+}
+
+ul.pagination li.active-page {
+  background-color: #337ab7;
+  font-weight: bold;
+}
+
+ul.pagination li.active-page a,
+ul.pagination li.active-page a:hover {
+  color: white;
+}

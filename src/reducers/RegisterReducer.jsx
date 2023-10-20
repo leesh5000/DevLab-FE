@@ -5,7 +5,7 @@ import {
   SET_PASSWORD,
   SET_PASSWORD_CONFIRM,
   SET_VERIFIED
-} from "../actions/UserRegisterActions.js";
+} from "../actions/UserRegisterActions.jsx";
 
 const initialState = {
   id: "",

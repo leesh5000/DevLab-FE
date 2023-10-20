@@ -1,5 +1,5 @@
 import {useDispatch, useSelector} from "react-redux";
-import {setPassword, setPasswordConfirm} from "../actions/UserRegisterActions.js";
+import {setPassword, setPasswordConfirm} from "../actions/UserRegisterActions.jsx";
 
 const PasswordInputBox = () => {
 

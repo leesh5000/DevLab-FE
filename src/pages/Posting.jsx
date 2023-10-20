@@ -36,6 +36,7 @@ const Posting = () => {
         contents: postDetails.contents,
         tags: postDetails.tags,
       });
+      console.log(postInput);
     }
   }, [userAuth]);
 
@@ -80,7 +81,7 @@ const Posting = () => {
 
     if (e.key === "Enter" && e.target.value !== "") {
 
-      if (!/^[a-z0-9가-힣\s+]*$/.test(e.target.value)) {
+      if (!/^[a-z0-9가-힣\s+\-]*$/.test(e.target.value)) {
         alert("태그는 한글, 영어, 숫자, 공백만 입력 가능합니다.");
         return;
       }

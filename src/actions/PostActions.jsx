@@ -63,10 +63,11 @@ export const deletePost = (id, accessToken) => async (dispatch) => {
   });
 }
 
-export const getPage = (page, size, sort) => async (dispatch) => {
+export const getPage = (category, page, size, sort) => async (dispatch) => {
 
     const response = await client.get(`/posts`, {
       params: {
+        category: category,
         page: page,
         size: size,
         sort: sort,
@@ -179,3 +180,9 @@ export const addLikeComment = (commentId, userAuth) => async (dispatch) => {
     commentId: commentId,
   });
 }
+
+/**
+ * 1. 페이지네이션 작업하기 (react-js-pagination)
+ * 2. 백엔드 QueryDSL 적용하기 + 추천 정렬 완성하기
+ * 3. ㅈ
+ */

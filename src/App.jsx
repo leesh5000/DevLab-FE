@@ -1,21 +1,23 @@
 import React from "react";
 import {Route, Routes} from "react-router-dom";
-import Home from "./pages/Home.jsx";
 import Login from "./pages/Login.jsx";
 import OauthLogin from "./utils/OauthRedirectHandler.jsx";
 import Register from "./pages/Register.jsx";
 import Posting from "./pages/Posting.jsx";
 import PostDetail from "./pages/PostDetail.jsx";
+import PostLists from "./pages/PostLists.jsx";
+import Home from "./pages/Home.jsx";
 
 export const App = () => {
   return (
     <Routes>
-      <Route path="/" element={<Home/>}/>
       <Route path="/login" element={<Login/>}/>
       <Route path="/oauth/callback/*" element={<OauthLogin/>}/>
       <Route path="/register" element={<Register/>}/>
-      <Route path="/post" element={<Posting/>}/>
-      <Route path="/post/:title" element={<PostDetail/>}/>
+      <Route path="/posts/" element={<PostLists/>}/>
+      <Route path="/posts/:title" element={<PostDetail/>}/>
+      <Route path="/posting" element={<Posting/>}/>
+      <Route path="*" element={<Home/>}/>
     </Routes>
   );
 }
