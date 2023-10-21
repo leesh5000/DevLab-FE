@@ -19,11 +19,18 @@ function PostTable() {
   const pageSize = 12;
 
   useEffect(() => {
-    console.log("category : " + searchParams.get("category"));
-    console.log("page : " + searchParams.get("page"));
+
     const category = searchParams.get("category") === "ALL" ? null : searchParams.get("category");
     const currentPage = Math.max(searchParams.get("page") - 1, 0);
-    dispatch(getPage(category, currentPage, pageSize, `${sort},${order}`))
+    const keyword = searchParams.get("search");
+
+    const pageInfo = {
+      page: currentPage,
+      size: pageSize,
+      sort: `${sort},${order}`,
+    }
+
+    dispatch(getPage(category, pageInfo, keyword));
   }, [searchParams, sort, order]);
 
   const onTitleClick = (post) => {
