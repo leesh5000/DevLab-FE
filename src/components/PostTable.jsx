@@ -16,7 +16,7 @@ function PostTable() {
   const [sort, setSort] = useState("created_at");
   const [order, setOrder] = useState("desc");
   const postPage = useSelector(state => state.posts);
-  const pageSize = 12;
+  const pageSize = 6;
 
   useEffect(() => {
 
