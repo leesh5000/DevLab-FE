@@ -26,12 +26,12 @@ function PaginatedItems({pageSize, totalItemSize}) {
         containerClassName="pagination"
         activeClassName="active-page"
         breakLabel="..."
-        nextLabel="next >"
+        nextLabel="Next"
         onPageChange={handlePageClick}
         pageRangeDisplayed={5}
         marginPagesDisplayed={2}
         pageCount={pageCount}
-        previousLabel="< previous"
+        previousLabel="Prev"
         renderOnZeroPageCount={null}
       />
     </>

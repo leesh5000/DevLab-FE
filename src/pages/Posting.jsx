@@ -192,11 +192,11 @@ const Posting = () => {
           })
         }
       </div>
-      <div className="flex justify-end items-center">
-        <button className="mr-6 border-1 border-gray-400 text-white bg-blue-700 hover:bg-blue-800 rounded p-2 px-4" onClick={onPostHandler}>
+      <div className="flex justify-end items-center my-8">
+        <button className="mr-6 border-1 text-sm border-gray-400 text-white bg-blue-700 hover:bg-blue-800 rounded p-2 px-4" onClick={onPostHandler}>
           등록
         </button>
-        <button className="border-1 border-gray-400 text-white bg-blue-700 hover:bg-blue-800 rounded p-2 px-4" onClick={onCancel}>
+        <button className="border-1 text-sm border-gray-400 text-white bg-blue-700 hover:bg-blue-800 rounded p-2 px-4" onClick={onCancel}>
           취소
         </button>
       </div>

@@ -18,6 +18,7 @@ export const setUpInterceptors = (dispatch) => {
             if (e.response.status === 401) {
               alert("로그인이 만료되었습니다. 다시 로그인 해주세요.");
               dispatch(loginExpired());
+              location.href = "/login";
               return null;
             }
           });
