@@ -14,7 +14,9 @@ function PaginatedItems({pageSize, totalItemSize}) {
 
   const handlePageClick = (event) => {
     searchParams.set("page", event.selected + 1);
-    setSearchParams(searchParams);
+    setSearchParams(searchParams, {
+      replace: true
+    });
   };
 
   return (

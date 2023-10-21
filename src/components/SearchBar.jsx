@@ -18,7 +18,9 @@ const SearchBar = () => {
 
     if (e.target.value === "") {
       searchParams.delete("search");
-      setSearchParams(searchParams);
+      setSearchParams(searchParams, {
+        replace: true
+      });
       return;
     }
 
@@ -26,7 +28,9 @@ const SearchBar = () => {
       e.preventDefault();
       searchParams.set("page", "1");
       searchParams.set("search", encodeURI(e.target.value));
-      setSearchParams(searchParams);
+      setSearchParams(searchParams, {
+        replace: true
+      });
     }
   }
 
@@ -44,7 +48,7 @@ const SearchBar = () => {
             </svg>
           </div>
           <input type="search" id="default-search"
-                 className="block w-full p-2 pl-10 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 placeholder:text-sm"
+                 className="block w-full p-2 pl-10 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 placeholder:text-sm"
                  placeholder="제목, 내용, 태그 통합검색" required
                  value={keyword} onChange={(e) => setKeyword(e.target.value)}
                  autoFocus={true}
