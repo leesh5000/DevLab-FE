@@ -81,7 +81,10 @@ const Posting = () => {
 
     if (e.key === "Enter" && e.target.value !== "") {
 
-      if (!/^[a-z0-9가-힣\s+\-]*$/.test(e.target.value)) {
+      const newTag = e.target.value.replace(/ /g, "-").toLowerCase();
+      console.log(newTag);
+
+      if (!/^[a-z0-9가-힣\s+\-]*$/.test(newTag)) {
         alert("태그는 한글, 영어, 숫자, 공백만 입력 가능합니다.");
         return;
       }
@@ -91,12 +94,10 @@ const Posting = () => {
         return;
       }
 
-      const newTag = e.target.value.replace(/ /g, "-");
-
       if (!postInput.tags.includes(newTag)) {
         setPostInput({
           ...postInput,
-          tags: [...postInput.tags, e.target.value.replace(/ /g, "-")],
+          tags: [...postInput.tags, newTag],
         });
       }
 
@@ -108,7 +109,7 @@ const Posting = () => {
     setPostInput({
       ...postInput,
       tags: postInput.tags.filter((tag) => {
-        return tag !== e.target.innerText;
+        return tag !== e.target.innerText.toLowerCase();
       }),
     });
   }

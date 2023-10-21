@@ -1,11 +1,12 @@
 import {useEffect, useState} from "react";
 import Categories from "../utils/Categories.jsx";
-import {Link, useSearchParams} from "react-router-dom";
+import {Link, useNavigate, useSearchParams} from "react-router-dom";
 
 const Navbar = () => {
 
   const [searchParams] = useSearchParams();
   const [active, setActive] = useState("ALL");
+  const navigate = useNavigate();
 
   useEffect(() => {
     setActive(searchParams.get("category") || "ALL");
