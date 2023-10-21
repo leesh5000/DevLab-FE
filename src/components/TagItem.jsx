@@ -13,7 +13,8 @@ export const TagItem = ({ value }) => {
   }
 
   return (
-    <button className="mb-2 text-xs rounded-lg py-1 px-1.5 mr-2 bg-sky-100 text-sky-600 hover:bg-blue-200" onClick={onTagClick}>
+    <button className="inline mr-2 mt-1.5 text-xs rounded-lg text-sky-800 bg-sky-100 py-1 px-2"
+            onClick={onTagClick}>
       {value}
     </button>
   );

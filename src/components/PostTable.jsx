@@ -4,19 +4,35 @@ import {getPage} from "../actions/PostActions.jsx";
 import {useNavigate, useSearchParams} from "react-router-dom";
 import Categories from "../utils/Categories.jsx";
 import {DateConverter} from "../utils/DateConverter.jsx";
-import {TagItem} from "./TagItem.jsx";
 import PaginatedItems from "../lib/PaginatedItems.jsx";
+import {Loading} from "./Loading.jsx";
+import {TagItem} from "./TagItem.jsx";
 
 function PostTable() {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const userAuth = useSelector((state) => state.auth);
 
   const [searchParams] = useSearchParams();
   const [sort, setSort] = useState("created_at");
   const [order, setOrder] = useState("desc");
   const postPage = useSelector(state => state.posts);
-  const pageSize = 12;
+  const pageSize = 20;
+
+  const onPostingHandler = () => {
+
+    if (!userAuth.isLogin) {
+      alert("로그인이 필요합니다.");
+      return;
+    }
+
+    navigate("/posting", {
+      state: {
+        mode: "write",
+      },
+    });
+  }
 
   useEffect(() => {
 
@@ -47,95 +63,91 @@ function PostTable() {
     setOrder(order === "desc" ? "asc" : "desc");
   }
 
-  if (postPage.content === undefined) {
+  if (!postPage.content) {
     return (
-      <div>
-        <h1>
-          Loading...
-        </h1>
-      </div>
+      <Loading/>
     )
   }
 
   return (
     <>
-      <div id="table-container" className="h-[940px]">
-        <table className="table-fixed text-sm">
-          <thead>
-          <tr className="border-1 border-t-0">
-            <th className="w-20 text-sm text-gray-600">
+      <div className="relative">
+        <table className="w-full text-sm text-left text-gray-500 table-fixed">
+          <thead className="text-sm text-gray-700 uppercase bg-gray-50 ">
+          <tr className="text-center">
+            <th scope="col" className="w-10 px-3 py-3">
               분류
             </th>
-            <th className="w-[600px] text-sm text-gray-600">
+            <th scope="col" className="w-[460px] px-3 py-3">
               제목 & 태그
             </th>
-            <th className="w-32 text-sm text-gray-600">
+            <th scope="col" className="w-20 px-2 py-3">
               작성자
             </th>
-            <th className="w-24 text-sm text-gray-600">
+            <th scope="col" className="w-20 px-2 py-3">
               작성일
             </th>
-            <th className="w-14 text-sm text-gray-600">
+            <th scope="col" className="w-12 px-2 py-3">
               조회
             </th>
-            <th className="w-14 text-sm text-gray-600">
-              <button onClick={onLikeSortHandler}>
-                추천
-              </button>
+            <th scope="col" className="w-12 px-2 py-3 hover:cursor-pointer" onClick={onLikeSortHandler}>
+              추천
             </th>
           </tr>
           </thead>
           <tbody>
-          {
-            postPage.content?.map((post, index) => {
-              return (
-                <tr key={index} className="align-middle text-center border-b-1 border-gray-200">
-                  <td id="category" className="">
-                    {Categories[post.category]}
-                  </td>
-                  <td id="title" className="text-start text-base">
-                    <button
-                      className="my-2 text-sky-700 font-semibold hover:text-sky-500 hover:underline flex items-center"
-                      onClick={() => {
-                        onTitleClick(post)
-                      }}>
-                      {post.title}
-                      {
-                        (post.comment_count !== 0) &&
-                        <p className="inline text-xs ml-1">
-                          [{post.comment_count}]
-                        </p>
-                      }
-                    </button>
-                    <div>
-                      {post.tags.map((tag, index) => {
-                        return (
-                          <TagItem key={index} value={tag}/>
-                        )
-                      })}
-                    </div>
-                  </td>
-                  <td id="author" className="overflow-hidden text-ellipsis whitespace-nowrap">
-                    {post.author}
-                  </td>
-                  <td id="createdAt">
-                    {DateConverter(post.created_at)}
-                  </td>
-                  <td>
-                    999+
-                  </td>
-                  <td>
-                    {post.like_count > 999 ? '999+' : post.like_count}
-                  </td>
-                </tr>
-              );
-            })
-          }
+            {
+              postPage.content?.map((post, index) => {
+                return (
+                  <tr key={index} className="bg-white border-b">
+                    <td scope="row" className="text-center w-10 px-2 py-3">
+                      <strong className="font-semibold">{Categories[post.category]}</strong>
+                    </td>
+                    <td scope="row" className="px-3 py-3 h-20">
+                      <strong className="text-sky-600 hover:text-sky-400 hover:underline hover:cursor-pointer" onClick={() => onTitleClick(post)}>
+                        {post.title}
+                        {
+                          (post.comment_count !== 0) &&
+                          <p className="inline text-xs ml-1">
+                            [{post.comment_count}]
+                          </p>
+                        }
+                      </strong>
+                      <div className="block">
+                        {post.tags.map((tag, index) => {
+                          return (
+                            <TagItem key={index} value={tag}/>
+                          )
+                        })}
+                      </div>
+                    </td>
+                    <td scope="row"
+                        className="text-center w-20 px-2 py-3 text-ellipsis whitespace-nowrap overflow-hidden">
+                      {post.author}
+                    </td>
+                    <td scope="row" className="text-center w-20 px-2 py-3">
+                      {DateConverter(post.created_at)}
+                    </td>
+                    <td scope="row" className="text-center w-12 px-2 py-3">
+                      14
+                    </td>
+                    <td scope="row" className="text-center w-12 px-2 py-3">
+                      {post.like_count}
+                    </td>
+                  </tr>
+                );
+              })
+            }
           </tbody>
         </table>
       </div>
-      <div className="my-16">
+      <div className="relative my-16">
         <PaginatedItems pageSize={pageSize} totalItemSize={postPage.total_elements}/>
+        <button
+          className="absolute top-1/2 right-0 transform -translate-y-1/2 p-2 px-4 text-sm bg-blue-700 hover:bg-blue-800 rounded text-white"
+          onClick={onPostingHandler}>
+          글 쓰기
+        </button>
       </div>
     </>
   );
