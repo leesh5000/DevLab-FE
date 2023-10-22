@@ -38,7 +38,7 @@ function PostTable() {
 
     const category = searchParams.get("category") === "ALL" ? null : searchParams.get("category");
     const currentPage = Math.max(searchParams.get("page") - 1, 0);
-    const keyword = searchParams.get("search");
+    const keyword = searchParams.get("keyword");
 
     const pageInfo = {
       page: currentPage,

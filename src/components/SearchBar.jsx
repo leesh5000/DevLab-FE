@@ -7,8 +7,8 @@ const SearchBar = () => {
   const [keyword, setKeyword] = useState("");
 
   useEffect(() => {
-    if (searchParams.get("search")) {
-      setKeyword(decodeURI(searchParams.get("search")));
+    if (searchParams.get("keyword")) {
+      setKeyword(decodeURI(searchParams.get("keyword")));
     } else {
       setKeyword("");
     }
@@ -17,7 +17,7 @@ const SearchBar = () => {
   const onEnterHandler = (e) => {
 
     if (e.target.value === "") {
-      searchParams.delete("search");
+      searchParams.delete("keyword");
       setSearchParams(searchParams, {
         replace: true
       });
@@ -27,7 +27,7 @@ const SearchBar = () => {
     if (e.key === 'Enter') {
       e.preventDefault();
       searchParams.set("page", "1");
-      searchParams.set("search", encodeURI(e.target.value));
+      searchParams.set("keyword", encodeURI(e.target.value));
       setSearchParams(searchParams, {
         replace: true
       });
