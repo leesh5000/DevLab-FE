@@ -24,7 +24,7 @@ ul.pagination li:hover {
 }
 
 ul.pagination li.active-page {
-  background-color: #337ab7;
+  background-color: rgba(37, 99, 235, 1);
   font-weight: bold;
 }
 

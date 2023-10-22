@@ -118,11 +118,6 @@ export const EmailInputBox = () => {
               인증코드 받기
             </button>
           </div>
-          {
-            count === -1 ?
-              null :
-              <Timer count={count} setCount={setCount}/>
-          }
         </div>
       </form>
     </>

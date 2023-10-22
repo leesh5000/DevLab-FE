@@ -1,4 +1,4 @@
-import {useEffect} from "react";
+import React, {useEffect} from "react";
 
 const Timer = ({count, setCount}) => {
 
@@ -15,17 +15,13 @@ const Timer = ({count, setCount}) => {
     return () => {
       clearInterval(timer);
     }
+
   }, [count]);
 
   return (
-    count === -1 ?
-      null : count > 0 ?
-      <div className="text-sm text-gray-600 my-1 block">
-        인증 번호 입력 남은 시간은 <p className="text-red-600 inline">{count}</p>초 입니다.
-      </div> :
-      <div className="text-sm text-red-600 my-1 block">
-        인증 번호 입력 시간이 만료되었습니다.
-      </div>
+    count > 0 ?
+      <p id="standard_error_help" className="mt-2 text-sm text-gray-500 dark:text-gray-300">인증 번호 입력 남은 시간은 <span className="font-medium text-red-600 dark:text-red-400">{count}</span>초 입니다.</p> :
+      <p id="standard_error_help" className="mt-2 text-sm text-red-600 dark:text-red-400">인증 번호 입력 시간이 만료되었습니다.</p>
   );
 };
 

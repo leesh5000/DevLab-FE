@@ -104,7 +104,7 @@ function PostTable() {
                       <strong className="font-semibold">{Categories[post.category]}</strong>
                     </td>
                     <td scope="row" className="px-3 py-3 h-20">
-                      <strong className="text-sky-600 hover:text-sky-400 hover:underline hover:cursor-pointer" onClick={() => onTitleClick(post)}>
+                      <strong className="text-sky-700 hover:text-sky-500 hover:underline hover:cursor-pointer" onClick={() => onTitleClick(post)}>
                         {post.title}
                         {
                           (post.comment_count !== 0) &&
@@ -143,9 +143,8 @@ function PostTable() {
       </div>
       <div className="relative my-16">
         <PaginatedItems pageSize={pageSize} totalItemSize={postPage.total_elements}/>
-        <button
-          className="absolute top-1/2 right-0 transform -translate-y-1/2 p-2 px-4 text-sm bg-blue-700 hover:bg-blue-800 rounded text-white"
-          onClick={onPostingHandler}>
+        <button className="absolute top-1/2 right-0 transform -translate-y-1/2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none"
+           onClick={onPostingHandler}>
           글 쓰기
         </button>
       </div>
