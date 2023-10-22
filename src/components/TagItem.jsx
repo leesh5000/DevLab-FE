@@ -6,7 +6,7 @@ export const TagItem = ({ value }) => {
 
   const onTagClick = (e) => {
     searchParams.set("page", "1");
-    searchParams.set("search", encodeURI(e.target.innerText));
+    searchParams.set("keyword", encodeURI(e.target.innerText));
     setSearchParams(searchParams, {
       replace: true
     });

@@ -1,16 +1,15 @@
 import Header from "../components/Header.jsx";
 import Navbar from "../components/Navbar.jsx";
-import {useState} from "react";
+import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {login} from "../actions/UserAuthActions.jsx";
 
 const Login = () => {
 
-  const [userInput, setUserInput] = useState({
-    id: "",
-    password: ""
-  });
+  const [id, setId] = useState("");
+  const [password, setPassword] = useState("");
+  console.log(id, password);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -29,21 +28,21 @@ const Login = () => {
   const googleRedirectUri = baseRedirectURI + "google";
   const googleUri = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${googleClientId}&redirect_uri=${googleRedirectUri}&response_type=code&scope=openid email`
 
-  const onLogin = () => {
+  const onIdChangeHandler = (e) => {
+    setId(e.target.value);
+  }
 
-    if (userInput.id === "") {
-      alert("아이디를 입력해주세요.");
-      return;
-    }
+  const onPasswordHandler = (e) => {
+    setPassword(e.target.value);
+  }
 
-    if (userInput.password === "") {
-      alert("비밀번호를 입력해주세요.");
-      return;
-    }
+  const onLoginHandler = (e) => {
+
+    e.preventDefault();
 
     const body = {
-      login_id: userInput.id,
-      password: userInput.password
+      login_id: id,
+      password: password
     };
 
     dispatch(login(body))
@@ -62,55 +61,84 @@ const Login = () => {
       });
   };
 
-  const onIdHandler = (e) => {
-    setUserInput((prevState) => {
-      return {
-        ...prevState,
-        id: e.target.value,
-      }
-    })
-  }
-
-  const onPasswordHandler = (e) => {
-    setUserInput((prevState) => {
-      return {
-        ...prevState,
-        password: e.target.value,
-      }
-    })
-  }
-
   return (
     <>
       <Header/>
       <Navbar/>
-      <div id="border" className="w-[500px] mx-auto my-24 border-1 border-gray-400 p-24 rounded flex flex-col justify-items-start items-center">
-        <input type="text" className="w-full border-1 border-gray-400 p-2" placeholder="아이디" onChange={onIdHandler}/>
-        <input type="password" className="w-full border-1 border-t-white border-gray-400 p-2" placeholder="패스워드" onChange={onPasswordHandler}/>
-        <button className="mt-8 h-12 text-lg w-full bg-blue-700 hover:bg-blue-800 text-white rounded" onClick={onLogin}>
-          로그인
-        </button>
-        <div id="divider" className="w-[420px] my-8">
-          <div className="relative flex items-center">
-            <div className="flex-grow border-t border-gray-300"></div>
-            <span className="flex-shrink mx-4 text-gray-400">
-                또는
-              </span>
-            <div className="flex-grow border-t border-gray-300"></div>
+      <section className="bg-gray-50 dark:bg-gray-900">
+        <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+          <a href="#" className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
+            <img className="w-8 h-8 mr-2" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg"
+                 alt="logo"/>
+            DevLab
+          </a>
+          <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+            <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
+              <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+                Sign in to your account
+              </h1>
+              <form className="space-y-4 md:space-y-6" onSubmit={onLoginHandler} action="#">
+                <div className="relative z-0">
+                  <input type="text" id="floating_id" className="block py-2.5 px-0 w-full text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                         placeholder=" " required={true} onChange={onIdChangeHandler}/>
+                  <label htmlFor="floating_id" className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                    로그인 아이디
+                  </label>
+                </div>
+                <div>
+                  <div className="relative z-0">
+                    <input type="password" id="floating_password" className="block py-2.5 px-0 w-full text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                           placeholder=" " required={true} onChange={onPasswordHandler}/>
+                    <label htmlFor="floating_password" className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                      비밀번호
+                    </label>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-start">
+                    <div className="flex items-center h-5">
+                      <input id="remember" aria-describedby="remember" type="checkbox"
+                             className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
+                             required=""/>
+                    </div>
+                    <div className="ml-3 text-sm">
+                      <label form="remember" className="text-gray-500 dark:text-gray-300">Remember me</label>
+                    </div>
+                  </div>
+                  <a href="#" className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">
+                    Forgot password?
+                  </a>
+                </div>
+                <button type="submit"
+                        className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                  Sign in
+                </button>
+                <p className="text-sm font-light text-gray-500 dark:text-gray-400">
+                  Don’t have an account yet?<a href="/register" className="font-medium text-primary-600 hover:underline dark:text-primary-500"> Sign up</a>
+                </p>
+              </form>
+            </div>
+            <div id="divider" className="mx-8">
+              <div className="relative flex items-center">
+                <div className="flex-grow border-t border-gray-300"></div>
+                <span className="flex-shrink mx-4 text-gray-400 text-sm">또는</span>
+                <div className="flex-grow border-t border-gray-300"></div>
+              </div>
+            </div>
+            <div id="social" className="w-[340px] flex flex-col mx-auto py-4 pb-6 space-y-2">
+              <a href={googleUri}>
+                <img src="/google.png" className="cursor-pointer" alt="google"/>
+              </a>
+              <a href={naverUri}>
+                <img src="/naver.png" className="cursor-pointer" alt="naver"/>
+              </a>
+              <a href={kakaoUri}>
+                <img src="/kakao.png" className="cursor-pointer" alt="kakao"/>
+              </a>
+            </div>
           </div>
         </div>
-        <div id="social" className="w-[340px] flex flex-col">
-          <a href={googleUri}>
-            <img src="/google.png" className="cursor-pointer mb-2" alt="google"/>
-          </a>
-          <a href={naverUri}>
-            <img src="/naver.png" className="cursor-pointer mb-2" alt="naver"/>
-          </a>
-          <a href={kakaoUri}>
-            <img src="/kakao.png" className="cursor-pointer" alt="kakao"/>
-          </a>
-        </div>
-      </div>
+      </section>
     </>
   );
 }
