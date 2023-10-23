@@ -8,7 +8,7 @@ const Timer = ({count, setCount}) => {
       setCount(count - 1);
     }, 1000);
 
-    if (count === 0) {
+    if (count === -1) {
       clearInterval(timer);
     }
 
@@ -20,8 +20,8 @@ const Timer = ({count, setCount}) => {
 
   return (
     count > 0 ?
-      <p id="standard_error_help" className="mt-2 text-sm text-gray-500 dark:text-gray-300">인증 번호 입력 남은 시간은 <span className="font-medium text-red-600 dark:text-red-400">{count}</span>초 입니다.</p> :
-      <p id="standard_error_help" className="mt-2 text-sm text-red-600 dark:text-red-400">인증 번호 입력 시간이 만료되었습니다.</p>
+      <p id="standard_error_help" className="mt-1 ml-1 text-sm text-gray-500 dark:text-gray-300">인증 번호 입력 남은 시간은 <span className="text-red-600 dark:text-red-400">{count}</span>초 입니다.</p> :
+      <p id="standard_error_help" className="mt-1 ml-1 text-sm text-red-600 dark:text-red-400">인증 번호 입력 시간이 만료되었습니다.</p>
   );
 };
 

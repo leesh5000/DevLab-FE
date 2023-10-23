@@ -49,6 +49,7 @@ export const fetchAccessToken = () => async (dispatch) => {
     type: GET_ACCESS_TOKEN,
     accessToken: response.data.access_token.value,
     nickname: response.data.user_info.nickname,
+    uniqueId: response.data.user_info.id,
   });
 }
 

@@ -1,5 +1,5 @@
 import axios from "axios";
-import {loginExpired} from "../actions/UserAuthActions.jsx";
+import {loginExpired} from "../actions/AuthActions.jsx";
 
 const client = axios.create();
 client.defaults.baseURL = import.meta.env.VITE_API_SERVER_URL;
