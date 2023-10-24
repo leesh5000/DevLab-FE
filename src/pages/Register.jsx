@@ -6,6 +6,7 @@ import 'flowbite';
 import React, {useEffect, useState} from "react";
 import {initFlowbite} from "flowbite";
 import {EmailAuthenticator} from "../components/EmailAuthenticator.jsx";
+import validator from "../utils/validator.js";
 
 const Register = () => {
 
@@ -21,13 +22,6 @@ const Register = () => {
     isPasswordConfirmed: false,
   });
   const [onEmailAuthenticator, setOnEmailAuthenticator] = useState(false);
-
-  const validator = {
-    id: /^[a-z0-9]{4,20}$/, // 영어, 숫자로 된 4~20자리
-    password: /^.{6,30}$/,
-    nickname: /^[a-z0-9가-힣]{2,9}$/, // 한글, 영어, 숫자로 된 2~9자리
-    email: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
-  }
 
   useEffect(() => {
     initFlowbite();
@@ -173,7 +167,7 @@ const Register = () => {
                   <input type="text" id="floating_nickname" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                          placeholder=" " required={true} onChange={onNicknameChangeHandler}/>
                   <label htmlFor="floating_nickname" className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                    닉네임 (2-10 자리의 한글/영어/숫자 조합)
+                    닉네임 (2-20 자리의 한글/영어/숫자 조합)
                   </label>
                   {
                     userInput.isDuplicatedNickname &&

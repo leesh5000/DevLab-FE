@@ -78,7 +78,7 @@ export const EmailAuthenticator = ({userInput, setUserInput}) => {
       },
       withCredentials: true
     }).then(() => {
-      alert("이메일 인증이 완료 되었습니다.\n회원가입 후 해당 이메일로 보안코드가 전송됩니다.");
+      alert("이메일 인증이 완료 되었습니다.\n작업 완료 후 해당 이메일로 보안코드가 전송됩니다.");
       setUserInput({
         ...userInput,
         email: userInput.email,
