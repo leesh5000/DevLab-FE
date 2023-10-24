@@ -24,9 +24,6 @@ const Posting = () => {
     tags: [],
   });
 
-  console.log("1. userAuth.isLogin = " + userAuth.isLogin);
-  console.log("2. userAuth.accessToken = " + userAuth.accessToken);
-
   useEffect(() => {
     if (!userAuth.isLogin) {
       navigate("/");
