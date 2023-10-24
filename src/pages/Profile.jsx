@@ -9,6 +9,7 @@ import {Loading} from "../components/Loading.jsx";
 import {EmailAuthenticator} from "../components/EmailAuthenticator.jsx";
 import client from "../lib/client.jsx";
 import validator from "../utils/validator.js";
+import {UserActivity} from "../components/UserActivity.jsx";
 
 const Profile = () => {
 
@@ -128,13 +129,33 @@ const Profile = () => {
     <>
       <Header/>
       <Navbar/>
-      <div className="w-full mx-auto my-32 max-w-lg border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-        <div className="flex justify-end px-6 pt-6">
-          <img src="/public/edit2.svg" className="h-6 opacity-60 cursor-pointer active:ring-4" alt="edit" onClick={onEditMode}></img>
+      <div className="w-full mx-auto my-24 max-w-lg border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+        <div className="flex justify-end px-4 pt-4">
+          <button id="dropdownButton" data-dropdown-toggle="dropdown" className="inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5" type="button">
+            <span className="sr-only">Open dropdown</span>
+            <svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 3">
+              <path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/>
+            </svg>
+          </button>
+          <div id="dropdown" className="z-10 hidden text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+            <ul className="py-2" aria-labelledby="dropdownButton">
+              <li>
+                <a className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white cursor-pointer" onClick={onEditMode}>
+                  수정
+                </a>
+              </li>
+              <li>
+                <a className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Export Data</a>
+              </li>
+              <li>
+                <a className="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Delete</a>
+              </li>
+            </ul>
+          </div>
         </div>
         <form className="flex flex-col items-center pb-10" onSubmit={onSubmitUpdateUser}>
-          <div className="relative w-24 h-24 mr-3 mb-4 overflow-hidden bg-gray-200 rounded-full dark:bg-gray-600">
-            <svg className="absolute w-24 h-24 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd"></path></svg>
+          <div className="relative w-32 h-32 mr-3 mb-4 overflow-hidden bg-gray-200 rounded-full dark:bg-gray-600">
+            <svg className="absolute w-32 h-32 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd"></path></svg>
           </div>
           <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">{users.nickname || ''}</h5>
           <span className="text-gray-600 dark:text-gray-400">
@@ -233,87 +254,7 @@ const Profile = () => {
           }
         </form>
       </div>
-      <ul className="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400">
-        <li className="mr-2">
-          <a href="#" aria-current="page" className="inline-block p-4 text-blue-600 bg-gray-100 rounded-t-lg active dark:bg-gray-800 dark:text-blue-500">Profile</a>
-        </li>
-        <li className="mr-2">
-          <a href="#" className="inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300">Dashboard</a>
-        </li>
-        <li className="mr-2">
-          <a href="#" className="inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300">Settings</a>
-        </li>
-        <li className="mr-2">
-          <a href="#" className="inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300">Contacts</a>
-        </li>
-        <li>
-          <a className="inline-block p-4 text-gray-400 rounded-t-lg cursor-not-allowed dark:text-gray-500">Disabled</a>
-        </li>
-      </ul>
-      <div className="relative overflow-x-auto">
-        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-          <tr>
-            <th scope="col" className="px-6 py-3">
-              Product name
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Color
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Category
-            </th>
-            <th scope="col" className="px-6 py-3">
-              Price
-            </th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-            <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-              Apple MacBook Pro 17"
-            </th>
-            <td className="px-6 py-4">
-              Silver
-            </td>
-            <td className="px-6 py-4">
-              Laptop
-            </td>
-            <td className="px-6 py-4">
-              $2999
-            </td>
-          </tr>
-          <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-            <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-              Microsoft Surface Pro
-            </th>
-            <td className="px-6 py-4">
-              White
-            </td>
-            <td className="px-6 py-4">
-              Laptop PC
-            </td>
-            <td className="px-6 py-4">
-              $1999
-            </td>
-          </tr>
-          <tr className="bg-white dark:bg-gray-800">
-            <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-              Magic Mouse 2
-            </th>
-            <td className="px-6 py-4">
-              Black
-            </td>
-            <td className="px-6 py-4">
-              Accessories
-            </td>
-            <td className="px-6 py-4">
-              $99
-            </td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
+      <UserActivity/>
     </>
   );
 }

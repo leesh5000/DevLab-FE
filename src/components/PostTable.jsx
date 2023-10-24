@@ -19,6 +19,9 @@ function PostTable() {
   const [order, setOrder] = useState("desc");
   const postPage = useSelector(state => state.posts);
   const pageSize = 20;
+  const category = searchParams.get("category") === "ALL" ? null : searchParams.get("category");
+  const currentPage = Math.max(searchParams.get("page") - 1, 0);
+  const keyword = searchParams.get("keyword");
 
   const onPostingHandler = () => {
 
@@ -35,11 +38,6 @@ function PostTable() {
   }
 
   useEffect(() => {
-
-    const category = searchParams.get("category") === "ALL" ? null : searchParams.get("category");
-    const currentPage = Math.max(searchParams.get("page") - 1, 0);
-    const keyword = searchParams.get("keyword");
-
     const pageInfo = {
       page: currentPage,
       size: pageSize,
@@ -142,11 +140,7 @@ function PostTable() {
         </table>
       </div>
       <div className="relative my-16">
-        <PaginatedItems pageSize={pageSize} totalItemSize={postPage.total_elements}/>
-        <button className="absolute top-1/2 right-0 transform -translate-y-1/2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none"
-           onClick={onPostingHandler}>
-          글 쓰기
-        </button>
+        <PaginatedItems currentPage={currentPage} pageSize={pageSize} totalItemSize={postPage.total_elements}/>
       </div>
     </>
   );
