@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import {Route, Routes, useNavigate} from "react-router-dom";
+import {Route, Routes} from "react-router-dom";
 import Login from "./pages/Login.jsx";
 import OauthLogin from "./utils/OauthRedirectHandler.jsx";
 import Register from "./pages/Register.jsx";
@@ -7,16 +7,17 @@ import Posting from "./pages/Posting.jsx";
 import PostDetail from "./pages/PostDetail.jsx";
 import PostLists from "./pages/PostLists.jsx";
 import Home from "./pages/Home.jsx";
-import {initFlowbite} from "flowbite";
 import Profile from "./pages/Profile.jsx";
+import {fetchAccessToken} from "./actions/AuthActions.jsx";
+import {useDispatch} from "react-redux";
 
 export const App = () => {
 
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    initFlowbite();
-  }, [navigate]);
+    dispatch(fetchAccessToken());
+  }, []);
 
   return (
     <Routes>

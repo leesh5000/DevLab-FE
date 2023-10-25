@@ -22,18 +22,14 @@ const SearchBar = () => {
 
     if (e.target.value === "") {
       searchParams.delete("keyword");
-      setSearchParams(searchParams, {
-        replace: true
-      });
+      setSearchParams(searchParams);
       return;
     }
 
     if (e.key === 'Enter') {
       searchParams.set("page", "1");
       searchParams.set("keyword", encodeURI(e.target.value));
-      setSearchParams(searchParams, {
-        replace: true
-      });
+      setSearchParams(searchParams);
     }
   }
 

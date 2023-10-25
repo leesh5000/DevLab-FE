@@ -1,8 +1,9 @@
 import {Link} from "react-router-dom";
-import {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {fetchAccessToken, logout} from "../actions/AuthActions.jsx";
+import {logout} from "../actions/AuthActions.jsx";
 import 'flowbite';
+import {useEffect} from "react";
+import {initFlowbite} from "flowbite";
 
 const Header = () => {
 
@@ -10,13 +11,13 @@ const Header = () => {
   const userAuth = useSelector(state => state.auth);
 
   useEffect (() => {
-    if (userAuth.isLogin) {
-      dispatch(fetchAccessToken());
-    }
-  }, []);
+    initFlowbite();
+  }, [userAuth]);
 
   const onLogoutHandler = () => {
-    dispatch(logout());
+    dispatch(logout()).then(() => {
+      window.location.href = "/";
+    });
   }
 
   return (

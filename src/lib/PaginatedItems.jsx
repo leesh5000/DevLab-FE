@@ -1,26 +1,24 @@
 import ReactPaginate from "react-paginate";
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import "../pagination.css";
 import {useSearchParams} from "react-router-dom";
 
-function PaginatedItems({currentPage, pageSize, totalItemSize}) {
+function PaginatedItems({currentPage, pageSize, totalItemSize, totalPages, scrollToTop = true}) {
 
-  const [pageCount, setPageCount] = useState(Math.ceil(totalItemSize / pageSize));
   const [searchParams, setSearchParams] = useSearchParams();
-
-  useEffect(() => {
-    setPageCount(Math.ceil(totalItemSize / pageSize));
-  }, [searchParams, totalItemSize]);
-
-  const pageChangeHandler = (event) => {
-    searchParams.set("page", event.selected + 1);
-    setSearchParams(searchParams, {
-      replace: true
-    });
-  };
-
   const startItem = Math.min(currentPage * pageSize + 1, totalItemSize);
   const endItem = Math.min((currentPage + 1) * pageSize, totalItemSize);
+
+  useEffect(() => {
+    if (scrollToTop) {
+      window.scrollTo(0, 0);
+    }
+  }, [searchParams, totalItemSize]);
+
+  const onPageChangeHandler = (event) => {
+    searchParams.set("page", event.selected + 1);
+    setSearchParams(searchParams);
+  };
 
   return (
     <nav className="flex items-center justify-between pt-4" aria-label="Table navigation">
@@ -31,10 +29,10 @@ function PaginatedItems({currentPage, pageSize, totalItemSize}) {
         activeLinkClassName="active-link"
         breakLabel="..."
         nextLabel="Next"
-        onPageChange={pageChangeHandler}
+        onPageChange={onPageChangeHandler}
         pageRangeDisplayed={5}
         marginPagesDisplayed={2}
-        pageCount={pageCount}
+        pageCount={totalPages}
         previousLabel="Prev"
         renderOnZeroPageCount={null}
       />

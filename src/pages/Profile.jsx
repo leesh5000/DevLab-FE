@@ -2,22 +2,23 @@ import Header from "../components/Header.jsx";
 import Navbar from "../components/Navbar.jsx";
 import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {useNavigate} from "react-router-dom";
 import {initFlowbite} from "flowbite";
 import {fetchMyProfile, updateUserProfile} from "../actions/UserActions.jsx";
-import {Loading} from "../components/Loading.jsx";
 import {EmailAuthenticator} from "../components/EmailAuthenticator.jsx";
 import client from "../lib/client.jsx";
 import validator from "../utils/validator.js";
-import {UserActivity} from "../components/UserActivity.jsx";
+import {useNavigate} from "react-router-dom";
+import {UserPostPages} from "../components/UserPostPages.jsx";
+import {Loading} from "../components/Loading.jsx";
+import {UserCommentPages} from "../components/UserCommentPages.jsx";
 
 const Profile = () => {
 
-  const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const userAuth = useSelector((state) => state.auth);
+  const navigate = useNavigate();
+  const auth = useSelector((state) => state.auth);
   const users = useSelector((state) => state.users);
+
   const [emailAuthenticator, setEmailAuthenticator] = React.useState(false);
   const [editMode, setEditMode] = React.useState(false);
   const [userInput, setUserInput] = React.useState({
@@ -28,14 +29,18 @@ const Profile = () => {
     isVerified: false,
     isDuplicatedNickname: false,
   });
+  const inputRef = React.useRef();
+
+  const [activeTab, setActiveTab] = React.useState('posts');
+  const activeTabCss = "inline-block p-4 text-blue-600 bg-gray-100 rounded-t-lg active dark:bg-gray-800 dark:text-blue-500";
+  const inactiveTabCss = "inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300";
 
   useEffect(() => {
-    if (!userAuth.isLogin) {
+    if (!auth.isLogin) {
       navigate("/");
-    } else {
-      dispatch(fetchMyProfile(userAuth.accessToken));
     }
-  }, [userAuth]);
+    dispatch(fetchMyProfile(auth.accessToken));
+  }, [auth]);
 
   useEffect(() => {
     initFlowbite();
@@ -46,7 +51,9 @@ const Profile = () => {
     setUserInput({
       ...userInput,
       nickname: users.nickname,
+      introduce: users.introduce,
     })
+    inputRef.current.classList.replace("block", "hidden");
   }
 
   const onEmailAuthenticator = () => {
@@ -109,7 +116,7 @@ const Profile = () => {
       return;
     }
 
-    dispatch(updateUserProfile(userAuth.accessToken, users.id, userInput))
+    dispatch(updateUserProfile(auth.accessToken, users.id, userInput))
       .then(() => {
         alert("회원정보가 수정되었습니다.");
         location.reload();
@@ -117,7 +124,7 @@ const Profile = () => {
     setEditMode(false);
   }
 
-  if (!users) {
+  if (!users.id) {
     return (
       <>
         <Loading/>
@@ -137,7 +144,7 @@ const Profile = () => {
               <path d="M2 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm6.041 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM14 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/>
             </svg>
           </button>
-          <div id="dropdown" className="z-10 hidden text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+          <div ref={inputRef} id="dropdown" className="z-10 hidden text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
             <ul className="py-2" aria-labelledby="dropdownButton">
               <li>
                 <a className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white cursor-pointer" onClick={onEditMode}>
@@ -232,9 +239,12 @@ const Profile = () => {
                               defaultValue={users.introduce || ''} disabled={true}>
                     </textarea>
                 }
-                <p className="flex justify-end text-xs text-gray-700">
-                  {userInput.introduce.length} / 150
-                </p>
+                {
+                  editMode &&
+                  <p className="flex justify-end text-xs text-gray-700">
+                    {userInput.introduce?.length} / 150
+                  </p>
+                }
               </div>
             </div>
           </div>
@@ -254,7 +264,34 @@ const Profile = () => {
           }
         </form>
       </div>
-      <UserActivity/>
+      <ul className="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400">
+        <li className="mr-2">
+          <button aria-current="page" className={activeTab === 'posts' ? activeTabCss : inactiveTabCss} onClick={() => {setActiveTab("posts")}}>
+            내 게시글
+          </button>
+        </li>
+        <li className="mr-2">
+          <button className={activeTab === 'comments' ? activeTabCss : inactiveTabCss} onClick={() => {setActiveTab("comments")}}>
+            내 댓글
+          </button>
+        </li>
+        <li className="mr-2">
+          <button className="inline-block p-4 text-gray-400 rounded-t-lg cursor-not-allowed dark:text-gray-500">
+            추천한 게시글
+          </button>
+        </li>
+        <li className="mr-2">
+          <button className="inline-block p-4 text-gray-400 rounded-t-lg cursor-not-allowed dark:text-gray-500">
+            추천한 댓글
+          </button>
+        </li>
+      </ul>
+      {
+        activeTab === 'posts' && <UserPostPages id={users.id}/>
+      }
+      {
+        activeTab === 'comments' && <UserCommentPages id={users.id}/>
+      }
     </>
   );
 }

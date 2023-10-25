@@ -1,23 +1,6 @@
 import {FETCH_MY_PROFILE, UPDATE_USER_PROFILE} from "../actions/UserActions.jsx";
 
-const initialState = {
-  id: "",
-  loginId: "",
-  nickname: "",
-  securityCode: "",
-  oauth: {
-    type: "",
-    id: "",
-  },
-  introduce: "",
-  createdAt: "",
-  postCount: 0,
-  postLikeCount: 0,
-  commentCount: 0,
-  commentLikeCount: 0,
-};
-
-export default function (state = initialState, action) {
+export default function (state = {}, action) {
   switch (action.type) {
     case FETCH_MY_PROFILE:
       return {
@@ -37,9 +20,6 @@ export default function (state = initialState, action) {
         commentLikeCount: action.payload.activities.comment_like_count,
       };
     case UPDATE_USER_PROFILE:
-      return {
-
-      }
     default:
       return state;
   }

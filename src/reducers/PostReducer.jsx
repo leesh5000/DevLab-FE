@@ -28,7 +28,7 @@ export default function (state = {}, action) {
       return {
         content: action.payload.content,
         pageable: action.payload.pageable,
-        total_page: action.payload.total_page,
+        total_pages: action.payload.total_pages,
         total_elements: action.payload.total_elements,
         last: action.payload.last,
         size: action.payload.size,

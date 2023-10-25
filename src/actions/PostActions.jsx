@@ -181,9 +181,3 @@ export const addLikeComment = (commentId, userAuth) => async (dispatch) => {
     commentId: commentId,
   });
 }
-
-/**
- * 1. 페이지네이션 작업하기 (react-js-pagination)
- * 2. 백엔드 QueryDSL 적용하기 + 추천 정렬 완성하기
- * 3. ㅈ
- */
