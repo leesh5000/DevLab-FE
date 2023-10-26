@@ -18,11 +18,17 @@ const PostDetail = () => {
   const userAuth = useSelector(state => state.auth);
   const [comment, setComment] = useState("");
 
-  const id = location.state.id;
+  const id = location.state?.id;
 
   useEffect(() => {
+
+    if (!location.state?.id) {
+      alert("존재하지 않는 게시글입니다.");
+      navigate(-1);
+    }
+
     dispatch(getDetail(id));
-  }, [dispatch]);
+  }, []);
 
   const convertDetailTime = (timeInMillis) => {
     const date = new Date(timeInMillis);
