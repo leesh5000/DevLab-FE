@@ -5,7 +5,7 @@ export const SET_SORT = "posts/SET_SORT";
 export const SET_PAGE = "posts/SET_PAGE";
 export const SET_CATEGORY = "posts/SET_CATEGORY";
 
-export const fetchPostPages = (category, {page, size, sort}, keyword) => async (dispatch) => {
+export const fetchPostPages = ({category, page, size, sort, keyword}) => async (dispatch) => {
 
   const response = await client.get(`/posts`, {
     params: {
@@ -13,7 +13,7 @@ export const fetchPostPages = (category, {page, size, sort}, keyword) => async (
       page: page,
       size: size,
       sort: sort,
-      keyword,
+      keyword: keyword,
     }
   });
 

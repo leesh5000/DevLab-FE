@@ -1,5 +1,5 @@
 import {useDispatch, useSelector} from "react-redux";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {Link, useSearchParams} from "react-router-dom";
 import Categories from "../utils/Categories.jsx";
 import {DateConverter} from "../utils/DateConverter.jsx";
@@ -7,7 +7,7 @@ import {Loading} from "./Loading.jsx";
 import {TagItem} from "./TagItem.jsx";
 import "../pagination.css";
 import ReactPaginate from "react-paginate";
-import {fetchPostPages, setPage, setSort} from "../actions/HomeActions.jsx";
+import {fetchPostPages} from "../actions/HomeActions.jsx";
 import {DownArrow} from "./DownArrow.jsx";
 import {UpArrow} from "./UpArrow.jsx";
 
@@ -15,42 +15,65 @@ function PostTable() {
 
   const dispatch = useDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
+  const [loading, setLoading] = useState(false);
 
   const postPages = useSelector(state => state.home);
-  const pageInfo = postPages.page_info;
+  const pageInfo = {
+    page: searchParams.get("page") || 0,
+    size: 20,
+    sort: searchParams.get("sort") ? searchParams.get("sort") : "created_at,desc",
+  }
   const startItem = Math.min(pageInfo.page * pageInfo.size + 1, postPages.total_elements);
   const endItem = Math.min((pageInfo.page + 1) * pageInfo.size, postPages.total_elements);
 
   useEffect(() => {
-    const category = searchParams.get("category") === "ALL" ? null : searchParams.get("category");
-    const keyword = searchParams.get("keyword");
-    console.log(category);
-    dispatch(fetchPostPages(category, pageInfo, keyword));
-  }, [searchParams, pageInfo]);
+
+    async function getPages() {
+      setLoading(true);
+      await dispatch(fetchPostPages({
+          page: Math.max(searchParams.get("page") - 1, 0),
+          size: pageInfo.size,
+          sort: searchParams.get("sort") ? searchParams.get("sort") : "created_at,desc",
+          category: searchParams.get("category") === "ALL" ? null : searchParams.get("category"),
+          keyword: searchParams.get("keyword"),
+        })
+      );
+    }
+
+    getPages().then(() => {
+      setLoading(false);
+    });
+
+  }, [searchParams]);
 
   const onCreatedSortHandler = () => {
     const order = pageInfo.sort.split(",")[1];
     const sort = "created_at," + (order === "desc" ? "asc" : "desc");
-    dispatch(setSort(sort));
+    searchParams.set("sort", sort);
+    setSearchParams(searchParams);
   }
 
   const onLikeSortHandler = () => {
     const order = pageInfo.sort.split(",")[1];
     const sort = "like_count," + (order === "desc" ? "asc" : "desc");
-    dispatch(setSort(sort));
+    searchParams.set("sort", sort);
+    setSearchParams(searchParams);
   }
 
   const onViewsSortHandler = () => {
     const order = pageInfo.sort.split(",")[1];
     const sort = "view_count," + (order === "desc" ? "asc" : "desc");
-    dispatch(setSort(sort));
+    searchParams.set("sort", sort);
+    setSearchParams(searchParams);
   }
 
   const onPageChangeHandler = (e) => {
-    dispatch(setPage(e.selected));
+    searchParams.set("page", e.selected + 1);
+    setSearchParams(searchParams);
   }
 
-  if (!postPages) {
+  if (loading) {
+    console.log("hello")
     return (
       <Loading/>
     )
@@ -152,7 +175,7 @@ function PostTable() {
         <nav className="flex items-center justify-between pt-4" aria-label="Table navigation">
           <span className="text-sm font-normal text-gray-500 dark:text-gray-400">Showing <span className="font-semibold text-gray-900 dark:text-white">{startItem} - {endItem}</span> of <span className="font-semibold text-gray-900 dark:text-white">{postPages.total_elements}</span></span>
           <ReactPaginate
-            forcePage={pageInfo.page}
+            forcePage={pageInfo.page - 1 < 0 ? 0 : pageInfo.page - 1}
             containerClassName="pagination"
             activeLinkClassName="active-link"
             breakLabel="..."
