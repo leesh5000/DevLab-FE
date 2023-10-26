@@ -3,6 +3,7 @@ import client from "../lib/client.jsx";
 export const FETCH_POST_PAGES = "posts/FETCH_POST_PAGES";
 export const SET_SORT = "posts/SET_SORT";
 export const SET_PAGE = "posts/SET_PAGE";
+export const SET_CATEGORY = "posts/SET_CATEGORY";
 
 export const fetchPostPages = (category, {page, size, sort}, keyword) => async (dispatch) => {
 
@@ -33,5 +34,12 @@ export const setPage = (page) => {
   return {
     type: SET_PAGE,
     payload: page,
+  }
+}
+
+export const setCategory = (category) => {
+  return {
+    type: SET_CATEGORY,
+    payload: category,
   }
 }

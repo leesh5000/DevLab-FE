@@ -10,7 +10,7 @@ const initialState = {
   number: 0,
   page_info: {
     page: 0,
-    size: 20,
+    size: 5,
     sort: "created_at,desc"
   }
 }
