@@ -1,54 +1,53 @@
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
-import {getPage} from "../actions/PostActions.jsx";
 import {Link, useSearchParams} from "react-router-dom";
 import Categories from "../utils/Categories.jsx";
 import {DateConverter} from "../utils/DateConverter.jsx";
-import PaginatedItems from "../lib/PaginatedItems.jsx";
 import {Loading} from "./Loading.jsx";
 import {TagItem} from "./TagItem.jsx";
+import "../pagination.css";
+import ReactPaginate from "react-paginate";
+import {fetchPostPages, setPage, setSort} from "../actions/HomeActions.jsx";
 
 function PostTable() {
 
   const dispatch = useDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const postPage = useSelector(state => state.posts);
-
-  const pageSize = 20;
-  const category = searchParams.get("category") === "ALL" ? null : searchParams.get("category");
-  const currentPage = Math.max(searchParams.get("page") - 1, 0);
-  const keyword = searchParams.get("keyword");
-  const sort = searchParams.get("sort") || "created_at,desc";
+  const postPages = useSelector(state => state.home);
+  const pageInfo = postPages.page_info;
+  const startItem = Math.min(pageInfo.page * pageInfo.size + 1, postPages.total_elements);
+  const endItem = Math.min((pageInfo.page + 1) * pageInfo.size, postPages.total_elements);
 
   useEffect(() => {
-    const pageInfo = {
-      page: currentPage,
-      size: pageSize,
-      sort: sort,
-    }
-    dispatch(getPage(category, pageInfo, keyword));
-  }, [searchParams, sort]);
+    const category = searchParams.get("category") === "ALL" ? null : searchParams.get("category");
+    const keyword = searchParams.get("keyword");
+    dispatch(fetchPostPages(category, pageInfo, keyword));
+  }, [searchParams, pageInfo]);
 
   const onCreatedSortHandler = () => {
-    const order = sort.split(",")[1];
-    searchParams.set("sort", "created_at," + (order === "desc" ? "asc" : "desc"));
-    setSearchParams(searchParams);
+    const order = pageInfo.sort.split(",")[1];
+    const sort = "sort," + (order === "desc" ? "asc" : "desc");
+    dispatch(setSort(sort));
   }
 
   const onLikeSortHandler = () => {
-    const order = sort.split(",")[1];
-    searchParams.set("sort", encodeURI("like_count," + (order === "desc" ? "asc" : "desc")));
-    setSearchParams(searchParams);
+    const order = pageInfo.sort.split(",")[1];
+    const sort = "like_count," + (order === "desc" ? "asc" : "desc");
+    dispatch(setSort(sort));
   }
 
   const onViewsSortHandler = () => {
-    const order = sort.split(",")[1];
-    searchParams.set("sort", encodeURI("view_count," + (order === "desc" ? "asc" : "desc")));
-    setSearchParams(searchParams);
+    const order = pageInfo.sort.split(",")[1];
+    const sort = "view_count," + (order === "desc" ? "asc" : "desc");
+    dispatch(setSort(sort));
   }
 
-  if (!postPage.content) {
+  const onPageChangeHandler = (e) => {
+    dispatch(setPage(e.selected));
+  }
+
+  if (!postPages) {
     return (
       <Loading/>
     )
@@ -103,7 +102,7 @@ function PostTable() {
           </thead>
           <tbody>
             {
-              postPage.content?.map((post, index) => {
+              postPages.content?.map((post, index) => {
                 return (
                   <tr key={index} className="bg-white border-b">
                     <td scope="row" className="text-center w-10 px-3 py-3">
@@ -147,7 +146,22 @@ function PostTable() {
         </table>
       </div>
       <div className="relative my-16">
-        <PaginatedItems currentPage={currentPage} pageSize={pageSize} totalItemSize={postPage.total_elements} totalPages={postPage.total_pages}/>
+        <nav className="flex items-center justify-between pt-4" aria-label="Table navigation">
+          <span className="text-sm font-normal text-gray-500 dark:text-gray-400">Showing <span className="font-semibold text-gray-900 dark:text-white">{startItem} - {endItem}</span> of <span className="font-semibold text-gray-900 dark:text-white">{postPages.total_elements}</span></span>
+          <ReactPaginate
+            forcePage={pageInfo.page}
+            containerClassName="pagination"
+            activeLinkClassName="active-link"
+            breakLabel="..."
+            nextLabel="Next"
+            onPageChange={onPageChangeHandler}
+            pageRangeDisplayed={5}
+            marginPagesDisplayed={2}
+            pageCount={postPages.total_pages}
+            previousLabel="Prev"
+            renderOnZeroPageCount={null}
+          />
+        </nav>
       </div>
     </>
   );

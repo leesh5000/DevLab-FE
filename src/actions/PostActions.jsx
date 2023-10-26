@@ -3,7 +3,6 @@ import client from "../lib/client.jsx";
 export const WRITE = "posts/WRITE";
 export const EDIT = "posts/EDIT";
 export const DELETE = "posts/DELETE";
-export const GET_PAGE = "posts/GET_PAGE";
 export const GET_DETAIL = "posts/GET_DETAIL";
 export const ADD_COMMENT = "posts/ADD_COMMENT";
 export const EDIT_COMMENT = "posts/EDIT_COMMENT";
@@ -61,24 +60,6 @@ export const deletePost = (id, accessToken) => async (dispatch) => {
     type: DELETE,
     deletedPostId: id,
   });
-}
-
-export const getPage = (category, {page, size, sort}, keyword) => async (dispatch) => {
-
-    const response = await client.get(`/posts`, {
-      params: {
-        category: category,
-        page: page,
-        size: size,
-        sort: sort,
-        keyword,
-      }
-    });
-
-    dispatch({
-      type: GET_PAGE,
-      payload: response.data,
-    });
 }
 
 export const getDetail = (id) => async (dispatch) => {

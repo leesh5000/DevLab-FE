@@ -6,18 +6,18 @@ import {DateConverter} from "../utils/DateConverter.jsx";
 import {Loading} from "./Loading.jsx";
 import {Footer} from "./Footer.jsx";
 import ReactPaginate from "react-paginate";
-import {changePage, fetchUserComments, setSort} from "../actions/ActivityActions.jsx";
+import {fetchUserCommentPages, setPage, setSort} from "../actions/UserCommentPageActions.jsx";
 
 export const UserCommentPages = ({id}) => {
 
   const dispatch = useDispatch();
-  const userCommentPages = useSelector(state => state.activities);
+  const userCommentPages = useSelector(state => state.userCommentPage);
   const pageInfo = userCommentPages.page_info;
   const startItem = Math.min(pageInfo.page * pageInfo.size + 1, userCommentPages.total_elements);
   const endItem = Math.min((pageInfo.page + 1) * pageInfo.size, userCommentPages.total_elements);
 
   useEffect(() => {
-    dispatch(fetchUserComments(id, pageInfo));
+    dispatch(fetchUserCommentPages(id, pageInfo));
   }, [pageInfo]);
 
   const onCreatedSortHandler = () => {
@@ -39,8 +39,8 @@ export const UserCommentPages = ({id}) => {
   }
 
   const onPageChangeHandler = (e) => {
-    dispatch(changePage(e.selected));
-  }
+    dispatch(setPage(e.selected));
+  };
 
   if (!userCommentPages.content) {
     return (

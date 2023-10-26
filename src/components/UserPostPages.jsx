@@ -3,21 +3,20 @@ import {useDispatch, useSelector} from "react-redux";
 import {Link} from "react-router-dom";
 import Categories from "../utils/Categories.jsx";
 import {DateConverter} from "../utils/DateConverter.jsx";
-import {Loading} from "./Loading.jsx";
 import {Footer} from "./Footer.jsx";
 import ReactPaginate from "react-paginate";
-import {changePage, fetchUserPosts, setSort} from "../actions/ActivityActions.jsx";
+import {fetchUserPostPages, setPage, setSort} from "../actions/UserPostPageActions.jsx";
 
 export const UserPostPages = ({id}) => {
 
   const dispatch = useDispatch();
-  const userPostPage = useSelector(state => state.activities);
+  const userPostPage = useSelector(state => state.userPostPage);
   const pageInfo = userPostPage.page_info;
   const startItem = Math.min(pageInfo.page * pageInfo.size + 1, userPostPage.total_elements);
   const endItem = Math.min((pageInfo.page + 1) * pageInfo.size, userPostPage.total_elements);
 
   useEffect(() => {
-    dispatch(fetchUserPosts(id, pageInfo));
+    dispatch(fetchUserPostPages(id, pageInfo));
   }, [pageInfo]);
 
   const onCreatedSortHandler = () => {
@@ -39,14 +38,7 @@ export const UserPostPages = ({id}) => {
   }
 
   const onPageChangeHandler = (e) => {
-    dispatch(changePage(e.selected));
-  }
-
-  if (!userPostPage) {
-    console.log("loading")
-    return (
-      <Loading/>
-    )
+    dispatch(setPage(e.selected));
   }
 
   return (

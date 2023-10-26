@@ -5,7 +5,9 @@ import {persistReducer} from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import createFilter from "redux-persist-transform-filter";
 import UserReducer from "./UserReducer.jsx";
-import ActivityReducer from "./ActivityReducer.jsx";
+import HomeReducer from "./HomeReducer.jsx";
+import {userPostPageReducer} from "./UserPostPageReducer.jsx";
+import {userCommentPageReducer} from "./UserCommentPageReducer.jsx";
 
 const subsetFilter = createFilter('auth', ['isLogin']);
 
@@ -20,7 +22,9 @@ const rootReducer = combineReducers({
   posts: PostReducer,
   auth: AuthReducer,
   users: UserReducer,
-  activities: ActivityReducer,
+  userPostPage: userPostPageReducer,
+  userCommentPage: userCommentPageReducer,
+  home: HomeReducer,
 });
 
 export const persistedReducer = persistReducer(persistConfig, rootReducer);

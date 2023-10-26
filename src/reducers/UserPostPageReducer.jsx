@@ -1,4 +1,4 @@
-import {CHANGE_PAGE, FETCH_USER_COMMENTS, FETCH_USER_POSTS, SET_SORT} from "../actions/ActivityActions.jsx";
+import {FETCH_USER_POST_PAGE, SET_PAGE, SET_SORT} from "../actions/UserPostPageActions.jsx";
 
 const initialState = {
   content: [],
@@ -11,14 +11,13 @@ const initialState = {
   page_info: {
     page: 0,
     size: 10,
-    sort: "created_at,desc"
+    sort: "created_at,desc",
   }
 }
 
-export default function (state = initialState, action) {
+export const userPostPageReducer = (state = initialState, action) => {
   switch (action.type) {
-    case FETCH_USER_POSTS:
-    case FETCH_USER_COMMENTS:
+    case FETCH_USER_POST_PAGE:
       return {
         ...state,
         content: action.payload.content,
@@ -34,15 +33,15 @@ export default function (state = initialState, action) {
         ...state,
         page_info: {
           ...state.page_info,
-          sort: action.payload
+          sort: action.payload,
         }
       }
-    case CHANGE_PAGE:
+    case SET_PAGE:
       return {
         ...state,
         page_info: {
           ...state.page_info,
-          page: action.payload
+          page: action.payload,
         }
       }
     default:

@@ -5,7 +5,6 @@ import OauthLogin from "./utils/OauthRedirectHandler.jsx";
 import Register from "./pages/Register.jsx";
 import Posting from "./pages/Posting.jsx";
 import PostDetail from "./pages/PostDetail.jsx";
-import PostLists from "./pages/PostLists.jsx";
 import Home from "./pages/Home.jsx";
 import Profile from "./pages/Profile.jsx";
 import {fetchAccessToken} from "./actions/AuthActions.jsx";
@@ -25,7 +24,7 @@ export const App = () => {
       <Route path="/oauth/callback/*" element={<OauthLogin/>}/>
       <Route path="/register" element={<Register/>}/>
       <Route path="/users/:nickname" element={<Profile/>}/>
-      <Route path="/posts/" element={<PostLists/>}/>
+      <Route path="/posts/" element={<Home/>}/>
       <Route path="/posts/:title" element={<PostDetail/>}/>
       <Route path="/posting" element={<Posting/>}/>
       <Route path="*" element={<Home/>}/>
