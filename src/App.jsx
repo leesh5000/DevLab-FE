@@ -9,6 +9,7 @@ import Home from "./pages/Home.jsx";
 import Profile from "./pages/Profile.jsx";
 import {fetchAccessToken} from "./actions/AuthActions.jsx";
 import {useDispatch} from "react-redux";
+import {Redirecter} from "./pages/Redirecter.jsx";
 
 export const App = () => {
 
@@ -27,7 +28,7 @@ export const App = () => {
       <Route path="/posts/" element={<Home/>}/>
       <Route path="/posts/:title" element={<PostDetail/>}/>
       <Route path="/posting" element={<Posting/>}/>
-      <Route path="*" element={<Home/>}/>
+      <Route path="*" element={<Redirecter/>}/>
     </Routes>
   );
 }

@@ -19,12 +19,12 @@ function PostTable() {
 
   const postPages = useSelector(state => state.home);
   const pageInfo = {
-    page: searchParams.get("page") || 0,
+    page: searchParams.get("page") || 1,
     size: 20,
     sort: searchParams.get("sort") ? searchParams.get("sort") : "created_at,desc",
   }
-  const startItem = Math.min(pageInfo.page * pageInfo.size + 1, postPages.total_elements);
-  const endItem = Math.min((pageInfo.page + 1) * pageInfo.size, postPages.total_elements);
+  const startItem = Math.min((pageInfo.page - 1) * pageInfo.size + 1, postPages.total_elements);
+  const endItem = Math.min(pageInfo.page * pageInfo.size, postPages.total_elements);
 
   useEffect(() => {
 
@@ -73,7 +73,6 @@ function PostTable() {
   }
 
   if (loading) {
-    console.log("hello")
     return (
       <Loading/>
     )
@@ -175,7 +174,7 @@ function PostTable() {
         <nav className="flex items-center justify-between pt-4" aria-label="Table navigation">
           <span className="text-sm font-normal text-gray-500 dark:text-gray-400">Showing <span className="font-semibold text-gray-900 dark:text-white">{startItem} - {endItem}</span> of <span className="font-semibold text-gray-900 dark:text-white">{postPages.total_elements}</span></span>
           <ReactPaginate
-            forcePage={pageInfo.page - 1 < 0 ? 0 : pageInfo.page - 1}
+            forcePage={pageInfo.page - 1}
             containerClassName="pagination"
             activeLinkClassName="active-link"
             breakLabel="..."
