@@ -1,5 +1,5 @@
 import {useDispatch} from "react-redux";
-import {oauthLogin} from "../actions/UserAuthActions.jsx";
+import {oauthLogin} from "../actions/AuthActions.jsx";
 import {useNavigate} from "react-router-dom";
 
 const OauthRedirectHandler = () => {

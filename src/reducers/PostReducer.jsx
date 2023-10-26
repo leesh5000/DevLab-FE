@@ -7,7 +7,6 @@ import {
   EDIT,
   EDIT_COMMENT,
   GET_DETAIL,
-  GET_PAGE,
   WRITE
 } from "../actions/PostActions.jsx";
 
@@ -23,16 +22,6 @@ export default function (state = {}, action) {
       return {
         ...state,
         content: state.content.filter((post) => post.id !== action.deletedPostId),
-      }
-    case GET_PAGE:
-      return {
-        content: action.payload.content,
-        pageable: action.payload.pageable,
-        total_page: action.payload.total_page,
-        total_elements: action.payload.total_elements,
-        last: action.payload.last,
-        size: action.payload.size,
-        number: action.payload.number,
       }
     case GET_DETAIL:
       return {

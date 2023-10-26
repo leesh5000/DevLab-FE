@@ -1,13 +1,22 @@
-import {useNavigate} from "react-router-dom";
-import {useEffect} from "react";
+import Header from "../components/Header.jsx";
+import Navbar from "../components/Navbar.jsx";
+import SearchBar from "../components/SearchBar.jsx";
+import PostTable from "../components/PostTable.jsx";
+import {Footer} from "../components/Footer.jsx";
 
 const Home = () => {
 
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    navigate("/posts?category=ALL&page=1");
-  }, []);
+  return (
+    <>
+      <Header/>
+      <Navbar/>
+      <SearchBar/>
+      <div className="flex flex-col min-h-screen">
+        <PostTable/>
+      </div>
+      <Footer/>
+    </>
+  );
 }
 
 export default Home;

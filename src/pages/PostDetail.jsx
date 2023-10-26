@@ -7,7 +7,6 @@ import {addComment, addLike, deletePost, getDetail} from "../actions/PostActions
 import {TagItem} from "../components/TagItem.jsx";
 import {CommentDetail} from "../components/CommentDetail.jsx";
 import Editor from "../components/Editor.jsx";
-import {initFlowbite} from "flowbite";
 
 const PostDetail = () => {
 

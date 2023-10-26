@@ -8,36 +8,49 @@ export const LOGIN_EXPIRED = "users/login-expired";
 
 export const login = (data) => async (dispatch) => {
 
-  const accessToken = await client.post("/auth/login", data, {
+  const response = await client.post("/auth/login", data, {
     withCredentials: true
   }).then((res) => {
-    return res.data.access_token.value;
+    return res.data;
   });
 
   dispatch({
     type: OAUTH_LOGIN,
-    accessToken: accessToken,
+    payload: response,
   });
 };
 
 export const oauthLogin = (data) => async (dispatch) => {
 
-  const accessToken = await client.post("/auth/oauth-login", data, {
+  const response = await client.post("/auth/oauth-login", data, {
     withCredentials: true
   }).then((res) => {
-    return res.data.access_token.value;
+    return res.data;
   });
 
   dispatch({
     type: OAUTH_LOGIN,
-    accessToken: accessToken,
+    payload: response,
   });
 }
 
-export const fetchAccessToken = () => async (dispatch) => {
+export const fetchAccessToken = () => async (dispatch, getState) => {
+
+  // 로그인 유저가 아니면, 액세스 토큰을 발급 받을 필요 없음
+  if (!getState().auth.isLogin) {
+    return;
+  }
+
+  // 액세스 토큰이 만료되지 않았으면, 액세스 토큰을 재발급 받지 않는다.
+  if (getState().auth.accessTokenExpiredAt > new Date().getTime()) {
+    console.log(getState().auth.accessTokenExpiredAt);
+    return;
+  }
 
   const response = await client.post("/auth/refresh-token", {}, {
     withCredentials: true
+  }).then((res) => {
+    return res.data;
   }).catch((e) => {
     if (e.response.status === 401) {
       alert("로그인이 만료되었습니다. 다시 로그인 해주세요.");
@@ -47,8 +60,7 @@ export const fetchAccessToken = () => async (dispatch) => {
 
   dispatch({
     type: GET_ACCESS_TOKEN,
-    accessToken: response.data.access_token.value,
-    nickname: response.data.user_info.nickname,
+    payload: response,
   });
 }
 

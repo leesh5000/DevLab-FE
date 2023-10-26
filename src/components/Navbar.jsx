@@ -36,8 +36,13 @@ const Navbar = () => {
             질문
           </button>
           <button
-            className={"mr-2 inline-block p-4 rounded-t-lg " + `${active === "TIP" ? 'text-blue-600 border-blue-600 border-b-2' : 'hover:border-b-2 hover:text-gray-600 hover:border-gray-400'}`}
-            onClick={() => {onCategoryHandler("TIP")}}>
+            className={"mr-2 inline-block p-4 rounded-t-lg " + `${active === "INFORMATION" ? 'text-blue-600 border-blue-600 border-b-2' : 'hover:border-b-2 hover:text-gray-600 hover:border-gray-400'}`}
+            onClick={() => {onCategoryHandler("INFORMATION")}}>
+            정보
+          </button>
+          <button
+            className={"mr-2 inline-block p-4 rounded-t-lg " + `${active === "TIPS" ? 'text-blue-600 border-blue-600 border-b-2' : 'hover:border-b-2 hover:text-gray-600 hover:border-gray-400'}`}
+            onClick={() => {onCategoryHandler("TIPS")}}>
             팁
           </button>
           <button
