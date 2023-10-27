@@ -4,7 +4,13 @@ import ReactPaginate from "react-paginate";
 import {TimeConverter} from "../utils/TimeConverter.jsx";
 import {useDispatch, useSelector} from "react-redux";
 import Editor from "./Editor.jsx";
-import {addLike, deletePostComment, editPostComment, fetchPostComments} from "../actions/PostCommentActions.jsx";
+import {
+  addLike,
+  createPostComment,
+  deletePostComment,
+  editPostComment,
+  fetchPostComments
+} from "../actions/PostCommentActions.jsx";
 
 export const PostComments = ({postId}) => {
 
@@ -13,7 +19,8 @@ export const PostComments = ({postId}) => {
   const [editModeCommentId, setEditModeCommentId] = useState("");
   const userAuth = useSelector(state => state.auth);
   const postComments = useSelector(state => state.postComments);
-  const [contents, setContents] = useState("");
+  const [editCommentContents, setEditCommentContents] = useState("");
+  const [commentContents, setCommentContents] = useState("");
   const [pageInfo, setPageInfo] = useState({
     page: 0,
     size: 12,
@@ -55,7 +62,7 @@ export const PostComments = ({postId}) => {
 
   const onEditModeHandler = (commentId, contents) => {
     setEditModeCommentId(commentId);
-    setContents(contents);
+    setEditCommentContents(contents);
   }
 
   const onDeleteHandler = (commentId) => {
@@ -74,8 +81,8 @@ export const PostComments = ({postId}) => {
       });
   }
 
-  const onContentsHandler = (e) => {
-    setContents(e);
+  const onEditCommentContentsHandler = (e) => {
+    setEditCommentContents(e);
   }
 
   const onCancelHandler = () => {
@@ -94,6 +101,30 @@ export const PostComments = ({postId}) => {
       ...pageInfo,
       sort: e.target.value
     });
+  }
+
+  const commentContentHandler = (e) => {
+    setCommentContents(e);
+  }
+
+  const createCommentHandler = () => {
+
+    if (!userAuth.isLogin) {
+      alert("로그인이 필요합니다.");
+      return;
+    }
+
+    if (commentContents === "") {
+      alert("내용을 입력해주세요.");
+      return;
+    }
+
+    dispatch(createPostComment(postId, commentContents, userAuth.accessToken))
+      .then(() => {
+        window.location.reload();
+      });
+
+    setCommentContents("");
   }
 
   if (loading) {
@@ -159,7 +190,7 @@ export const PostComments = ({postId}) => {
                 {
                   ((editModeCommentId === comment.id) && userAuth.isLogin && (userAuth.nickname === comment.author)) &&
                   <div className="text-gray-600 flex">
-                    <button className="hover:text-blue-700 hover:underline flex items-center" onClick={() => {onEditConfirmHandler(comment.id, contents)}}>
+                    <button className="hover:text-blue-700 hover:underline flex items-center" onClick={() => {onEditConfirmHandler(comment.id, editCommentContents)}}>
                       <img src="/public/confirm-2.svg" alt="edit" className="h-4 inline-block text-sm mr-0.5"/>
                       <p>확인</p>
                     </button>
@@ -176,7 +207,7 @@ export const PostComments = ({postId}) => {
               (editModeCommentId !== comment.id) ?
                 <div className="text-sm pt-2" dangerouslySetInnerHTML={{__html: comment.contents}}/> :
                 <div className="mt-2">
-                  <Editor contents={contents} onContentsHandler={onContentsHandler}/>
+                  <Editor contents={editCommentContents} onContentsHandler={onEditCommentContentsHandler}/>
                 </div>
             }
           </div>
@@ -200,6 +231,11 @@ export const PostComments = ({postId}) => {
           />
         </nav>
       </div>
+      <Editor contents={commentContents} onContentsHandler={commentContentHandler}/>
+      <button className="mt-6 mb-12 bg-blue-600 text-white p-2 px-4 rounded-lg hover:bg-blue-700"
+              onClick={createCommentHandler}>
+        답변 작성하기
+      </button>
     </>
   )
 }

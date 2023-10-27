@@ -1,6 +1,7 @@
 import client from "../lib/client.jsx";
 
 export const FETCH_POST_COMMENTS = "postComments/FETCH_POST_COMMENTS";
+export const CREATE_POST_COMMENT = "postComments/CREATE_POST_COMMENT";
 export const EDIT_POST_COMMENT = "postComments/EDIT_POST_COMMENT";
 export const DELETE_POST_COMMENT = "postComments/DELETE_POST_COMMENT";
 export const ADD_LIKE = "postComments/ADD_LIKE";
@@ -17,7 +18,22 @@ export const fetchPostComments = (postId, pageInfo) => async (dispatch) => {
     type: FETCH_POST_COMMENTS,
     payload: response,
   });
+}
 
+export const createPostComment = (postId, commentContents, accessToken) => async (dispatch) => {
+
+    const response = await client.post(`/posts/${postId}/comments`, {
+      contents: commentContents,
+    }, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      }
+    });
+
+    dispatch({
+      type: CREATE_POST_COMMENT,
+      payload: commentContents,
+    });
 }
 
 export const editPostComment = (postId, commentId, contents, accessToken) => async (dispatch) => {

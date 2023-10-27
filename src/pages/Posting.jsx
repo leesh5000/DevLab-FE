@@ -3,9 +3,9 @@ import Navbar from "../components/Navbar.jsx";
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useLocation, useNavigate} from "react-router-dom";
-import {edit, getDetail, write} from "../actions/PostActions.jsx";
+import {createPost, editPost, fetchPost} from "../actions/PostActions.jsx";
 import Editor from "../components/Editor.jsx";
-import Categories from "../utils/Categories.jsx";
+import Categories from "../utils/Categories.js";
 
 const Posting = () => {
 
@@ -29,14 +29,13 @@ const Posting = () => {
       navigate("/");
     }
     if (mode === "edit") {
-      dispatch(getDetail(location.state.id));
+      dispatch(fetchPost(location.state.id));
       setPostInput({
         category: postDetails.category,
         title: postDetails.title,
         contents: postDetails.contents,
         tags: postDetails.tags,
       });
-      console.log(postInput);
     }
   }, [userAuth]);
 
@@ -118,23 +117,23 @@ const Posting = () => {
     }
 
     const noWhitespaceTitle = postInput.title.replace(/ /g, "");
-    if (noWhitespaceTitle.length < 8 || noWhitespaceTitle.length > 100) {
-      alert("제목은 최소 8자, 최대 100자로 입력해야 합니다.");
+    if (noWhitespaceTitle.length < 4 || noWhitespaceTitle.length > 100) {
+      alert("제목은 최소 4자, 최대 100자로 입력해야 합니다.");
       return;
     }
 
-    if (postInput.contents.replace(/<[^>]*>/g, '').length < 20) {
-      alert("내용은 최소 20자 이상 입력해야 합니다.");
+    if (postInput.contents.replace(/<[^>]*>/g, '').length < 10) {
+      alert("내용은 최소 10자 이상 입력해야 합니다.");
       return;
     }
 
     if (mode === "edit") {
-      dispatch(edit(location.state.id, postInput, userAuth.accessToken))
+      dispatch(editPost(location.state.id, postInput, userAuth.accessToken))
         .then(() => {
           navigate(-1);
         });
     } else {
-      dispatch(write(postInput, userAuth.accessToken))
+      dispatch(createPost(postInput, userAuth.accessToken))
         .then(() => {
           navigate("/");
         });

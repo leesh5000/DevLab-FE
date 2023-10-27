@@ -1,4 +1,4 @@
-import {FETCH_POST_PAGES} from "../actions/HomeActions.jsx";
+import {FETCH_POSTS} from "../actions/HomeActions.jsx";
 
 const initialState = {
   content: [],
@@ -12,7 +12,7 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case FETCH_POST_PAGES:
+    case FETCH_POSTS:
       return {
         content: action.payload.content,
         pageable: action.payload.pageable,

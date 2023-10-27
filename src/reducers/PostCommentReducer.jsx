@@ -1,4 +1,10 @@
-import {ADD_LIKE, DELETE_POST_COMMENT, EDIT_POST_COMMENT, FETCH_POST_COMMENTS} from "../actions/PostCommentActions.jsx";
+import {
+  ADD_LIKE,
+  CREATE_POST_COMMENT,
+  DELETE_POST_COMMENT,
+  EDIT_POST_COMMENT,
+  FETCH_POST_COMMENTS
+} from "../actions/PostCommentActions.jsx";
 
 const initialState = {
   content: [],
@@ -13,6 +19,10 @@ export const postCommentReducer = (state = initialState, action) => {
         content: action.payload.content,
         total_elements: action.payload.total_elements,
         total_pages: action.payload.total_pages,
+      }
+    case CREATE_POST_COMMENT:
+      return {
+        ...state
       }
     case EDIT_POST_COMMENT:
       return {

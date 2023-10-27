@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
-import Categories from "../utils/Categories.jsx";
+import Categories from "../utils/Categories.js";
 import {DateConverter} from "../utils/DateConverter.jsx";
 import {Loading} from "./Loading.jsx";
 import {Footer} from "./Footer.jsx";
