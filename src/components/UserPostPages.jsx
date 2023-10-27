@@ -1,13 +1,13 @@
 import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Link} from "react-router-dom";
-import Categories from "../utils/Categories.js";
 import {DateConverter} from "../utils/DateConverter.jsx";
 import {Footer} from "./Footer.jsx";
 import ReactPaginate from "react-paginate";
 import {fetchUserPostPages, setPage, setSort} from "../actions/UserPostPageActions.jsx";
 import {DownArrow} from "./DownArrow.jsx";
 import {UpArrow} from "./UpArrow.jsx";
+import {CategoryItem} from "./CategoryItem.jsx";
 
 export const UserPostPages = ({id}) => {
 
@@ -93,7 +93,7 @@ export const UserPostPages = ({id}) => {
               return (
                 <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                   <th scope="row" className="px-2 py-4 text-sm text-gray-500 whitespace-nowrap dark:text-white">
-                    <strong className="font-semibold">{Categories[post.category]}</strong>
+                    <CategoryItem category={post.category}/>
                   </th>
                   <td className="h-10 text-left px-2 py-4">
                     <Link to={`/posts/${post.id}/${encodeURI(post.title)}`} state={{id : post.id}}

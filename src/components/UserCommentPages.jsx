@@ -1,7 +1,6 @@
 import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
-import Categories from "../utils/Categories.js";
 import {DateConverter} from "../utils/DateConverter.jsx";
 import {Loading} from "./Loading.jsx";
 import {Footer} from "./Footer.jsx";
@@ -9,6 +8,7 @@ import ReactPaginate from "react-paginate";
 import {fetchUserCommentPages, setPage, setSort} from "../actions/UserCommentPageActions.jsx";
 import {DownArrow} from "./DownArrow.jsx";
 import {UpArrow} from "./UpArrow.jsx";
+import {CategoryItem} from "./CategoryItem.jsx";
 
 export const UserCommentPages = ({id}) => {
 
@@ -97,7 +97,9 @@ export const UserCommentPages = ({id}) => {
               return (
                 <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                   <th scope="row" className="px-2 py-4 text-sm text-gray-500 whitespace-nowrap dark:text-white">
-                    <strong className="font-semibold">{comment.post?.category === null ? '-' : Categories[comment.post?.category]}</strong>
+                    {
+                      comment.post?.category === null ? '-' : <CategoryItem category={comment.post.category}/>
+                    }
                   </th>
                   <td className="h-10 text-left px-2 py-4 whitespace-nowrap overflow-hidden overflow-ellipsis">
                     <button onClick={() => {onTitleClickHandler(comment.post)}}

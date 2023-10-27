@@ -6,6 +6,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {addLikePost, fetchPost, removePost} from "../actions/PostActions.jsx";
 import {TagItem} from "../components/TagItem.jsx";
 import {PostComments} from "../components/PostComments.jsx";
+import {CategoryItem} from "../components/CategoryItem.jsx";
 
 const PostDetail = () => {
 
@@ -73,15 +74,18 @@ const PostDetail = () => {
     <>
       <Header/>
       <Navbar/>
-      <h1 className="text-2xl text-gray-700 mt-12 mb-2">
-        {post.title}
-      </h1>
-      <div>
-        {post.tags?.map((tag, index) => {
-          return (
-            <TagItem key={index} value={tag}/>
-          )
-        })}
+      <div className="mt-12">
+        <CategoryItem category={post.category}/>
+        <h1 className="text-2xl text-gray-700 mt-4 mb-1">
+          {post.title}
+        </h1>
+        <div>
+          {post.tags?.map((tag, index) => {
+            return (
+              <TagItem key={index} value={tag}/>
+            )
+          })}
+        </div>
       </div>
       <div id="metadata" className="text-sm text-gray-600 mt-3 flex justify-between border-b pb-3 border-gray-200">
         <div className="flex items-center">
