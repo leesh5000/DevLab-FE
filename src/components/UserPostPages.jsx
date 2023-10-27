@@ -96,7 +96,7 @@ export const UserPostPages = ({id}) => {
                     <strong className="font-semibold">{Categories[post.category]}</strong>
                   </th>
                   <td className="h-10 text-left px-2 py-4">
-                    <Link to={`/posts/${encodeURI(post.title)}`} state={{id : post.id}}
+                    <Link to={`/posts/${post.id}/${encodeURI(post.title)}`} state={{id : post.id}}
                           className="text-sky-700 hover:text-sky-500 hover:underline hover:cursor-pointer">
                       {post.title}
                       {

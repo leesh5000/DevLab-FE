@@ -1,6 +1,6 @@
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
-import {Link, useSearchParams} from "react-router-dom";
+import {Link, useNavigate, useSearchParams} from "react-router-dom";
 import Categories from "../utils/Categories.jsx";
 import {DateConverter} from "../utils/DateConverter.jsx";
 import {Loading} from "./Loading.jsx";
@@ -16,6 +16,7 @@ function PostTable() {
   const dispatch = useDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const postPages = useSelector(state => state.home);
   const pageInfo = {
@@ -134,7 +135,7 @@ function PostTable() {
                       <strong className="font-semibold">{Categories[post.category]}</strong>
                     </td>
                     <td scope="row" className="px-3 py-3 h-20">
-                      <Link to={`/posts/${encodeURI(post.title)}`} state={{id : post.id}} className="text-sky-700 hover:text-sky-500 hover:underline hover:cursor-pointer">
+                      <Link to={`/posts/${post.id}/${encodeURI(post.title)}`} state={{id : post.id}} className="text-sky-700 hover:text-sky-500 hover:underline hover:cursor-pointer">
                         {post.title}
                         {
                           (post.comment_count !== 0) &&
