@@ -1,16 +1,12 @@
 import client from "../lib/client.jsx";
 
-export const WRITE = "posts/WRITE";
-export const EDIT = "posts/EDIT";
-export const DELETE = "posts/DELETE";
-export const GET_DETAIL = "posts/GET_DETAIL";
-export const ADD_COMMENT = "posts/ADD_COMMENT";
-export const EDIT_COMMENT = "posts/EDIT_COMMENT";
-export const DELETE_COMMENT = "posts/DELETE_COMMENT";
-export const ADD_LIKE = "posts/ADD_LIKE";
-export const ADD_LIKE_COMMENT = "posts/ADD_LIKE_COMMENT";
+export const CREATE_POST = "posts/CREATE_POST";
+export const EDIT_POST = "posts/EDIT_POST";
+export const REMOVE_POST = "posts/REMOVE_POST";
+export const FETCH_POST = "posts/FETCH_POST";
+export const ADD_LIKE_POST = "posts/ADD_LIKE_POST";
 
-export const write = (data = {}, accessToken) => async (dispatch) => {
+export const createPost = (data = {}, accessToken) => async (dispatch) => {
 
   const response = await client.post("/posts", {
     title: data.title,
@@ -24,12 +20,12 @@ export const write = (data = {}, accessToken) => async (dispatch) => {
   });
 
   dispatch({
-    type: WRITE,
+    type: CREATE_POST,
     payload: response.data,
   });
 }
 
-export const edit = (id, data = {}, accessToken) => async (dispatch) => {
+export const editPost = (id, data = {}, accessToken) => async (dispatch) => {
 
     const response = await client.put(`/posts/${id}`, {
       title: data.title,
@@ -43,12 +39,12 @@ export const edit = (id, data = {}, accessToken) => async (dispatch) => {
     });
 
     dispatch({
-      type: EDIT,
+      type: EDIT_POST,
       payload: response.data,
     });
 }
 
-export const deletePost = (id, accessToken) => async (dispatch) => {
+export const removePost = (id, accessToken) => async (dispatch) => {
 
   await client.delete(`/posts/${id}`, {
     headers: {
@@ -57,72 +53,22 @@ export const deletePost = (id, accessToken) => async (dispatch) => {
   });
 
   dispatch({
-    type: DELETE,
+    type: REMOVE_POST,
     deletedPostId: id,
   });
 }
 
-export const getDetail = (id) => async (dispatch) => {
+export const fetchPost = (id) => async (dispatch) => {
 
     const response = await client.get(`/posts/${id}`);
 
     dispatch({
-      type: GET_DETAIL,
+      type: FETCH_POST,
       payload: response.data,
     });
 }
 
-export const addComment = (id, newComment, userAuth) => async (dispatch) => {
-
-  const response = await client.post(`/posts/${id}/comments`, {
-    contents: newComment.contents,
-  }, {
-    headers: {
-      Authorization: `Bearer ${userAuth.accessToken}`,
-    }
-  });
-
-  dispatch({
-    type: ADD_COMMENT,
-    newComment : {
-      ...newComment,
-      id: response.data.id,
-    }
-  });
-};
-
-export const editComment = (postId, commentId, contents, userAuth) => async (dispatch) => {
-
-    const response = await client.put(`/posts/${postId}/comments/${commentId}`, {
-      contents: contents,
-    }, {
-      headers: {
-        Authorization: `Bearer ${userAuth.accessToken}`,
-      }
-    });
-
-    dispatch({
-      type: EDIT_COMMENT,
-      commentId: commentId,
-      contents: contents,
-    });
-}
-
-export const deleteComment = (postId, commentId, userAuth) => async (dispatch) => {
-
-    await client.delete(`/comments/${commentId}`, {
-      headers: {
-        Authorization: `Bearer ${userAuth.accessToken}`,
-      }
-    });
-
-    dispatch({
-      type: DELETE_COMMENT,
-      commentId: commentId,
-    });
-}
-
-export const addLike = (id, userAuth) => async (dispatch) => {
+export const addLikePost = (id, userAuth) => async (dispatch) => {
 
   const response = await client.post(`/posts/${id}/likes`, {}, {
     headers: {
@@ -138,27 +84,6 @@ export const addLike = (id, userAuth) => async (dispatch) => {
   });
 
   dispatch({
-    type: ADD_LIKE,
-  });
-}
-
-export const addLikeComment = (commentId, userAuth) => async (dispatch) => {
-
-  await client.post(`/comments/${commentId}/likes`, {}, {
-    headers: {
-      Authorization: `Bearer ${userAuth.accessToken}`,
-    }
-  }).then(() => {
-    alert("추천되었습니다.");
-  }).catch((e) => {
-    if (e.response.status === 409) {
-      alert("이미 추천한 댓글입니다.");
-      throw e;
-    }
-  });
-
-  dispatch({
-    type: ADD_LIKE_COMMENT,
-    commentId: commentId,
+    type: ADD_LIKE_POST,
   });
 }

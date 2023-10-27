@@ -1,15 +1,15 @@
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {Link, useSearchParams} from "react-router-dom";
-import Categories from "../utils/Categories.jsx";
 import {DateConverter} from "../utils/DateConverter.jsx";
 import {Loading} from "./Loading.jsx";
 import {TagItem} from "./TagItem.jsx";
 import "../pagination.css";
 import ReactPaginate from "react-paginate";
-import {fetchPostPages} from "../actions/HomeActions.jsx";
+import {fetchPosts} from "../actions/HomeActions.jsx";
 import {DownArrow} from "./DownArrow.jsx";
 import {UpArrow} from "./UpArrow.jsx";
+import {CategoryItem} from "./CategoryItem.jsx";
 
 function PostTable() {
 
@@ -17,57 +17,58 @@ function PostTable() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [loading, setLoading] = useState(false);
 
-  const postPages = useSelector(state => state.home);
+  const posts = useSelector(state => state.home);
   const pageInfo = {
-    page: searchParams.get("page") || 1,
+    page: Math.max(searchParams.get("page") - 1, 0),
     size: 20,
     sort: searchParams.get("sort") ? searchParams.get("sort") : "created_at,desc",
   }
-  const startItem = Math.min((pageInfo.page - 1) * pageInfo.size + 1, postPages.total_elements);
-  const endItem = Math.min(pageInfo.page * pageInfo.size, postPages.total_elements);
+  const startItem = Math.min(pageInfo.page * pageInfo.size + 1, posts.total_elements);
+  const endItem = Math.min((pageInfo.page + 1) * pageInfo.size, posts.total_elements);
 
   useEffect(() => {
 
-    async function getPages() {
+    async function getPosts() {
       setLoading(true);
-      await dispatch(fetchPostPages({
-          page: Math.max(searchParams.get("page") - 1, 0),
+      await dispatch(fetchPosts({
+          page: pageInfo.page,
           size: pageInfo.size,
-          sort: searchParams.get("sort") ? searchParams.get("sort") : "created_at,desc",
+          sort: pageInfo.sort,
           category: searchParams.get("category") === "ALL" ? null : searchParams.get("category"),
           keyword: searchParams.get("keyword"),
         })
       );
     }
 
-    getPages().then(() => {
-      setLoading(false);
-    });
+    getPosts()
+      .then(() => {
+        setLoading(false);
+      });
 
   }, [searchParams]);
 
-  const onCreatedSortHandler = () => {
+  const createdSortHandler = () => {
     const order = pageInfo.sort.split(",")[1];
     const sort = "created_at," + (order === "desc" ? "asc" : "desc");
     searchParams.set("sort", sort);
     setSearchParams(searchParams);
   }
 
-  const onLikeSortHandler = () => {
+  const likeSortHandler = () => {
     const order = pageInfo.sort.split(",")[1];
     const sort = "like_count," + (order === "desc" ? "asc" : "desc");
     searchParams.set("sort", sort);
     setSearchParams(searchParams);
   }
 
-  const onViewsSortHandler = () => {
+  const viewsSortHandler = () => {
     const order = pageInfo.sort.split(",")[1];
     const sort = "view_count," + (order === "desc" ? "asc" : "desc");
     searchParams.set("sort", sort);
     setSearchParams(searchParams);
   }
 
-  const onPageChangeHandler = (e) => {
+  const pageChangeHandler = (e) => {
     searchParams.set("page", e.selected + 1);
     setSearchParams(searchParams);
   }
@@ -84,7 +85,7 @@ function PostTable() {
         <table className="w-full text-sm text-left text-gray-500 table-fixed">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50">
           <tr className="text-center">
-            <th scope="col" className="w-10 px-3 py-3">
+            <th scope="col" className="w-12 px-3 py-3">
               탭
             </th>
             <th scope="col" className="w-[460px] px-3 py-3">
@@ -93,7 +94,7 @@ function PostTable() {
             <th scope="col" className="w-20 px-2 py-3">
               작성자
             </th>
-            <th scope="col" className="w-20 px-2 py-3 hover:cursor-pointer" onClick={onCreatedSortHandler}>
+            <th scope="col" className="w-20 px-2 py-3 hover:cursor-pointer" onClick={createdSortHandler}>
               <div className="flex items-center justify-center">
                 작성일
                 {
@@ -103,7 +104,7 @@ function PostTable() {
                 }
               </div>
             </th>
-            <th scope="col" className="w-12 px-2 py-3 hover:cursor-pointer" onClick={onViewsSortHandler}>
+            <th scope="col" className="w-12 px-2 py-3 hover:cursor-pointer" onClick={viewsSortHandler}>
               <div className="flex items-center justify-center">
                 조회
                 {
@@ -113,7 +114,7 @@ function PostTable() {
                 }
               </div>
             </th>
-            <th scope="col" className="w-12 px-2 py-3 hover:cursor-pointer" onClick={onLikeSortHandler}>
+            <th scope="col" className="w-12 px-2 py-3 hover:cursor-pointer" onClick={likeSortHandler}>
               <div className="flex items-center justify-center">
                 추천
                 {
@@ -127,14 +128,14 @@ function PostTable() {
           </thead>
           <tbody>
             {
-              postPages.content?.map((post, index) => {
+              posts.content?.map((post, index) => {
                 return (
                   <tr key={index} className="bg-white border-b">
-                    <td scope="row" className="text-center w-10 px-3 py-3">
-                      <strong className="font-semibold">{Categories[post.category]}</strong>
+                    <td scope="row" className="text-center w-12 px-3 py-3">
+                      <CategoryItem category={post.category}/>
                     </td>
                     <td scope="row" className="px-3 py-3 h-20">
-                      <Link to={`/posts/${encodeURI(post.title)}`} state={{id : post.id}} className="text-sky-700 hover:text-sky-500 hover:underline hover:cursor-pointer">
+                      <Link to={`/posts/${post.id}/${encodeURI(post.title)}`} state={{id : post.id}} className="font-semibold text-sky-700 hover:text-sky-500 hover:underline hover:cursor-pointer">
                         {post.title}
                         {
                           (post.comment_count !== 0) &&
@@ -172,17 +173,17 @@ function PostTable() {
       </div>
       <div className="relative my-16">
         <nav className="flex items-center justify-between pt-4" aria-label="Table navigation">
-          <span className="text-sm font-normal text-gray-500 dark:text-gray-400">Showing <span className="font-semibold text-gray-900 dark:text-white">{startItem} - {endItem}</span> of <span className="font-semibold text-gray-900 dark:text-white">{postPages.total_elements}</span></span>
+          <span className="text-sm font-normal text-gray-500 dark:text-gray-400">Showing <span className="font-semibold text-gray-900 dark:text-white">{startItem} - {endItem}</span> of <span className="font-semibold text-gray-900 dark:text-white">{posts.total_elements}</span></span>
           <ReactPaginate
-            forcePage={pageInfo.page - 1}
+            forcePage={pageInfo.page}
             containerClassName="pagination"
             activeLinkClassName="active-link"
             breakLabel="..."
             nextLabel="Next"
-            onPageChange={onPageChangeHandler}
+            onPageChange={pageChangeHandler}
             pageRangeDisplayed={5}
             marginPagesDisplayed={2}
-            pageCount={postPages.total_pages}
+            pageCount={posts.total_pages}
             previousLabel="Prev"
             renderOnZeroPageCount={null}
           />

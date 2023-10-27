@@ -1,7 +1,6 @@
 import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {Link} from "react-router-dom";
-import Categories from "../utils/Categories.jsx";
+import {useNavigate} from "react-router-dom";
 import {DateConverter} from "../utils/DateConverter.jsx";
 import {Loading} from "./Loading.jsx";
 import {Footer} from "./Footer.jsx";
@@ -9,10 +8,12 @@ import ReactPaginate from "react-paginate";
 import {fetchUserCommentPages, setPage, setSort} from "../actions/UserCommentPageActions.jsx";
 import {DownArrow} from "./DownArrow.jsx";
 import {UpArrow} from "./UpArrow.jsx";
+import {CategoryItem} from "./CategoryItem.jsx";
 
 export const UserCommentPages = ({id}) => {
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const userCommentPages = useSelector(state => state.userCommentPage);
   const pageInfo = userCommentPages.page_info;
   const startItem = Math.min(pageInfo.page * pageInfo.size + 1, userCommentPages.total_elements);
@@ -34,15 +35,21 @@ export const UserCommentPages = ({id}) => {
     dispatch(setSort(sort));
   }
 
-  const onViewsSortHandler = () => {
-    const order = pageInfo.sort.split(",")[1];
-    const sort = "view_count," + (order === "desc" ? "asc" : "desc");
-    dispatch(setSort(sort));
-  }
-
   const onPageChangeHandler = (e) => {
     dispatch(setPage(e.selected));
   };
+
+  const onTitleClickHandler = (commentPost) => {
+
+    if (!commentPost.id) {
+      alert("삭제된 게시물입니다.");
+      return;
+    }
+
+    navigate(`/posts/${commentPost.id}/${encodeURI(commentPost.title)}`, {
+      state: commentPost.id
+    });
+  }
 
   if (!userCommentPages.content) {
     return (
@@ -90,12 +97,14 @@ export const UserCommentPages = ({id}) => {
               return (
                 <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                   <th scope="row" className="px-2 py-4 text-sm text-gray-500 whitespace-nowrap dark:text-white">
-                    <strong className="font-semibold">{comment.post?.category === null ? '-' : Categories[comment.post?.category]}</strong>
+                    {
+                      comment.post?.category === null ? '-' : <CategoryItem category={comment.post.category}/>
+                    }
                   </th>
                   <td className="h-10 text-left px-2 py-4 whitespace-nowrap overflow-hidden overflow-ellipsis">
-                    <Link to={`/posts/${encodeURI(comment.post?.title)}`} state={{id : comment.post?.id}}
-                          className="text-sky-700 hover:text-sky-500 hover:underline hover:cursor-pointer"
-                          dangerouslySetInnerHTML={{__html: comment.contents}}
+                    <button onClick={() => {onTitleClickHandler(comment.post)}}
+                            className="text-sky-700 hover:text-sky-500 hover:underline hover:cursor-pointer"
+                            dangerouslySetInnerHTML={{__html: comment.contents}}
                     />
                   </td>
                   <td className="px-2 py-4">
