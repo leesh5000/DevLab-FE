@@ -1,13 +1,12 @@
-import {useSearchParams} from "react-router-dom";
+import {useNavigate, useSearchParams} from "react-router-dom";
 
 export const TagItem = ({ value }) => {
 
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
   const onTagClick = (e) => {
-    searchParams.set("page", "1");
-    searchParams.set("keyword", encodeURI(e.target.innerText));
-    setSearchParams(searchParams);
+    navigate("/posts?page=1&keyword=" + encodeURI(e.target.innerText));
     window.scrollTo(0, 0);
   }
 
