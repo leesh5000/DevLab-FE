@@ -104,7 +104,7 @@ export const PostComments = ({postId}) => {
 
   return (
     <>
-      <div className="flex border-b-2 border-blue-700 pb-1 mt-8 items-center justify-between">
+      <div className="flex border-b-2 border-blue-700 pb-2 mt-8 items-end justify-between">
         <div className="font-semibold">
           답변 {postComments.total_elements}
         </div>

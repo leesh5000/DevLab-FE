@@ -161,13 +161,26 @@ const Profile = () => {
           </div>
         </div>
         <form className="flex flex-col items-center pb-10" onSubmit={onSubmitUpdateUser}>
-          <div className="relative w-32 h-32 mr-3 mb-4 overflow-hidden bg-gray-200 rounded-full dark:bg-gray-600">
+          <div className="relative w-32 h-32 mb-4 overflow-hidden bg-gray-200 rounded-full dark:bg-gray-600">
             <svg className="absolute w-32 h-32 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd"></path></svg>
           </div>
           <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">{users.nickname || ''}</h5>
-          <span className="text-gray-600 dark:text-gray-400">
-            &#128077; {users.postLikeCount + users.commentLikeCount}
-          </span>
+          <button type="button" data-popover-target="popover-default" className="my-2 text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2 px-2.5 text-center inline-flex items-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800 dark:hover:bg-blue-500">
+            <svg className="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
+              <path d="M3 7H1a1 1 0 0 0-1 1v8a2 2 0 0 0 4 0V8a1 1 0 0 0-1-1Zm12.954 0H12l1.558-4.5a1.778 1.778 0 0 0-3.331-1.06A24.859 24.859 0 0 1 6 6.8v9.586h.114C8.223 16.969 11.015 18 13.6 18c1.4 0 1.592-.526 1.88-1.317l2.354-7A2 2 0 0 0 15.954 7Z"/>
+            </svg>
+            <p className="ml-1.5">{users.postLikeCount + users.commentLikeCount}</p>
+            <span className="sr-only">Icon description</span>
+            <div data-popover="" id="popover-default" role="tooltip" className="absolute z-10 invisible inline-block w-64 text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 dark:text-gray-400 dark:border-gray-600 dark:bg-gray-800">
+              <div className="px-3 py-2 bg-gray-100 border-b border-gray-200 rounded-t-lg dark:border-gray-600 dark:bg-gray-700">
+                <h3 className="font-semibold text-gray-900 dark:text-white">총 추천 수</h3>
+              </div>
+              <div className="px-3 py-2 text-left">
+                <p>해당 유저가 작성한 게시물, 댓글이 받은 총 추천 수를 나타냅니다.</p>
+              </div>
+              <div data-popper-arrow=""></div>
+            </div>
+          </button>
           <div className="my-8">
             <div className="space-y-6 w-96">
               <div className="relative z-0">
