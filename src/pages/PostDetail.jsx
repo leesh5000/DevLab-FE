@@ -5,8 +5,8 @@ import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {addComment, addLike, deletePost, getDetail} from "../actions/PostActions.jsx";
 import {TagItem} from "../components/TagItem.jsx";
-import {CommentDetail} from "../components/CommentDetail.jsx";
 import Editor from "../components/Editor.jsx";
+import {PostComments} from "../components/PostComments.jsx";
 
 const PostDetail = () => {
 
@@ -104,7 +104,7 @@ const PostDetail = () => {
     <>
       <Header/>
       <Navbar/>
-      <h1 className="text-2xl text-gray-700 mt-8 mb-2">
+      <h1 className="text-2xl text-gray-700 mt-12 mb-2">
         {postDetails.title}
       </h1>
       <div>
@@ -151,26 +151,18 @@ const PostDetail = () => {
           </div>
         </div>
       </div>
-      <div id="contents" className="my-12" dangerouslySetInnerHTML={{__html: postDetails.contents}}/>
+      <div id="contents" className="text-sm my-12" dangerouslySetInnerHTML={{__html: postDetails.contents}}/>
       <div className="flex justify-center">
         <button type="button" className="text-blue-700 border border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2.5 text-center inline-flex items-center mr-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800 dark:hover:bg-blue-500"
                 onClick={addLikeHandler}>
           <svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
             <path d="M3 7H1a1 1 0 0 0-1 1v8a2 2 0 0 0 4 0V8a1 1 0 0 0-1-1Zm12.954 0H12l1.558-4.5a1.778 1.778 0 0 0-3.331-1.06A24.859 24.859 0 0 1 6 6.8v9.586h.114C8.223 16.969 11.015 18 13.6 18c1.4 0 1.592-.526 1.88-1.317l2.354-7A2 2 0 0 0 15.954 7Z"/>
           </svg>
+          <p className="ml-1.5">{postDetails.like_count}</p>
           <span className="sr-only">Icon description</span>
         </button>
       </div>
-      <div className="my-8">
-        <div className="font-bold border-b-2 border-blue-700 pb-1">
-          답변 {postDetails.comment_details?.length}
-        </div>
-        {postDetails.comment_details?.map((commentDetail, index) => {
-          return (
-            <CommentDetail key={index} commentDetail={commentDetail}/>
-          );
-        })}
-      </div>
+      <PostComments postId={id}/>
       <Editor contents={comment} onContentsHandler={onCommentHandler}/>
       <button className="mt-6 mb-12 bg-blue-600 text-white p-2 px-4 rounded-lg hover:bg-blue-700"
               onClick={addCommentHandler}>

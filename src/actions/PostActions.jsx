@@ -89,37 +89,6 @@ export const addComment = (id, newComment, userAuth) => async (dispatch) => {
       id: response.data.id,
     }
   });
-};
-
-export const editComment = (postId, commentId, contents, userAuth) => async (dispatch) => {
-
-    const response = await client.put(`/posts/${postId}/comments/${commentId}`, {
-      contents: contents,
-    }, {
-      headers: {
-        Authorization: `Bearer ${userAuth.accessToken}`,
-      }
-    });
-
-    dispatch({
-      type: EDIT_COMMENT,
-      commentId: commentId,
-      contents: contents,
-    });
-}
-
-export const deleteComment = (postId, commentId, userAuth) => async (dispatch) => {
-
-    await client.delete(`/comments/${commentId}`, {
-      headers: {
-        Authorization: `Bearer ${userAuth.accessToken}`,
-      }
-    });
-
-    dispatch({
-      type: DELETE_COMMENT,
-      commentId: commentId,
-    });
 }
 
 export const addLike = (id, userAuth) => async (dispatch) => {
@@ -139,26 +108,5 @@ export const addLike = (id, userAuth) => async (dispatch) => {
 
   dispatch({
     type: ADD_LIKE,
-  });
-}
-
-export const addLikeComment = (commentId, userAuth) => async (dispatch) => {
-
-  await client.post(`/comments/${commentId}/likes`, {}, {
-    headers: {
-      Authorization: `Bearer ${userAuth.accessToken}`,
-    }
-  }).then(() => {
-    alert("추천되었습니다.");
-  }).catch((e) => {
-    if (e.response.status === 409) {
-      alert("이미 추천한 댓글입니다.");
-      throw e;
-    }
-  });
-
-  dispatch({
-    type: ADD_LIKE_COMMENT,
-    commentId: commentId,
   });
 }

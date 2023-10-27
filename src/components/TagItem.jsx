@@ -11,7 +11,7 @@ export const TagItem = ({ value }) => {
   }
 
   return (
-    <button className="inline mr-2 mt-1.5 text-xs rounded-lg text-sky-800 bg-sky-100 py-1 px-1.5"
+    <button className="inline mr-2 mt-1.5 text-xs rounded-lg text-sky-700 bg-sky-100 py-1 px-1.5 hover:bg-sky-200 hover:text-sky-900 focus:outline-none focus:ring-4 focus:ring-sky-300"
             onClick={onTagClick}>
       {value}
     </button>
