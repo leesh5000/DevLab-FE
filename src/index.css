@@ -11,21 +11,23 @@
 .ql-container {
   border-bottom-left-radius: 0.5em;
   border-bottom-right-radius: 0.5em;
-  background: #fefcfc;
+  background: white;
 }
 
 .ql-editor {
-  font-size: 1rem;
+  font-size: 0.875rem;
   line-height: 1.5rem;
   min-height: 120px;
   border-bottom-left-radius: 0.5em;
   border-bottom-right-radius: 0.5em;
-  background: #fefcfc;
+  background: white;
 }
 
 .ql-toolbar {
   display: block;
-  background: #eaecec;
+  --tw-text-opacity: 1;
+  --tw-bg-opacity: 1;
+  background-color: rgba(249, 250, 251, var(--tw-bg-opacity));
   border-top-left-radius: 0.5em;
   border-top-right-radius: 0.5em;
 }

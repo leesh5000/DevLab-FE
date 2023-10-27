@@ -13,7 +13,6 @@ const Header = () => {
   useEffect (() => {
     initFlowbite();
   }, [userAuth]);
-
   const onLogoutHandler = () => {
     dispatch(logout()).then(() => {
       window.location.href = "/";
@@ -42,6 +41,13 @@ const Header = () => {
               </button>
               <div className="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700" id="profile-dropdown-menu">
                 <ul className="py-2 font-medium" role="none">
+                  <li>
+                    <Link to={`/posting`} className="block px-4 pr-20 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">
+                      <div className="inline-flex items-center">
+                        새 글 작성
+                      </div>
+                    </Link>
+                  </li>
                   <li>
                     <Link to={`/users/${encodeURI(userAuth.nickname)}`} className="block px-4 pr-20 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">
                       <div className="inline-flex items-center">
