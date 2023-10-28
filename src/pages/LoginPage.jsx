@@ -5,7 +5,7 @@ import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {login} from "../actions/AuthActions.jsx";
 
-const Login = () => {
+const LoginPage = () => {
 
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
@@ -113,7 +113,7 @@ const Login = () => {
                   Sign in
                 </button>
                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                  Don’t have an account yet?<a href="/register" className="font-medium text-primary-600 hover:underline dark:text-primary-500"> Sign up</a>
+                  Don’t have an account yet?<a href="/src/pages/RegisterPage" className="font-medium text-primary-600 hover:underline dark:text-primary-500"> Sign up</a>
                 </p>
               </form>
             </div>
@@ -142,4 +142,4 @@ const Login = () => {
   );
 }
 
-export default Login;
+export default LoginPage;

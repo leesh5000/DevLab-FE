@@ -7,7 +7,7 @@ import {createPost, editPost, fetchPost} from "../actions/PostActions.jsx";
 import Editor from "../components/Editor.jsx";
 import Categories from "../utils/Categories.js";
 
-const Posting = () => {
+const PostingPage = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -209,4 +209,4 @@ const Posting = () => {
   );
 }
 
-export default Posting;
+export default PostingPage;

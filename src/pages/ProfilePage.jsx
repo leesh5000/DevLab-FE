@@ -13,7 +13,7 @@ import {Loading} from "../components/Loading.jsx";
 import {UserCommentPages} from "../components/UserCommentPages.jsx";
 import {removeUser} from "../actions/AuthActions.jsx";
 
-const Profile = () => {
+const ProfilePage = () => {
 
   const dispatch = useDispatch();
   const location = useLocation();
@@ -364,4 +364,4 @@ const Profile = () => {
   );
 }
 
-export default Profile
+export default ProfilePage
