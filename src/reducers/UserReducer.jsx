@@ -1,4 +1,4 @@
-import {FETCH_MY_PROFILE, FETCH_USER_PROFILE, UPDATE_USER_PROFILE} from "../actions/UserActions.jsx";
+import {FETCH_MY_PROFILE, FETCH_USER_PROFILE} from "../actions/UserActions.jsx";
 
 const initialState = {
   id: "",
@@ -48,7 +48,6 @@ export default function (state = initialState, action) {
         commentCount: action.payload.activities.comment_count,
         commentLikeCount: action.payload.activities.comment_like_count,
       }
-    case UPDATE_USER_PROFILE:
     default:
       return state;
   }

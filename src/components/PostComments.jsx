@@ -175,7 +175,7 @@ export const PostComments = ({postId}) => {
                   {comment.like_count}
                 </button>
                 {
-                  (userAuth.isLogin && (userAuth.nickname === comment.author)) && (editModeCommentId !== comment.id) &&
+                  (userAuth.isLogin && (userAuth.id === comment.author.id)) && (editModeCommentId !== comment.id) &&
                   <div className="text-gray-600 flex">
                     <button className="hover:text-blue-700 hover:underline flex items-center" onClick={() => {onEditModeHandler(comment.id, comment.contents)}}>
                       <img src="/public/edit.svg" alt="edit" className="h-4 inline-block text-sm"/>
@@ -189,7 +189,7 @@ export const PostComments = ({postId}) => {
                   </div>
                 }
                 {
-                  ((editModeCommentId === comment.id) && userAuth.isLogin && (userAuth.nickname === comment.author)) &&
+                  ((editModeCommentId === comment.id) && userAuth.isLogin && (userAuth.id === comment.author.id)) &&
                   <div className="text-gray-600 flex">
                     <button className="hover:text-blue-700 hover:underline flex items-center" onClick={() => {onEditConfirmHandler(comment.id, editCommentContents)}}>
                       <img src="/public/confirm-2.svg" alt="edit" className="h-4 inline-block text-sm mr-0.5"/>

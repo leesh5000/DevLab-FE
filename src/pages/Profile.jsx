@@ -11,6 +11,7 @@ import {useLocation, useNavigate} from "react-router-dom";
 import {UserPostPages} from "../components/UserPostPages.jsx";
 import {Loading} from "../components/Loading.jsx";
 import {UserCommentPages} from "../components/UserCommentPages.jsx";
+import {removeUser} from "../actions/AuthActions.jsx";
 
 const Profile = () => {
 
@@ -111,6 +112,16 @@ const Profile = () => {
     });
   }
 
+  const removeUserHandler = () => {
+    if (window.confirm("정말로 회원 탈퇴하시겠습니까?\n탈퇴 시 작성한 모든 게시글과 댓글이 삭제되며, 복구 불가능합니다.")) {
+      dispatch(removeUser(auth.accessToken, id))
+        .then(() => {
+          alert("회원 탈퇴되었습니다.");
+          window.location.href = "/";
+        });
+    }
+  }
+
   const onSubmitUpdateUser = (e) => {
 
     e.preventDefault()
@@ -134,7 +145,7 @@ const Profile = () => {
     dispatch(updateUserProfile(auth.accessToken, users.id, userInput))
       .then(() => {
         alert("회원정보가 수정되었습니다.");
-        location.reload();
+        window.location.reload();
       });
     setEditMode(false);
   }
@@ -180,10 +191,9 @@ const Profile = () => {
                     </a>
                   </li>
                   <li>
-                    <a className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Export Data</a>
-                  </li>
-                  <li>
-                    <a className="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Delete</a>
+                    <a className="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white cursor-pointer" onClick={removeUserHandler}>
+                      회원 탈퇴
+                    </a>
                   </li>
                 </ul>
               </div>

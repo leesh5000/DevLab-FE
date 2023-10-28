@@ -102,7 +102,7 @@ const PostDetail = () => {
             }
           </div>
           {
-            (userAuth.isLogin && userAuth.nickname === post.author) &&
+            (userAuth.isLogin && userAuth.id === post.author.id) &&
             <div className="text-gray-700 ml-4 flex">
               <button className="hover:text-blue-700 hover:underline flex items-center" onClick={onEditHandler}>
                 <img src="/public/edit.svg" alt="edit" className="h-5 inline-block"/>
