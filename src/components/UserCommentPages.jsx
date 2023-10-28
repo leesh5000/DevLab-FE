@@ -21,7 +21,7 @@ export const UserCommentPages = ({id}) => {
 
   useEffect(() => {
     dispatch(fetchUserCommentPages(id, pageInfo));
-  }, [pageInfo]);
+  }, [pageInfo, id]);
 
   const onCreatedSortHandler = () => {
     const order = pageInfo.sort.split(",")[1];
@@ -47,7 +47,9 @@ export const UserCommentPages = ({id}) => {
     }
 
     navigate(`/posts/${commentPost.id}/${encodeURI(commentPost.title)}`, {
-      state: commentPost.id
+      state: {
+        id: commentPost.id
+      }
     });
   }
 

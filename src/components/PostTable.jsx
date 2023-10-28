@@ -10,6 +10,7 @@ import {fetchPosts} from "../actions/HomeActions.jsx";
 import {DownArrow} from "./DownArrow.jsx";
 import {UpArrow} from "./UpArrow.jsx";
 import {CategoryItem} from "./CategoryItem.jsx";
+import {Author} from "./Author.jsx";
 
 function PostTable() {
 
@@ -153,7 +154,7 @@ function PostTable() {
                       </div>
                     </td>
                     <td scope="row" className="w-20 text-sm text-center px-2 py-3 text-ellipsis whitespace-nowrap overflow-hidden">
-                      {post.author}
+                      <Author nickname={post.author}/>
                     </td>
                     <td scope="row" className="w-20 text-center px-2 py-3">
                       {DateConverter(post.created_at)}
