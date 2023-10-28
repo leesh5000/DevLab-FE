@@ -159,8 +159,12 @@ const Posting = () => {
             {
               Object.entries(Categories).map(([key, value]) => {
                 return (
-                  <option key={key} value={key}>{value}</option>
-                );
+                  value === Categories.NOTICE ? (
+                    <option key={key} value={key} disabled={userAuth.role !== "ADMIN"}>{value}</option>
+                  ) : (
+                    <option key={key} value={key}>{value}</option>
+                  )
+                )
               })
             }
           </select>
