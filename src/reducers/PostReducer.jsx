@@ -6,6 +6,10 @@ const initialState = {
   contents: "",
   category: "",
   tags: [],
+  author: {
+    id: "",
+    nickname: "",
+  },
   created_at: 0,
   modified_at: 0,
   like_count: 0,

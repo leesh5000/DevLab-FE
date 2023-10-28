@@ -19,7 +19,7 @@ export const UserPostPages = ({id}) => {
 
   useEffect(() => {
     dispatch(fetchUserPostPages(id, pageInfo));
-  }, [pageInfo]);
+  }, [pageInfo, id]);
 
   const onCreatedSortHandler = () => {
     const order = pageInfo.sort.split(",")[1];

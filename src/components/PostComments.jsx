@@ -11,6 +11,7 @@ import {
   editPostComment,
   fetchPostComments
 } from "../actions/PostCommentActions.jsx";
+import {Author} from "./Author.jsx";
 
 export const PostComments = ({postId}) => {
 
@@ -151,9 +152,9 @@ export const PostComments = ({postId}) => {
           <div key={key} className="py-4 border-b border-gray-200">
             <div className="text-sm text-gray-500 flex justify-between">
               <div className="flex items-center">
-                <div id="author" className="font-semibold">
-                  {comment.author}
-                </div>
+                <p className="font-semibold">
+                  <Author {...comment.author}/>
+                </p>
                 <div className="w-[1px] h-[14px] bg-gray-400 mx-2"/>
                 <div id="modifiedAt">
                   {TimeConverter(comment.modified_at)}
@@ -174,7 +175,7 @@ export const PostComments = ({postId}) => {
                   {comment.like_count}
                 </button>
                 {
-                  (userAuth.isLogin && (userAuth.nickname === comment.author)) && (editModeCommentId !== comment.id) &&
+                  (userAuth.isLogin && (userAuth.id === comment.author.id)) && (editModeCommentId !== comment.id) &&
                   <div className="text-gray-600 flex">
                     <button className="hover:text-blue-700 hover:underline flex items-center" onClick={() => {onEditModeHandler(comment.id, comment.contents)}}>
                       <img src="/public/edit.svg" alt="edit" className="h-4 inline-block text-sm"/>
@@ -188,11 +189,11 @@ export const PostComments = ({postId}) => {
                   </div>
                 }
                 {
-                  ((editModeCommentId === comment.id) && userAuth.isLogin && (userAuth.nickname === comment.author)) &&
+                  ((editModeCommentId === comment.id) && userAuth.isLogin && (userAuth.id === comment.author.id)) &&
                   <div className="text-gray-600 flex">
                     <button className="hover:text-blue-700 hover:underline flex items-center" onClick={() => {onEditConfirmHandler(comment.id, editCommentContents)}}>
                       <img src="/public/confirm-2.svg" alt="edit" className="h-4 inline-block text-sm mr-0.5"/>
-                      <p>확인</p>
+                      확인
                     </button>
                     <button className="hover:text-blue-700 hover:underline ml-2 flex items-center"
                             onClick={onCancelHandler}>

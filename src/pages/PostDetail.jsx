@@ -7,6 +7,7 @@ import {addLikePost, fetchPost, removePost} from "../actions/PostActions.jsx";
 import {TagItem} from "../components/TagItem.jsx";
 import {PostComments} from "../components/PostComments.jsx";
 import {CategoryItem} from "../components/CategoryItem.jsx";
+import {Author} from "../components/Author.jsx";
 
 const PostDetail = () => {
 
@@ -89,7 +90,7 @@ const PostDetail = () => {
       </div>
       <div id="metadata" className="text-sm text-gray-600 mt-3 flex justify-between border-b pb-3 border-gray-200">
         <div className="flex items-center">
-          {post.author}
+          <Author {...post.author}/>
           <div className="w-[1px] h-[16px] bg-gray-400 mx-2"/>
           <div id="modifiedAt">
             {convertTime(post.modified_at)}
@@ -101,7 +102,7 @@ const PostDetail = () => {
             }
           </div>
           {
-            (userAuth.isLogin && userAuth.nickname === post.author) &&
+            (userAuth.isLogin && userAuth.id === post.author.id) &&
             <div className="text-gray-700 ml-4 flex">
               <button className="hover:text-blue-700 hover:underline flex items-center" onClick={onEditHandler}>
                 <img src="/public/edit.svg" alt="edit" className="h-5 inline-block"/>
