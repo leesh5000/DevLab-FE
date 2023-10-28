@@ -153,7 +153,7 @@ export const PostComments = ({postId}) => {
             <div className="text-sm text-gray-500 flex justify-between">
               <div className="flex items-center">
                 <p className="font-semibold">
-                  <Author nickname={comment.author}/>
+                  <Author {...comment.author}/>
                 </p>
                 <div className="w-[1px] h-[14px] bg-gray-400 mx-2"/>
                 <div id="modifiedAt">

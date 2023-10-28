@@ -18,9 +18,9 @@ export const fetchMyProfile = (accessToken) => async (dispatch, getState) => {
   });
 }
 
-export const fetchUserProfile = (nickname) => async (dispatch, getState) => {
+export const fetchUserProfile = (id) => async (dispatch, getState) => {
 
-  const response = await client.get(`/members/nickname/${nickname}`);
+  const response = await client.get(`/members/${id}`);
 
   dispatch({
     type: FETCH_USER_PROFILE,

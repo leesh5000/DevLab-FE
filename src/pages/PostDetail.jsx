@@ -90,7 +90,7 @@ const PostDetail = () => {
       </div>
       <div id="metadata" className="text-sm text-gray-600 mt-3 flex justify-between border-b pb-3 border-gray-200">
         <div className="flex items-center">
-          <Author nickname={post.author}/>
+          <Author {...post.author}/>
           <div className="w-[1px] h-[16px] bg-gray-400 mx-2"/>
           <div id="modifiedAt">
             {convertTime(post.modified_at)}
