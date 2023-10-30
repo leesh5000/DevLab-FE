@@ -1,15 +1,17 @@
 import React, {useEffect} from "react";
 import {Route, Routes} from "react-router-dom";
-import Login from "./pages/Login.jsx";
-import OauthLogin from "./utils/OauthRedirectHandler.jsx";
-import Register from "./pages/Register.jsx";
-import Posting from "./pages/Posting.jsx";
-import PostDetail from "./pages/PostDetail.jsx";
+import LoginPage from "./pages/LoginPage.jsx";
+import OauthRedirectHandler from "./utils/OauthRedirectHandler.jsx";
+import RegisterPage from "./pages/RegisterPage.jsx";
+import PostingPage from "./pages/PostingPage.jsx";
+import PostDetailPage from "./pages/PostDetailPage.jsx";
 import Home from "./pages/Home.jsx";
-import Profile from "./pages/Profile.jsx";
+import ProfilePage from "./pages/ProfilePage.jsx";
 import {fetchAccessToken} from "./actions/AuthActions.jsx";
 import {useDispatch} from "react-redux";
 import {Redirecter} from "./pages/Redirecter.jsx";
+import {FindIdPage} from "./pages/FindIdPage.jsx";
+import {FindPasswordPage} from "./pages/FindPasswordPage.jsx";
 
 export const App = () => {
 
@@ -21,13 +23,15 @@ export const App = () => {
 
   return (
     <Routes>
-      <Route path="/login" element={<Login/>}/>
-      <Route path="/oauth/callback/*" element={<OauthLogin/>}/>
-      <Route path="/register" element={<Register/>}/>
-      <Route path="/users/:id/:nickname" element={<Profile/>}/>
+      <Route path="/oauth/callback/*" element={<OauthRedirectHandler/>}/>
+      <Route path="/login" element={<LoginPage/>}/>
+      <Route path="/register" element={<RegisterPage/>}/>
+      <Route exact path="/find-id" element={<FindIdPage/>}/>
+      <Route exact path="/find-password" element={<FindPasswordPage/>}/>
+      <Route path="/users/:id/:nickname" element={<ProfilePage/>}/>
       <Route path="/posts/" element={<Home/>}/>
-      <Route path="/posts/:id/:title" element={<PostDetail/>}/>
-      <Route path="/posting" element={<Posting/>}/>
+      <Route path="/posts/:id/:title" element={<PostDetailPage/>}/>
+      <Route path="/posting" element={<PostingPage/>}/>
       <Route path="*" element={<Redirecter/>}/>
     </Routes>
   );

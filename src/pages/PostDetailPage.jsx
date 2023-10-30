@@ -9,7 +9,7 @@ import {PostComments} from "../components/PostComments.jsx";
 import {CategoryItem} from "../components/CategoryItem.jsx";
 import {Author} from "../components/Author.jsx";
 
-const PostDetail = () => {
+const PostDetailPage = () => {
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -141,4 +141,4 @@ const PostDetail = () => {
   );
 }
 
-export default PostDetail;
+export default PostDetailPage;
