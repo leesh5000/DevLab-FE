@@ -9,6 +9,7 @@ import HomeReducer from "./HomeReducer.jsx";
 import {userPostPageReducer} from "./UserPostPageReducer.jsx";
 import {userCommentPageReducer} from "./UserCommentPageReducer.jsx";
 import {postCommentReducer} from "./PostCommentReducer.jsx";
+import {SecurityReducer} from "./SecurityReducer.jsx";
 
 const subsetFilter = createFilter('auth', ['isLogin']);
 
@@ -27,6 +28,7 @@ const rootReducer = combineReducers({
   userCommentPage: userCommentPageReducer,
   postComments: postCommentReducer,
   home: HomeReducer,
+  security: SecurityReducer,
 });
 
 export const persistedReducer = persistReducer(persistConfig, rootReducer);

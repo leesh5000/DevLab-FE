@@ -65,7 +65,7 @@ export const FindIdPage = () => {
           </a>
           <div className="w-full p-6 bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md dark:bg-gray-800 dark:border-gray-700 sm:p-8">
             <h1 className="mb-1 text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-              아이디/비밀번호 찾기
+              아이디 찾기
             </h1>
             <p className="font-light text-gray-700 dark:text-gray-400">회원가입 시 인증한 이메일로 전송된 보안코드를 입력해주세요. 보안코드를 발급받지 않는 경우에는 관리자에게 문의해주세요.</p>
             <form className="mt-4 space-y-4 lg:mt-5 md:space-y-5" onSubmit={findIdHandler}>
