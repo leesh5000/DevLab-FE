@@ -12,6 +12,8 @@ import {useDispatch} from "react-redux";
 import {Redirecter} from "./pages/Redirecter.jsx";
 import {FindIdPage} from "./pages/FindIdPage.jsx";
 import {FindPasswordPage} from "./pages/FindPasswordPage.jsx";
+import {PrivatePage} from "./pages/PrivatePage.jsx";
+import {PolicyPage} from "./pages/PolicyPage.jsx";
 
 export const App = () => {
 
@@ -25,6 +27,8 @@ export const App = () => {
     <Routes>
       <Route path="/oauth/callback/*" element={<OauthRedirectHandler/>}/>
       <Route path="/login" element={<LoginPage/>}/>
+      <Route path="/private" element={<PrivatePage/>}/>
+      <Route path="/policy" element={<PolicyPage/>}/>
       <Route path="/register" element={<RegisterPage/>}/>
       <Route exact path="/find-id" element={<FindIdPage/>}/>
       <Route exact path="/find-password" element={<FindPasswordPage/>}/>

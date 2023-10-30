@@ -13,6 +13,8 @@ const initialState = {
   created_at: 0,
   modified_at: 0,
   like_count: 0,
+  comment_count: 0,
+  view_count: 0,
 }
 
 export default function (state = initialState, action) {

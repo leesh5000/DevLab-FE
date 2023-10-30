@@ -159,7 +159,7 @@ function PostTable() {
                       {DateConverter(post.created_at)}
                     </td>
                     <td scope="row" className="w-12 text-center px-2 py-3">
-                      14
+                      {post.view_count}
                     </td>
                     <td scope="row" className="w-12 text-center px-2 py-3">
                       {post.like_count}

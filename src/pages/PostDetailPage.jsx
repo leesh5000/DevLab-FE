@@ -121,7 +121,7 @@ const PostDetailPage = () => {
           </div>
           <div className="w-[1px] h-[16px] bg-gray-400 mx-4 my-auto"/>
           <div>
-            조회 {10}
+            조회 {post.view_count}
           </div>
         </div>
       </div>

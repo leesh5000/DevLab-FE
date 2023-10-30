@@ -1,6 +1,6 @@
 import Header from "../components/Header.jsx";
 import Navbar from "../components/Navbar.jsx";
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {initFlowbite} from "flowbite";
 import {fetchMyProfile, fetchUserProfile, updateUserProfile} from "../actions/UserActions.jsx";
@@ -22,6 +22,7 @@ const ProfilePage = () => {
   const users = useSelector((state) => state.users);
 
   const [emailAuthenticator, setEmailAuthenticator] = React.useState(false);
+  const [loading, setLoading] = useState(false);
   const [editMode, setEditMode] = React.useState(false);
   const [userInput, setUserInput] = React.useState({
     loginId: "",
@@ -45,18 +46,28 @@ const ProfilePage = () => {
       navigate("/");
     }
 
+    setLoading(true);
     if (auth.isLogin && auth.id === id) {
-      dispatch(fetchMyProfile(auth.accessToken));
+      dispatch(fetchMyProfile(auth.accessToken))
+        .then(() => {
+          setLoading(false);
+        });
     } else {
-      dispatch(fetchUserProfile(id));
+      dispatch(fetchUserProfile(id))
+        .then(() => {
+          setLoading(false);
+        });
     }
 
   }, [auth, location]);
 
   useEffect(() => {
     initFlowbite();
+  }, [emailAuthenticator]);
+
+  useEffect(() => {
     setEditMode(false);
-  }, [emailAuthenticator, location]);
+  }, [location]);
 
   const isMyProfile = () => {
     return auth.isLogin && auth.id === id;
@@ -67,7 +78,7 @@ const ProfilePage = () => {
     setUserInput({
       ...userInput,
       nickname: users.nickname,
-      introduce: users.introduce,
+      introduce: users.introduce || "",
     })
     inputRef.current.classList.replace("block", "hidden");
   }
@@ -137,17 +148,21 @@ const ProfilePage = () => {
       return;
     }
 
+    console.log(userInput);
+
     if (userInput.introduce.length > 150) {
       alert("내 소개는 150 글자 이하로만 가능합니다.")
       return;
     }
 
+    setLoading(true);
     dispatch(updateUserProfile(auth.accessToken, users.id, userInput))
       .then(() => {
         alert("회원정보가 수정되었습니다.");
+        setEditMode(false);
+        setLoading(false);
         window.location.reload();
       });
-    setEditMode(false);
   }
 
   const convertRegisterDate = (registerTimeInMillis) => {
@@ -161,7 +176,7 @@ const ProfilePage = () => {
     return `${year}-${month}-${day} ${hours}:${minutes}`;
   }
 
-  if (!users.id) {
+  if (loading) {
     return (
       <>
         <Loading/>
@@ -260,7 +275,7 @@ const ProfilePage = () => {
                     <input type="text" id="security_code" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                            placeholder=" " value={users.securityCode || ''} disabled={true}/>
                     <label htmlFor="security_code" className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">보안코드</label>
-                    <div className="mt-2 text-sm font-light text-gray-500 dark:text-gray-400">
+                    <div className="mt-2 text-sm  text-gray-500 dark:text-gray-400">
                       {
                         !users.securityCode && (emailAuthenticator ? (
                           <a className="font-medium text-primary-600 hover:underline dark:text-primary-500 hover:cursor-pointer" onClick={allClosed}>
@@ -275,7 +290,7 @@ const ProfilePage = () => {
                                 <h3 className="font-semibold text-gray-900 dark:text-white">보안코드란?</h3>
                               </div>
                               <div className="px-3 py-2">
-                                <p>보안코드는 <strong className="font-thin text-primary-700">아이디/패스워드 찾기에 사용되며, 이메일 인증을 완료한 후 생성</strong>됩니다.</p>
+                                <p>보안코드는 <strong className=" text-primary-700">아이디/패스워드 찾기에 사용되며, 이메일 인증을 완료한 후 생성</strong>됩니다.</p>
                               </div>
                               <div data-popper-arrow=""></div>
                             </div>

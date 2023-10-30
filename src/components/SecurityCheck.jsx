@@ -37,7 +37,7 @@ export const SecurityCheck = () => {
           <h2 className="mb-1 text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
             비밀번호 재설정
           </h2>
-          <p className="font-light text-gray-700 dark:text-gray-400"><span className="text-red-600">아이디, 보안코드가 일치</span>해야 비밀번호를 재설정할 수 있습니다.</p>
+          <p className=" text-gray-700 dark:text-gray-400"><span className="text-blue-600">아이디, 보안코드가 일치</span>해야 비밀번호를 재설정할 수 있습니다.</p>
           <form className="my-4 space-y-4 lg:mt-5 md:space-y-5" onSubmit={checkSecurityCodeSubmitHandler}>
             <div>
               <label form="login_id" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">로그인 아이디</label>
