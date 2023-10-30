@@ -5,6 +5,7 @@ import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {login} from "../actions/AuthActions.jsx";
 import {Footer} from "../components/Footer.jsx";
+import {Logo} from "../components/Logo.jsx";
 
 const LoginPage = () => {
 
@@ -67,15 +68,11 @@ const LoginPage = () => {
       <Navbar/>
       <section className="bg-gray-50 dark:bg-gray-900">
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-          <a href="#" className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
-            <img className="w-8 h-8 mr-2" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg"
-                 alt="logo"/>
-            DevLab
-          </a>
+          <Logo/>
           <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                일반계정으로 로그인
+                일반 계정으로 로그인
               </h1>
               <form className="space-y-4 md:space-y-6" onSubmit={onLoginHandler} action="#">
                 <div className="relative z-0">

@@ -4,6 +4,7 @@ import {logout} from "../actions/AuthActions.jsx";
 import 'flowbite';
 import {useEffect} from "react";
 import {initFlowbite} from "flowbite";
+import {Logo} from "./Logo.jsx";
 
 const Header = () => {
 
@@ -22,10 +23,7 @@ const Header = () => {
   return (
     <nav className="bg-white border-gray-200 dark:bg-gray-900">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto py-4">
-        <a href="/" className="flex items-center">
-          <img src="https://flowbite.com/docs/images/logo.svg" className="h-8 mr-3" alt="Flowbite Logo" />
-          <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Flowbite</span>
-        </a>
+        <Logo/>
         {
           !userAuth.isLogin ? (
             <a href="/login" type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
