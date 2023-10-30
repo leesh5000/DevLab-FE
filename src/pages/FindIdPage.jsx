@@ -1,9 +1,10 @@
 import Header from "../components/Header.jsx";
 import Navbar from "../components/Navbar.jsx";
-import {useState} from "react";
+import React, {useState} from "react";
 import client from "../lib/client.jsx";
 import {Loading} from "../components/Loading.jsx";
 import {Footer} from "../components/Footer.jsx";
+import {Logo} from "../components/Logo.jsx";
 
 export const FindIdPage = () => {
 
@@ -60,10 +61,7 @@ export const FindIdPage = () => {
       <Navbar/>
       <section className="bg-gray-50 dark:bg-gray-900">
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-          <a href="#" className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
-            <img className="w-8 h-8 mr-2" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg" alt="logo"/>
-              DevLab
-          </a>
+          <Logo/>
           <div className="w-full p-6 bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md dark:bg-gray-800 dark:border-gray-700 sm:p-8">
             <h1 className="mb-1 text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
               아이디 찾기
