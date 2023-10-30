@@ -7,19 +7,22 @@ import React, {useEffect, useState} from "react";
 import {initFlowbite} from "flowbite";
 import {EmailAuthenticator} from "../components/EmailAuthenticator.jsx";
 import validator from "../utils/validator.js";
+import {Footer} from "../components/Footer.jsx";
+import {Loading} from "../components/Loading.jsx";
 
 const RegisterPage = () => {
 
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [userInput, setUserInput] = useState({
     id: "",
     password: "",
+    passwordConfirm: "",
     nickname: "",
     email: "",
     isVerified: false,
     isDuplicatedId: false,
     isDuplicatedNickname: false,
-    isPasswordConfirmed: false,
   });
   const [onEmailAuthenticator, setOnEmailAuthenticator] = useState(false);
 
@@ -81,20 +84,13 @@ const RegisterPage = () => {
   }
 
   const onPasswordConfirmHandler = (e) => {
-    if (userInput.password === e.target.value) {
-      setUserInput({
-        ...userInput,
-        isPasswordConfirmed: true,
-      });
-    } else {
-      setUserInput({
-        ...userInput,
-        isPasswordConfirmed: false,
-      });
-    }
+    setUserInput({
+      ...userInput,
+      passwordConfirm: e.target.value,
+    });
   }
 
-  const onRegister = (e) => {
+  const onRegister = async (e) => {
 
     e.preventDefault();
 
@@ -103,13 +99,18 @@ const RegisterPage = () => {
       return;
     }
 
-    if (!validator.password.test(userInput.password) || !userInput.isPasswordConfirmed) {
+    if (!validator.nickname.test(userInput.nickname) || userInput.isDuplicatedNickname) {
+      alert("닉네임을 바르게 입력해주세요.");
+      return;
+    }
+
+    if (!validator.password.test(userInput.password)) {
       alert("비밀번호를 바르게 입력해주세요.");
       return;
     }
 
-    if (!validator.nickname.test(userInput.nickname) || userInput.isDuplicatedNickname) {
-      alert("닉네임을 바르게 입력해주세요.");
+    if (userInput.password !== userInput.passwordConfirm) {
+      alert("비밀번호가 일치하지 않습니다.");
       return;
     }
 
@@ -118,7 +119,8 @@ const RegisterPage = () => {
       return;
     }
 
-    client.post("/auth/register", {
+    setLoading(true);
+    await client.post("/auth/register", {
       login_id: userInput.id,
       password: userInput.password,
       nickname: userInput.nickname,
@@ -133,7 +135,15 @@ const RegisterPage = () => {
         alert("회원 가입에 실패하였습니다. 잠시 후 다시 시도해주세요.")
         navigate("/")
       }
+    }).finally(() => {
+      setLoading(false);
     });
+  }
+
+  if (loading) {
+    return (
+      <Loading/>
+    )
   }
 
   return (
@@ -188,11 +198,11 @@ const RegisterPage = () => {
                     비밀번호 확인
                   </label>
                   {
-                    userInput.password && !userInput.isPasswordConfirmed &&
+                    userInput.password && userInput.passwordConfirm && (userInput.password !== userInput.passwordConfirm) &&
                     <p id="standard_error_help" className="mt-2 text-sm text-red-600 dark:text-red-400"><span className="font-medium">비밀번호가 일치하지 않습니다.</span></p>
                   }
                 </div>
-                <div className="mt-2 text-sm font-light text-gray-500 dark:text-gray-400">
+                <div className="mt-2 text-sm  text-gray-500 dark:text-gray-400">
                   {
                     onEmailAuthenticator ? (
                       <a className="font-medium text-primary-600 hover:underline dark:text-primary-500 hover:cursor-pointer" onClick={() => {setOnEmailAuthenticator(!onEmailAuthenticator)}}>
@@ -209,7 +219,7 @@ const RegisterPage = () => {
                           </div>
                           <div className="px-3 py-2">
                             <p>보안코드는 아이디/패스워드 찾기에 사용되며, 이메일 인증을 완료한 후 회원 가입을 통해 해당 이메일로 전송됩니다.</p>
-                            <p><strong className="font-thin text-blue-700">보안코드를 발급하지 않고, 회원가입</strong> 할 수 있으며 추후 내 정보 페이지에서 발급 가능합니다.</p>
+                            <p><strong className="text-blue-700">보안코드를 발급하지 않고, 회원가입</strong> 할 수 있으며 추후 내 정보 페이지에서 발급 가능합니다.</p>
                           </div>
                           <div data-popper-arrow=""></div>
                         </div>
@@ -220,20 +230,21 @@ const RegisterPage = () => {
                     onEmailAuthenticator && <EmailAuthenticator userInput={userInput} setUserInput={setUserInput}/>
                   }
                 </div>
-                <div className="flex items-start">
-                  <div className="flex items-center h-5">
-                    <input id="terms" aria-describedby="terms" type="checkbox" className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800" required={true}/>
-                  </div>
-                  <div className="ml-3 text-sm">
-                    <label htmlFor="terms" className="font-light text-gray-500 dark:text-gray-300">I accept the <a className="font-medium text-primary-600 hover:underline dark:text-primary-500" href="#">Terms and Conditions</a></label>
-                  </div>
-                </div>
-                <button type="submit" className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Create an account</button>
+                {/*<div className="flex items-start">*/}
+                {/*  <div className="flex items-center h-5">*/}
+                {/*    <input id="terms" aria-describedby="terms" type="checkbox" className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800" required={true}/>*/}
+                {/*  </div>*/}
+                {/*  <div className="ml-3 text-sm">*/}
+                {/*    <label htmlFor="terms" className="text-gray-500 dark:text-gray-300"><a className="font-medium text-primary-600 hover:underline dark:text-primary-500" href="/policy">이용 약관</a>에 동의합니다.</label>*/}
+                {/*  </div>*/}
+                {/*</div>*/}
+                <button type="submit" className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">회원가입</button>
               </form>
             </div>
           </div>
         </div>
       </section>
+      <Footer/>
     </div>
   );
 };

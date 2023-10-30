@@ -3,6 +3,7 @@ import Navbar from "../components/Navbar.jsx";
 import {useState} from "react";
 import client from "../lib/client.jsx";
 import {Loading} from "../components/Loading.jsx";
+import {Footer} from "../components/Footer.jsx";
 
 export const FindIdPage = () => {
 
@@ -67,7 +68,7 @@ export const FindIdPage = () => {
             <h1 className="mb-1 text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
               아이디 찾기
             </h1>
-            <p className="font-light text-gray-700 dark:text-gray-400">회원가입 시 인증한 이메일로 전송된 보안코드를 입력해주세요. 보안코드를 발급받지 않는 경우에는 관리자에게 문의해주세요.</p>
+            <p className=" text-gray-700 dark:text-gray-400"><span className="text-blue-600">회원가입 시 인증한 이메일로 전송된 보안코드</span>를 입력해주세요. 보안코드를 발급받지 않는 경우에는 관리자에게 문의해주세요.</p>
             <form className="mt-4 space-y-4 lg:mt-5 md:space-y-5" onSubmit={findIdHandler}>
               <div>
                 <label htmlFor="security_code" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">보안코드</label>
@@ -104,6 +105,7 @@ export const FindIdPage = () => {
           }
         </div>
       </section>
+      <Footer/>
     </>
   );
 }

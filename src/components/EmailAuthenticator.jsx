@@ -2,11 +2,13 @@ import React, {useEffect, useState} from "react";
 import client from "../lib/client.jsx";
 import Timer from "./Timer.jsx";
 import {initFlowbite} from "flowbite";
+import {Loading} from "./Loading.jsx";
 
 export const EmailAuthenticator = ({userInput, setUserInput}) => {
 
   const [verifyCode, setVerifyCode] = useState("");
   const [count, setCount] = useState(-1);
+  const [loading, setLoading] = useState(false);
 
   const validator = {
     email: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
@@ -42,6 +44,7 @@ export const EmailAuthenticator = ({userInput, setUserInput}) => {
       isVerified: false,
     })
 
+    setLoading(true);
     await client.get("/auth/email-verifications", {
       params: {
         email: userInput.email,
@@ -49,6 +52,8 @@ export const EmailAuthenticator = ({userInput, setUserInput}) => {
       withCredentials: true
     }).then(() => {
       setCount(300);
+    }).finally(() => {
+      setLoading(false);
     });
   }
 
@@ -78,7 +83,7 @@ export const EmailAuthenticator = ({userInput, setUserInput}) => {
       },
       withCredentials: true
     }).then(() => {
-      alert("이메일 인증이 완료 되었습니다.\n작업 완료 후 해당 이메일로 보안코드가 전송됩니다.");
+      alert("이메일 인증이 완료 되었습니다.\n회원가입 및 프로필 수정 완료 후 해당 이메일로 보안코드가 전송됩니다.");
       setUserInput({
         ...userInput,
         email: userInput.email,
@@ -89,7 +94,13 @@ export const EmailAuthenticator = ({userInput, setUserInput}) => {
       if (e.response.status === 400) {
         alert("인증번호가 일치하지 않습니다.");
       }
-    });
+    })
+  }
+
+  if (loading) {
+    return (
+      <Loading/>
+    )
   }
 
   return (
@@ -97,7 +108,7 @@ export const EmailAuthenticator = ({userInput, setUserInput}) => {
       <div className="relative">
         <input type="email" name="email" id="email" placeholder="name@company.com"
                className={"bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" + ` ${userInput.isVerified ? 'cursor-not-allowed' : ''}`}
-               required={false} onChange={onEmailChangeHandler}/>
+               required={false} defaultValue={userInput.email} onChange={onEmailChangeHandler} disabled={userInput.isVerified}/>
         <button type="button" className={"absolute top-1/2 right-2 transform -translate-y-1/2 text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-2 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" + ` ${userInput.isVerified ? 'cursor-not-allowed' : ''}`}
                 onClick={onVerifyEmail}>
           인증번호 전송

@@ -6,6 +6,7 @@ import {useLocation, useNavigate} from "react-router-dom";
 import {createPost, editPost, fetchPost} from "../actions/PostActions.jsx";
 import Editor from "../components/Editor.jsx";
 import Categories from "../utils/Categories.js";
+import {Footer} from "../components/Footer.jsx";
 
 const PostingPage = () => {
 
@@ -148,7 +149,7 @@ const PostingPage = () => {
     <>
       <Header/>
       <Navbar/>
-      <div className="mt-32">
+      <div className="mt-32 min-h-screen">
         <p className="font-semibold text-2xl my-8">
           {mode === "edit" ? "게시글 수정" : "게시글 작성"}
         </p>
@@ -194,17 +195,18 @@ const PostingPage = () => {
             })
           }
         </div>
+        <div className="flex justify-start items-center">
+          <button type={"submit"} className="mr-6 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 focus:outline-none"
+                  onClick={onPostHandler}>
+            등록
+          </button>
+          <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 focus:outline-none"
+                  onClick={onCancel}>
+            취소
+          </button>
+        </div>
       </div>
-      <div className="flex justify-start items-center">
-        <button type={"submit"} className="mr-6 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 focus:outline-none"
-                onClick={onPostHandler}>
-          등록
-        </button>
-        <button className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 focus:outline-none"
-                onClick={onCancel}>
-          취소
-        </button>
-      </div>
+      <Footer/>
     </>
   );
 }

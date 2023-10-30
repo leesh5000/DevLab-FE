@@ -4,6 +4,7 @@ import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {login} from "../actions/AuthActions.jsx";
+import {Footer} from "../components/Footer.jsx";
 
 const LoginPage = () => {
 
@@ -118,7 +119,7 @@ const LoginPage = () => {
                         className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
                   로그인
                 </button>
-                <p className="text-sm font-light text-gray-500 dark:text-gray-400">
+                <p className="text-sm  text-gray-500 dark:text-gray-400">
                   아직 회원이 아니신가요?<a href="/register" className="font-medium text-primary-600 hover:underline dark:text-primary-500"> 회원가입</a>
                 </p>
               </form>
@@ -144,6 +145,7 @@ const LoginPage = () => {
           </div>
         </div>
       </section>
+      <Footer/>
     </>
   );
 }
