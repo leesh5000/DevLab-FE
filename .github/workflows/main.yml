@@ -26,14 +26,11 @@ jobs:
 
       - name: create .env
         run: |
-          echo "REACT_APP_GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> .env
-          echo "REACT_APP_GOOGLE_REDIRECT_URI=${{ secrets.GOOGLE_REDIRECT_URI }}" >> .env
-          echo "REACT_APP_NAVER_CLIENT_ID=${{ secrets.NAVER_CLIENT_ID }}" >> .env
-          echo "REACT_APP_NAVER_REDIRECT_URI=${{ secrets.NAVER_REDIRECT_URI }}" >> .env
-          echo "REACT_APP_KAKAO_CLIENT_ID=${{ secrets.KAKAO_CLIENT_ID }}" >> .env
-          echo "REACT_APP_KAKAO_REDIRECT_URI=${{ secrets.KAKAO_REDIRECT_URI }}" >> .env
-          echo "REACT_APP_QUIZ_API_HOST=${{ secrets.QUIZ_API_HOST }}" >> .env
-          echo "REACT_APP_BASE_REDIRECT_URI=${{ secrets.BASE_REDIRECT_URI }}" >> .env
+          echo "VITE_GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> .env
+          echo "VITE_NAVER_CLIENT_ID=${{ secrets.NAVER_CLIENT_ID }}" >> .env
+          echo "VITE_KAKAO_CLIENT_ID=${{ secrets.KAKAO_CLIENT_ID }}" >> .env
+          echo "VITE_BASE_REDIRECT_URI=${{ secrets.BASE_REDIRECT_URI }}" >> .env
+          echo "VITE_API_SERVER_URL=${{ secrets.API_SERVER_URL }}" >> .env
           cat .env
 
       - name: react build
@@ -54,7 +51,7 @@ jobs:
           aws s3 cp \
             --recursive \
             --region $AWS_REGION \
-            build s3://$AWS_S3_BUCKET
+            dist s3://$AWS_S3_BUCKET
             
       - name: invalidate cache in cloudfront
         env:
