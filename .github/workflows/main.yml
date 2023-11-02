@@ -51,7 +51,7 @@ jobs:
           aws s3 cp \
             --recursive \
             --region $AWS_REGION \
-            build s3://$AWS_S3_BUCKET
+            dist s3://$AWS_S3_BUCKET
             
       - name: invalidate cache in cloudfront
         env:
