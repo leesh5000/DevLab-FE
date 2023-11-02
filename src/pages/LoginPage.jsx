@@ -6,6 +6,7 @@ import {useDispatch} from "react-redux";
 import {login} from "../actions/AuthActions.jsx";
 import {Footer} from "../components/Footer.jsx";
 import {Logo} from "../components/Logo.jsx";
+import google from "../../src/public/google.png";
 
 const LoginPage = () => {
 
@@ -130,7 +131,7 @@ const LoginPage = () => {
             </div>
             <div id="social" className="w-[340px] flex flex-col mx-auto py-4 pb-6 space-y-2">
               <a href={googleUri}>
-                <img src="/src/public/google.png" className="cursor-pointer" alt="google"/>
+                <img src={google} className="cursor-pointer" alt="google"/>
               </a>
               <a href={naverUri}>
                 <img src="/src/public/naver.png" className="cursor-pointer" alt="naver"/>
