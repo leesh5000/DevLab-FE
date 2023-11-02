@@ -1,0 +1,64 @@
+name: Deploy React to S3
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: cache node modules
+        uses: actions/cache@v3.2.6
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.OS }}-build-
+            ${{ runner.OS }}-
+
+      - name: install dependencies
+        run: npm install
+
+      - name: create .env
+        run: |
+          echo "REACT_APP_GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> .env
+          echo "REACT_APP_GOOGLE_REDIRECT_URI=${{ secrets.GOOGLE_REDIRECT_URI }}" >> .env
+          echo "REACT_APP_NAVER_CLIENT_ID=${{ secrets.NAVER_CLIENT_ID }}" >> .env
+          echo "REACT_APP_NAVER_REDIRECT_URI=${{ secrets.NAVER_REDIRECT_URI }}" >> .env
+          echo "REACT_APP_KAKAO_CLIENT_ID=${{ secrets.KAKAO_CLIENT_ID }}" >> .env
+          echo "REACT_APP_KAKAO_REDIRECT_URI=${{ secrets.KAKAO_REDIRECT_URI }}" >> .env
+          echo "REACT_APP_QUIZ_API_HOST=${{ secrets.QUIZ_API_HOST }}" >> .env
+          echo "REACT_APP_BASE_REDIRECT_URI=${{ secrets.BASE_REDIRECT_URI }}" >> .env
+          cat .env
+
+      - name: react build
+        run: CI=false npm run build
+
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: deploy to s3
+        env:
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+        run: |
+          aws s3 cp \
+            --recursive \
+            --region $AWS_REGION \
+            build s3://$AWS_S3_BUCKET
+            
+      - name: invalidate cache in cloudfront
+        env:
+          AWS_CLOUD_FRONT_ID: ${{ secrets.AWS_CLOUD_FRONT_ID }}
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id $AWS_CLOUD_FRONT_ID --paths "/*"
