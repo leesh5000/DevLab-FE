@@ -54,12 +54,12 @@ input:-webkit-autofill:active {
   transition: background-color 5000s ease-in-out 0s;
 }
 
-p ol {
+ol {
   list-style: decimal inside;
   margin-left: 1rem;
 }
 
-p ul {
+ul {
   list-style: disc inside;
   margin-left: 1rem;
 }

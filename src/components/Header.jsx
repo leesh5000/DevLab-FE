@@ -38,12 +38,10 @@ const Header = () => {
                 {userAuth.nickname}
               </button>
               <div className="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700" id="profile-dropdown-menu">
-                <ul className="py-2 font-medium" role="none">
+                <ul className="py-2 font-medium list-none p-0 m-0" role="none">
                   <li>
                     <Link to={`/posting`} className="block px-4 pr-20 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">
-                      <div className="inline-flex items-center">
-                        새 글 작성
-                      </div>
+                      새 글 작성
                     </Link>
                   </li>
                   <li>
@@ -52,11 +50,9 @@ const Header = () => {
                     </Link>
                   </li>
                   <li>
-                    <button className="block px-4 pr-20 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem" onClick={onLogoutHandler}>
-                      <div className="inline-flex items-center">
-                        로그아웃
-                      </div>
-                    </button>
+                    <Link to={""} onClick={onLogoutHandler} role="menuitem" className="block px-4 pr-20 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white">
+                      로그아웃
+                    </Link>
                   </li>
                 </ul>
               </div>
