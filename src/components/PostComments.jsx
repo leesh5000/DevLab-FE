@@ -210,7 +210,7 @@ export const PostComments = ({postId}) => {
             </div>
             {
               (editModeCommentId !== comment.id) ?
-                <div className="text-sm pt-2 break-words" dangerouslySetInnerHTML={{__html: comment.contents}}/> :
+                <div id="commentContents" className="text-sm pt-2 break-words" dangerouslySetInnerHTML={{__html: comment.contents}}/> :
                 <div className="mt-2">
                   <Editor contents={editCommentContents} onContentsHandler={onEditCommentContentsHandler}/>
                 </div>

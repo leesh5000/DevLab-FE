@@ -54,19 +54,29 @@ input:-webkit-autofill:active {
   transition: background-color 5000s ease-in-out 0s;
 }
 
-ol {
+#commentContents ol {
   list-style: decimal inside;
   margin-left: 1rem;
 }
 
-ul {
+#commentContents ul {
+  list-style: disc inside;
+  margin-left: 1rem;
+}
+
+#postContents ol {
+  list-style: decimal inside;
+  margin-left: 1rem;
+}
+
+#postContents ul {
   list-style: disc inside;
   margin-left: 1rem;
 }
 
 code {
-  color: #EB5757 !important;
-  background: #ededeb;
+  color: #0c0d0e;
+  background: #e4e5e7;
   padding: 2px 4px;
   font-size: 95%;
   border-radius: 4px;
