@@ -130,13 +130,13 @@ const LoginPage = () => {
             </div>
             <div id="social" className="w-[340px] flex flex-col mx-auto py-4 pb-6 space-y-2">
               <a href={googleUri}>
-                <img src="/google.png" className="cursor-pointer" alt="google"/>
+                <img src="/src/public/google.png" className="cursor-pointer" alt="google"/>
               </a>
               <a href={naverUri}>
-                <img src="/naver.png" className="cursor-pointer" alt="naver"/>
+                <img src="/src/public/naver.png" className="cursor-pointer" alt="naver"/>
               </a>
               <a href={kakaoUri}>
-                <img src="/kakao.png" className="cursor-pointer" alt="kakao"/>
+                <img src="/src/public/kakao.png" className="cursor-pointer" alt="kakao"/>
               </a>
             </div>
           </div>
