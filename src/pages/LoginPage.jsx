@@ -7,6 +7,8 @@ import {login} from "../actions/AuthActions.jsx";
 import {Footer} from "../components/Footer.jsx";
 import {Logo} from "../components/Logo.jsx";
 import google from "../../src/public/google.png";
+import naverImg from "../../src/public/naver.png";
+import kakaoImg from "../../src/public/kakao.png";
 
 const LoginPage = () => {
 
@@ -134,10 +136,10 @@ const LoginPage = () => {
                 <img src={google} className="cursor-pointer" alt="google"/>
               </a>
               <a href={naverUri}>
-                <img src="/src/public/naver.png" className="cursor-pointer" alt="naver"/>
+                <img src={naverImg} className="cursor-pointer" alt="naver"/>
               </a>
               <a href={kakaoUri}>
-                <img src="/src/public/kakao.png" className="cursor-pointer" alt="kakao"/>
+                <img src={kakaoImg} className="cursor-pointer" alt="kakao"/>
               </a>
             </div>
           </div>
