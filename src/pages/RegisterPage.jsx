@@ -106,7 +106,7 @@ const RegisterPage = () => {
     }
 
     if (!validator.password.test(userInput.password)) {
-      alert("비밀번호를 바르게 입력해주세요.");
+      alert("비밀번호는 6자리 이상, 30자리 이하로 입력해주세요.");
       return;
     }
 
