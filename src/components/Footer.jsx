@@ -6,7 +6,7 @@ export const Footer = () => {
           문의 : devlab2023@gmail.com
         </span>
         <span className="text-sm text-gray-500 sm:text-center">
-          © 2023<a href="https://flowbite.com/" className="hover:underline"> DEVLAB </a>All Rights Reserved.
+          © 2023<a href="https://flowbite.com/" className="hover:underline"> DevMoa </a>All Rights Reserved.
         </span>
         <ul className="flex flex-wrap items-center mt-3 text-sm font-medium text-gray-500 sm:mt-0">
           <li>

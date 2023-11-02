@@ -178,12 +178,12 @@ export const PostComments = ({postId}) => {
                   (userAuth.isLogin && (userAuth.id === comment.author.id)) && (editModeCommentId !== comment.id) &&
                   <div className="text-gray-600 flex">
                     <button className="hover:text-blue-700 hover:underline flex items-center" onClick={() => {onEditModeHandler(comment.id, comment.contents)}}>
-                      <img src="/public/edit.svg" alt="edit" className="h-4 inline-block text-sm"/>
+                      <img src="/src/public/edit.svg" alt="edit" className="h-4 inline-block text-sm"/>
                       수정
                     </button>
                     <button className="hover:text-blue-700 hover:underline ml-2 flex items-center"
                             onClick={() => {onDeleteHandler(comment.id)}}>
-                      <img src="/public/delete.svg" alt="edit" className="h-4 inline-block text-sm"/>
+                      <img src="/src/public/delete.svg" alt="edit" className="h-4 inline-block text-sm"/>
                       삭제
                     </button>
                   </div>
@@ -192,12 +192,12 @@ export const PostComments = ({postId}) => {
                   ((editModeCommentId === comment.id) && userAuth.isLogin && (userAuth.id === comment.author.id)) &&
                   <div className="text-gray-600 flex">
                     <button className="hover:text-blue-700 hover:underline flex items-center" onClick={() => {onEditConfirmHandler(comment.id, editCommentContents)}}>
-                      <img src="/public/confirm-2.svg" alt="edit" className="h-4 inline-block text-sm mr-0.5"/>
+                      <img src="/src/public/confirm-2.svg" alt="edit" className="h-4 inline-block text-sm mr-0.5"/>
                       확인
                     </button>
                     <button className="hover:text-blue-700 hover:underline ml-2 flex items-center"
                             onClick={onCancelHandler}>
-                      <img src="/public/cancel.svg" alt="edit" className="h-3 inline-block text-sm mr-0.5"/>
+                      <img src="/src/public/cancel.svg" alt="edit" className="h-3 inline-block text-sm mr-0.5"/>
                       취소
                     </button>
                   </div>
