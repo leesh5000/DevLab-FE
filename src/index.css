@@ -23,6 +23,12 @@
   background: white;
 }
 
+.ql-snow .ql-editor pre.ql-syntax {
+  background-color: #F6F6F6 !important;
+  color: #374151 !important;
+  overflow: visible;
+}
+
 .ql-toolbar {
   display: block;
   --tw-text-opacity: 1;
@@ -32,10 +38,41 @@
   border-top-right-radius: 0.5em;
 }
 
+pre.ql-syntax {
+  background-color: #F6F6F6;
+  border-radius: 0.5em;
+  padding: 1em;
+  margin: 1em 0;
+  overflow: auto;
+}
+
 /* Floating Input 자동 완성 배경색 방지 */
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
   transition: background-color 5000s ease-in-out 0s;
+}
+
+#contents ol {
+  list-style: decimal inside;
+  margin-left: 1rem;
+}
+
+#contents ul {
+  list-style: disc inside;
+  margin-left: 1rem;
+}
+
+p code {
+  color: #EB5757 !important;
+  background: #ededeb;
+  padding: 2px 4px;
+  font-size: 95%;
+  border-radius: 4px;
+}
+
+p a {
+  color: #3B82F6;
+  text-decoration: underline;
 }
