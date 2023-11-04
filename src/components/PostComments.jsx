@@ -37,14 +37,11 @@ export const PostComments = ({postId}) => {
 
   useEffect(() => {
 
-    const fetch = async () => {
-      setLoading(true);
-      await dispatch(fetchPostComments(postId, pageInfo))
-    }
-
-    fetch().then(() => {
-      setLoading(false);
-    })
+    setLoading(true);
+    dispatch(fetchPostComments(postId, pageInfo))
+      .then(() => {
+        setLoading(false);
+      });
 
   }, [pageInfo]);
 

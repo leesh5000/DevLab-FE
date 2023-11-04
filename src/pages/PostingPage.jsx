@@ -7,6 +7,7 @@ import {createPost, editPost, fetchPost} from "../actions/PostActions.jsx";
 import Editor from "../components/Editor.jsx";
 import Categories from "../utils/Categories.js";
 import {Footer} from "../components/Footer.jsx";
+import {Loading} from "../components/Loading.jsx";
 
 const PostingPage = () => {
 
@@ -19,6 +20,7 @@ const PostingPage = () => {
   const userAuth = useSelector((state) => state.auth);
   const postDetails = useSelector((state) => state.posts);
   const [errorMessage, setErrorMessage] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [postInput, setPostInput] = useState({
     category: "",
     title: "",
@@ -39,6 +41,7 @@ const PostingPage = () => {
     }
 
     if (mode === "edit") {
+      setLoading(true);
       dispatch(fetchPost(location.state.id))
         .then(() => {
           setPostInput({
@@ -47,8 +50,12 @@ const PostingPage = () => {
             contents: postDetails.contents,
             tags: postDetails.tags,
           });
+        })
+        .then(() => {
+          setLoading(false);
         });
     }
+
   }, [userAuth]);
 
   const onCategoryHandler = (e) => {
@@ -154,6 +161,12 @@ const PostingPage = () => {
 
   const onCancel = () => {
     navigate(-1);
+  }
+
+  if (loading) {
+    return (
+      <><Loading/></>
+    )
   }
 
   return (
