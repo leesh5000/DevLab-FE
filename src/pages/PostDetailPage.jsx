@@ -66,9 +66,8 @@ const PostDetailPage = () => {
   }
 
   const onEditHandler = () => {
-    navigate("/posting", {
+    navigate("/posting?mode=edit", {
       state: {
-        mode: "edit",
         id: id,
       }
     })

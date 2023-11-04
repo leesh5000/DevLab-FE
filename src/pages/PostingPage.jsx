@@ -2,7 +2,7 @@ import Header from "../components/Header.jsx";
 import Navbar from "../components/Navbar.jsx";
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useLocation, useNavigate, useSearchParams} from "react-router-dom";
 import {createPost, editPost, fetchPost} from "../actions/PostActions.jsx";
 import Editor from "../components/Editor.jsx";
 import Categories from "../utils/Categories.js";
@@ -13,7 +13,8 @@ const PostingPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const mode = location.state?.mode;
+  const [searchParams] = useSearchParams();
+  const mode = searchParams.get("mode");
 
   const userAuth = useSelector((state) => state.auth);
   const postDetails = useSelector((state) => state.posts);
@@ -26,17 +27,27 @@ const PostingPage = () => {
   });
 
   useEffect(() => {
+
     if (!userAuth.isLogin) {
+      alert("로그인 후 이용해주세요.");
       navigate("/");
     }
+
+    if (!location.state?.id) {
+      alert("잘못된 접근입니다.");
+      navigate(-1);
+    }
+
     if (mode === "edit") {
-      dispatch(fetchPost(location.state.id));
-      setPostInput({
-        category: postDetails.category,
-        title: postDetails.title,
-        contents: postDetails.contents,
-        tags: postDetails.tags,
-      });
+      dispatch(fetchPost(location.state.id))
+        .then(() => {
+          setPostInput({
+            category: postDetails.category,
+            title: postDetails.title,
+            contents: postDetails.contents,
+            tags: postDetails.tags,
+          });
+        });
     }
   }, [userAuth]);
 
