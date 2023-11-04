@@ -9,6 +9,7 @@ import {fetchUserCommentPages, setPage, setSort} from "../actions/UserCommentPag
 import {DownArrow} from "./DownArrow.jsx";
 import {UpArrow} from "./UpArrow.jsx";
 import {CategoryItem} from "./CategoryItem.jsx";
+import dompurify from "dompurify";
 
 export const UserCommentPages = ({id}) => {
 
@@ -105,7 +106,7 @@ export const UserCommentPages = ({id}) => {
                   </th>
                   <td className="text-sky-700 h-10 px-2 py-4 text-left break-words hover:underline hover:text-sky-600 hover:cursor-pointer"
                       onClick={() => onTitleClickHandler(comment.post)}
-                      dangerouslySetInnerHTML={{__html: comment.contents}}/>
+                      dangerouslySetInnerHTML={{__html: dompurify.sanitize(String(comment.contents || "loading..."))}}/>
                   <td className="px-2 py-4">
                     {DateConverter(comment.created_at)}
                   </td>

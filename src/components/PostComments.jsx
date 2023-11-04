@@ -16,6 +16,7 @@ import editImg from "../../src/public/edit.svg";
 import deleteImg from "../../src/public/delete.svg";
 import checkImg from "../../src/public/confirm-2.svg";
 import cancelImg from "../../src/public/cancel.svg";
+import dompurify from "dompurify";
 
 export const PostComments = ({postId}) => {
 
@@ -210,7 +211,7 @@ export const PostComments = ({postId}) => {
             </div>
             {
               (editModeCommentId !== comment.id) ?
-                <div id="commentContents" className="text-sm pt-2 break-words" dangerouslySetInnerHTML={{__html: comment.contents}}/> :
+                <div id="commentContents" className="text-sm pt-2 break-words" dangerouslySetInnerHTML={{__html: dompurify.sanitize(String(comment.contents || "loading..."))}}/> :
                 <div className="mt-2">
                   <Editor contents={editCommentContents} onContentsHandler={onEditCommentContentsHandler}/>
                 </div>
