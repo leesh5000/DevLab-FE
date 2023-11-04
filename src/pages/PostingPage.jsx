@@ -44,19 +44,22 @@ const PostingPage = () => {
       setLoading(true);
       dispatch(fetchPost(location.state.id))
         .then(() => {
-          setPostInput({
-            category: postDetails.category,
-            title: postDetails.title,
-            contents: postDetails.contents,
-            tags: postDetails.tags,
-          });
-        })
-        .then(() => {
           setLoading(false);
         });
     }
 
   }, [userAuth]);
+
+  useEffect(() => {
+    if (mode === "edit") {
+      setPostInput({
+        category: postDetails.category,
+        title: postDetails.title,
+        contents: postDetails.contents,
+        tags: postDetails.tags,
+      });
+    }
+  }, [postDetails]);
 
   const onCategoryHandler = (e) => {
     if (e.target.value === "none") {

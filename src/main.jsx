@@ -15,7 +15,7 @@ import {InjectAxiosInterceptor} from "./lib/InjectAxiosInterceptor.jsx";
 
 const middleware = applyMiddleware(thunk);
 const enhancer = process.env.NODE_ENV === 'production' ?
-  composeWithDevTools(middleware) :
+  middleware :
   composeWithDevTools(middleware);
 const store = createStore(persistedReducer, enhancer);
 const persistor = persistStore(store);
