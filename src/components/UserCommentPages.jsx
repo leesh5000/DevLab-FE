@@ -103,12 +103,9 @@ export const UserCommentPages = ({id}) => {
                       comment.post?.category === null ? '-' : <CategoryItem category={comment.post.category}/>
                     }
                   </th>
-                  <td className="h-10 text-left px-2 py-4 whitespace-nowrap overflow-hidden overflow-ellipsis">
-                    <button onClick={() => {onTitleClickHandler(comment.post)}}
-                            className="text-sky-700 hover:text-sky-500 hover:underline hover:cursor-pointer"
-                            dangerouslySetInnerHTML={{__html: comment.contents}}
-                    />
-                  </td>
+                  <td className="text-sky-700 h-10 px-2 py-4 text-left break-words hover:underline hover:text-sky-600 hover:cursor-pointer"
+                      onClick={() => onTitleClickHandler(comment.post)}
+                      dangerouslySetInnerHTML={{__html: comment.contents}}/>
                   <td className="px-2 py-4">
                     {DateConverter(comment.created_at)}
                   </td>
