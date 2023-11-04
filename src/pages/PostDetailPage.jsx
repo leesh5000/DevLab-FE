@@ -1,4 +1,4 @@
-import {useLocation, useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import Header from "../components/Header.jsx";
 import Navbar from "../components/Navbar.jsx";
 import {useEffect} from "react";
@@ -14,23 +14,29 @@ import {deletePost} from "../actions/HomeActions.jsx";
 
 const PostDetailPage = () => {
 
-  const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const post = useSelector(state => state.posts);
   const userAuth = useSelector(state => state.auth);
 
-  const id = location.state?.id;
+  const id = useParams().id;
 
   useEffect(() => {
 
-    if (!location.state?.id) {
+    if (!id) {
       alert("존재하지 않는 게시글입니다.");
       navigate(-1);
     }
 
-    dispatch(fetchPost(id));
+    dispatch(fetchPost(id))
+      .catch((e) => {
+        if (e.response.status === 404) {
+          alert("존재하지 않는 게시글입니다.");
+          navigate(-1);
+        }
+      });
+
   }, []);
 
   const convertTime = (timeInMillis) => {

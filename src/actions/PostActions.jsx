@@ -45,12 +45,12 @@ export const editPost = (id, data = {}, accessToken) => async (dispatch) => {
 
 export const fetchPost = (id) => async (dispatch) => {
 
-    const response = await client.get(`/posts/${id}`);
+  const response = await client.get(`/posts/${id}`);
 
-    dispatch({
-      type: FETCH_POST,
-      payload: response.data,
-    });
+  dispatch({
+    type: FETCH_POST,
+    payload: response.data,
+  });
 }
 
 export const addLikePost = (id, userAuth) => async (dispatch) => {
