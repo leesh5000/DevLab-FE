@@ -14,7 +14,10 @@ import {persistStore} from "redux-persist";
 import {InjectAxiosInterceptor} from "./lib/InjectAxiosInterceptor.jsx";
 
 const middleware = applyMiddleware(thunk);
-const store = createStore(persistedReducer, composeWithDevTools(middleware));
+const enhancer = process.env.NODE_ENV === 'production' ?
+  middleware :
+  composeWithDevTools(middleware);
+const store = createStore(persistedReducer, enhancer);
 const persistor = persistStore(store);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
