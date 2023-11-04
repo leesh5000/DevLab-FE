@@ -7,7 +7,7 @@ import {fetchMyProfile, fetchUserProfile, updateUserProfile} from "../actions/Us
 import {EmailAuthenticator} from "../components/EmailAuthenticator.jsx";
 import client from "../lib/client.jsx";
 import validator from "../utils/validator.js";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 import {UserPostPages} from "../components/UserPostPages.jsx";
 import {Loading} from "../components/Loading.jsx";
 import {UserCommentPages} from "../components/UserCommentPages.jsx";
@@ -37,10 +37,10 @@ const ProfilePage = () => {
   const [activeTab, setActiveTab] = React.useState('posts');
   const activeTabCss = "inline-block p-4 text-blue-600 bg-gray-100 rounded-t-lg active dark:bg-gray-800 dark:text-blue-500";
   const inactiveTabCss = "inline-block p-4 rounded-t-lg hover:text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-gray-300";
-  const id = location.state?.id;
+  const id = useParams().id;
 
   useEffect(() => {
-    console.log(id);
+
     if (!id) {
       alert("잘못된 접근입니다.")
       navigate("/");
