@@ -29,22 +29,18 @@ function PostTable() {
 
   useEffect(() => {
 
-    async function getPosts() {
-      setLoading(true);
-      await dispatch(fetchPosts({
-          page: pageInfo.page,
-          size: pageInfo.size,
-          sort: pageInfo.sort,
-          category: searchParams.get("category") === "ALL" ? null : searchParams.get("category"),
-          keyword: searchParams.get("keyword"),
-        })
-      );
-    }
+    setLoading(true);
+    dispatch(fetchPosts({
+        page: pageInfo.page,
+        size: pageInfo.size,
+        sort: pageInfo.sort,
+        category: searchParams.get("category") === "ALL" ? null : searchParams.get("category"),
+        keyword: searchParams.get("keyword"),
+      })
+    ).then(() => {
+      setLoading(false);
+    });
 
-    getPosts()
-      .then(() => {
-        setLoading(false);
-      });
   }, [searchParams]);
 
   const createdSortHandler = () => {

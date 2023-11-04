@@ -76,8 +76,10 @@ const PostDetailPage = () => {
 
   const onDeleteHandler = () => {
     if (window.confirm("정말로 삭제하시겠습니까?")) {
-      dispatch(deletePost(id, userAuth.accessToken));
-      navigate(-1);
+      dispatch(deletePost(id, userAuth.accessToken))
+        .then(() => {
+          navigate(-1);
+        });
     }
   }
 
