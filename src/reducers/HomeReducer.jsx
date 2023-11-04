@@ -1,4 +1,4 @@
-import {FETCH_POSTS} from "../actions/HomeActions.jsx";
+import {DELETE_POST, FETCH_POSTS} from "../actions/HomeActions.jsx";
 
 const initialState = {
   content: [],
@@ -15,6 +15,11 @@ export default function (state = initialState, action) {
     case FETCH_POSTS:
       return {
         ...action.payload,
+      }
+    case DELETE_POST:
+      return {
+        ...state,
+        content: state.content.filter(post => post.id !== action.deletedPostId),
       }
     default:
       return state;

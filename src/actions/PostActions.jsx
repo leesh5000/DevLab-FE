@@ -2,7 +2,6 @@ import client from "../lib/client.jsx";
 
 export const CREATE_POST = "posts/CREATE_POST";
 export const EDIT_POST = "posts/EDIT_POST";
-export const REMOVE_POST = "posts/REMOVE_POST";
 export const FETCH_POST = "posts/FETCH_POST";
 export const ADD_LIKE_POST = "posts/ADD_LIKE_POST";
 
@@ -42,20 +41,6 @@ export const editPost = (id, data = {}, accessToken) => async (dispatch) => {
       type: EDIT_POST,
       payload: response.data,
     });
-}
-
-export const removePost = (id, accessToken) => async (dispatch) => {
-
-  await client.delete(`/posts/${id}`, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    }
-  });
-
-  dispatch({
-    type: REMOVE_POST,
-    deletedPostId: id,
-  });
 }
 
 export const fetchPost = (id) => async (dispatch) => {

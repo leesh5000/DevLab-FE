@@ -3,13 +3,14 @@ import Header from "../components/Header.jsx";
 import Navbar from "../components/Navbar.jsx";
 import {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {addLikePost, fetchPost, removePost} from "../actions/PostActions.jsx";
+import {addLikePost, fetchPost} from "../actions/PostActions.jsx";
 import {TagItem} from "../components/TagItem.jsx";
 import {PostComments} from "../components/PostComments.jsx";
 import {CategoryItem} from "../components/CategoryItem.jsx";
 import {Author} from "../components/Author.jsx";
 import editImg from "../../src/public/edit.svg";
 import deleteImg from "../../src/public/delete.svg";
+import {deletePost} from "../actions/HomeActions.jsx";
 
 const PostDetailPage = () => {
 
@@ -68,7 +69,7 @@ const PostDetailPage = () => {
 
   const onDeleteHandler = () => {
     if (window.confirm("정말로 삭제하시겠습니까?")) {
-      dispatch(removePost(id, userAuth.accessToken));
+      dispatch(deletePost(id, userAuth.accessToken));
       navigate(-1);
     }
   }

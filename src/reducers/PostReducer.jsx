@@ -1,4 +1,4 @@
-import {ADD_LIKE_POST, FETCH_POST, REMOVE_POST} from "../actions/PostActions.jsx";
+import {ADD_LIKE_POST, FETCH_POST} from "../actions/PostActions.jsx";
 
 const initialState = {
   id: "",
@@ -24,8 +24,6 @@ export default function (state = initialState, action) {
       return {
         ...action.payload,
       }
-    case REMOVE_POST:
-      return initialState;
     case ADD_LIKE_POST:
       return {
         ...state,
