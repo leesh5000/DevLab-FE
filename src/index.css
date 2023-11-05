@@ -76,3 +76,15 @@ code {
   color: #3B82F6;
   text-decoration: underline;
 }
+
+.ql-size-huge {
+  font-size: 200%;
+}
+
+.ql-size-large {
+  font-size: 150%;
+}
+
+.ql-size-small {
+  font-size: 75%;
+}
