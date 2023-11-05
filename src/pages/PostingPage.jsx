@@ -96,8 +96,8 @@ const PostingPage = () => {
 
     console.log(e.target.value);
 
-    if (e.target.value.length > 20) {
-      e.target.value = e.target.value.substring(0, 20);
+    if (e.target.value.length > 30) {
+      e.target.value = e.target.value.substring(0, 30);
       return;
     }
 
@@ -207,7 +207,7 @@ const PostingPage = () => {
         <input type="text" className="mt-8 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                placeholder="태그 입력" onKeyUp={onTagInputHandler}/>
         <p className="text-sm text-blue-700 mt-2">
-          태그는 20자 이내로 입력 가능하며 최대 5개까지 지정 가능합니다.
+          태그는 30자 이내로 입력 가능하며 최대 5개까지 지정 가능합니다.
         </p>
         <div className="h-16">
           {
