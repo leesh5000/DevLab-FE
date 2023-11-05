@@ -29,27 +29,25 @@ const PostingPage = () => {
   });
 
   useEffect(() => {
-
     if (!userAuth.isLogin) {
       alert("로그인 후 이용해주세요.");
       navigate("/");
     }
+  }, [userAuth]);
 
+  useEffect(() => {
     if (mode === "edit") {
-
       if (!location.state?.id) {
         alert("잘못된 접근입니다.");
         navigate(-1);
       }
-
       setLoading(true);
       dispatch(fetchPost(location.state.id))
         .then(() => {
           setLoading(false);
         });
     }
-
-  }, [userAuth]);
+  }, []);
 
   useEffect(() => {
     if (mode === "edit") {
