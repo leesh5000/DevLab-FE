@@ -66,7 +66,7 @@ const ProfilePage = () => {
   }, [emailAuthenticator]);
 
   useEffect(() => {
-    setEditMode(false);
+    allClosed();
   }, [location]);
 
   const isMyProfile = () => {
