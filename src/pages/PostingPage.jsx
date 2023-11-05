@@ -35,12 +35,13 @@ const PostingPage = () => {
       navigate("/");
     }
 
-    if (!location.state?.id) {
-      alert("잘못된 접근입니다.");
-      navigate(-1);
-    }
-
     if (mode === "edit") {
+
+      if (!location.state?.id) {
+        alert("잘못된 접근입니다.");
+        navigate(-1);
+      }
+
       setLoading(true);
       dispatch(fetchPost(location.state.id))
         .then(() => {
