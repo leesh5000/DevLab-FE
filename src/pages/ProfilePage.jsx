@@ -47,7 +47,7 @@ const ProfilePage = () => {
     }
 
     setLoading(true);
-    if (auth.isLogin && auth.id === id) {
+    if (isMyProfile()) {
       dispatch(fetchMyProfile(auth.accessToken))
         .then(() => {
           setLoading(false);
@@ -70,7 +70,7 @@ const ProfilePage = () => {
   }, [location]);
 
   const isMyProfile = () => {
-    return auth.isLogin && auth.id === id;
+    return auth.isLogin && (parseInt(auth.id) === parseInt(id));
   }
 
   const onEditMode = () => {
