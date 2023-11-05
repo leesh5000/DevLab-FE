@@ -13,8 +13,12 @@ export const setUpInterceptors = (dispatch) => {
 
         const accessToken = await client.post("/auth/refresh-token", {}, {
           withCredentials: true
-        }).then((res) => res.data.access_token.value)
+        }).then((res) => {
+          console.log(res);
+          return res.data.token_info.access_token.value
+        })
           .catch((e) => {
+            console.log(e);
             if (e.response.status === 401) {
               alert("로그인이 만료되었습니다. 다시 로그인 해주세요.");
               dispatch(loginExpired());
