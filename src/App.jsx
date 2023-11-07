@@ -33,8 +33,8 @@ export const App = () => {
       <Route exact path="/find-id" element={<FindIdPage/>}/>
       <Route exact path="/find-password" element={<FindPasswordPage/>}/>
       <Route path="/users/:id/:nickname" element={<ProfilePage/>}/>
+      <Route path="/posts/:id" element={<PostDetailPage/>}/>
       <Route path="/posts/" element={<Home/>}/>
-      <Route path="/posts/:id/:title" element={<PostDetailPage/>}/>
       <Route path="/posting" element={<PostingPage/>}/>
       <Route path="*" element={<Redirecter/>}/>
     </Routes>
