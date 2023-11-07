@@ -131,7 +131,7 @@ function PostTable() {
                       <CategoryItem category={post.category}/>
                     </td>
                     <td scope="row" className="px-3 py-3 h-20">
-                      <Link to={`/posts/${post.id}/${encodeURI(post.title)}`} state={{id : post.id}} className="font-semibold text-sky-700 hover:text-sky-500 hover:underline hover:cursor-pointer">
+                      <Link to={`/posts/${post.id}`} state={{id : post.id}} className="font-semibold text-sky-700 hover:text-sky-500 hover:underline hover:cursor-pointer">
                         {post.title}
                         {
                           (post.comment_count !== 0) &&
