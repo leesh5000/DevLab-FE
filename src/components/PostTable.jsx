@@ -21,7 +21,7 @@ function PostTable() {
   const posts = useSelector(state => state.home);
   const pageInfo = {
     page: Math.max(searchParams.get("page") - 1, 0),
-    size: 20,
+    size: 12,
     sort: searchParams.get("sort") ? searchParams.get("sort") : "created_at,desc",
   }
   const startItem = Math.min(pageInfo.page * pageInfo.size + 1, posts.total_elements);
